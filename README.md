@@ -1,37 +1,57 @@
-# lgc
+# Basic management system
 
-#### 介绍
-柳州市垃圾分类小程序
+## 说明
 
-#### 软件架构
-软件架构说明
+BMS是一款以Spirng boot为核心，集成Vue、Shiro、JWT等框架开发的前后端分离基础后台管理系统。系统包含用户管理，角色管理二大功能模块。
 
+## 技术栈
 
-#### 安装教程
+### 前端
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+* JS框架：Vue
+* UI框架：Element UI
+* 异步请求：Axios
+* 跨域认证：JSON Web Token
 
-#### 使用说明
+### 后台
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+* 核心框架：Spring Boot
+* 安全框架：Apace Shiro + JWT
+* 持久层框架：Mybaits
+* 数据连接池：Durid
 
-#### 参与贡献
+## 开发环境
 
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
+* OS：Windows 10
+* 编译软件：IDEA
+* 数据库 ：MySQL 57
+* JDK：JDK11
+* Node：Node.js 14
 
+## 模块功能
 
-#### 特技
+### 用户管理
 
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+- [x] 添加用户
+
+- [x] 用户列表
+  - [x] 修改用户
+  - [x] 删除用户
+- [x] 用户角色分配
+- [ ] 禁用用户
+
+### 角色管理
+
+- [x] 添加角色
+- [x] 角色列表
+  - [x] 修改角色
+  - [x] 删除角色
+- [x] 角色权限分配
+- [ ] 禁用角色
+
+### 系统
+- [ ] Shiro权限认证
+
+## BUG
+- [X] 删除角色时未删除角色与用户之间的关系
+

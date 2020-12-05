@@ -1,0 +1,89 @@
+<template>
+  <div>
+    <el-table
+      :data="roles"
+      stripe
+      style="width: 100%">
+      <el-table-column
+        prop="roleCode"
+        label="代号">
+      </el-table-column>
+      <el-table-column
+        prop="roleName"
+        label="名称">
+      </el-table-column>
+      <el-table-column
+        prop="roleAddTime"
+        label="添加时间"
+      ></el-table-column>
+      <el-table-column
+        prop="roleUpdTime"
+        label="更新时间"
+      ></el-table-column>
+      <el-table-column
+        prop="roleStatus"
+        label="状态"
+      ></el-table-column>
+      <el-table-column label="操作">
+        <template slot-scope="scope">
+          <el-button type="info" @click="updRole(scope.row.roleName)">修改</el-button>
+          <el-button type="danger" @click="delRole(scope.row.roleId)">删除</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+  </div>
+</template>
+
+<script>
+  import storage from "../../assets/storage";
+  import api from "../../api/api";
+
+  export default {
+    name: "Edit",
+    data(){
+      return{
+        roles:[],
+        role:{}
+      }
+    },
+    methods:{
+      getRoles(){
+        api.getRoles().then(resp=>{
+          for(let i=0;i<resp.data.obj.length;i++){
+            resp.data.obj[i].roleId=resp.data.obj[i].roleId.toFixed(0);
+          }
+          this.roles=resp.data.obj;
+        })
+      },
+      updRole(name){
+        this.$router.push({path:"/roleMgt/upd",query:{name:name}})
+      },
+      delRole(id){
+        if(confirm("确认删除?")){
+          this.$http.get('/roleMgt/del?id='+id,{
+            headers:{
+              token:storage.get('token')
+            }
+          }).then(resp=>{
+            if(resp.data.code===1){
+              this.getRoles();
+            }
+            this.$message({
+              showClose:true,
+              message:resp.data.msg,
+              type:resp.data.obj,
+              duration:"1000"
+            })
+          })
+        }
+      }
+    },
+    created() {
+      this.getRoles()
+    }
+  }
+</script>
+
+<style scoped>
+
+</style>

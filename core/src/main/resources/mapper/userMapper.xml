@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lightning.lgc.core.dao.UserDao">
+    <resultMap id="userMap" type="User">
+        <id property="userId" column="user_id"/>
+        <result property="userName" column="user_name"/>
+        <result property="userGender" column="user_gender"/>
+        <result property="userBirthday" column="user_birthday"/>
+        <result property="userPhone" column="user_phone"/>
+        <result property="userEmail" column="user_email"/>
+        <result property="userAddTime" column="user_add_time"/>
+        <result property="userUpdTime" column="user_upd_time"/>
+        <result property="userStatus" column="user_status"/>
+        <collection property="roleList" ofType="Role">
+            <id property="roleId" column="role_id"/>
+            <result property="roleCode" column="role_code"/>
+            <result property="roleName" column="role_name"/>
+        </collection>
+        <collection property="roleIds" ofType="Long">
+            <id property="Long" column="role_id"/>
+        </collection>
+    </resultMap>
+
+    <select id="getUserByName" parameterType="String" resultMap="userMap">
+        SELECT u.user_id,u.user_name,u.user_gender,u.user_birthday,u.user_phone,u.user_email,u.user_add_time,u.user_upd_time,u.user_status,r.role_id,r.role_code,r.role_name
+        FROM user u
+        LEFT JOIN user_role_relation ur
+        ON u.user_id=ur.ur_user_id
+        LEFT JOIN role r
+        ON r.role_id=ur.ur_role_id
+        WHERE user_name=#{name}
+    </select>
+
+    <select id="getUserLoginInfo" parameterType="String" resultType="User">
+        SELECT * FROM user
+        WHERE user_name=#{userName}
+    </select>
+
+    <insert id="add" parameterType="User">
+        INSERT INTO user(user_id,user_name,user_pwd,user_gender,user_phone,user_email,user_salt)
+        VALUES(#{userId},#{userName},#{userPwd},#{userGender},#{userPhone},#{userEmail},#{userSalt})
+    </insert>
+
+    <select id="getUsers" resultMap="userMap">
+        SELECT u.user_id,u.user_name,u.user_gender,u.user_birthday,u.user_phone,u.user_email,u.user_add_time,u.user_upd_time,u.user_status,r.role_id,r.role_code,r.role_name
+        FROM user u
+        LEFT JOIN user_role_relation ur
+        ON u.user_id=ur.ur_user_id
+        LEFT JOIN role r
+        ON r.role_id=ur.ur_role_id
+    </select>
+
+    <update id="upd" parameterType="User">
+        UPDATE user SET user_gender=#{userGender},user_phone=#{userPhone},user_email=#{userEmail}
+        WHERE user_name=#{userName}
+    </update>
+
+    <delete id="del" parameterType="Long">
+        DELETE FROM user
+        WHERE user_id=#{id}
+    </delete>
+
+    <insert id="addUserRoleRelation" parameterType="Map">
+        INSERT INTO user_role_relation
+        VALUES(#{urId},#{urUserId},#{urRoleId})
+    </insert>
+
+    <select id="getUrRoleId" resultType="Long">
+        SELECT ur_role_id FROM user_role_relation
+        WHERE ur_user_id=#{id}
+    </select>
+
+    <delete id="delUserRoleRelation" parameterType="Long">
+        DELETE FROM user_role_relation
+        WHERE ur_user_id=#{userId}
+        AND ur_role_id=#{roleId}
+    </delete>
+
+    <delete id="delUserRoleRelations" parameterType="Long">
+        DELETE FROM user_role_relation
+        WHERE ur_user_id=#{id}
+        OR ur_role_id=#{id}
+    </delete>
+
+    <select id="getUserPerms" parameterType="Long" resultType="String">
+        SELECT p.perms_code FROM perms p
+        LEFT JOIN role_perms_relation rp
+        ON p.perms_id=rp_perms_id
+        LEFT JOIN role r
+        ON r.role_id=rp.rp_role_id
+        LEFT JOIN user_role_relation ur
+        ON r.role_id=ur.ur_role_id
+        LEFT JOIN user u
+        ON u.user_id=ur.ur_user_id
+        WHERE u.user_id=#{id}
+    </select>
+</mapper>

@@ -1,0 +1,110 @@
+{
+	"easycom": {
+		"^u-(.*)": "uview-ui/components/u-$1/u-$1.vue"
+	},
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "柳州市垃圾分类"
+			}
+		}, {
+			"path": "pages/search/search",
+			"style": {
+				"navigationBarTitleText": "柳州市垃圾分类",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/search/searchList/searchList",
+			"style": {
+				"navigationBarTitleText": "柳州市垃圾分类",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/index/catalogList/catalogList",
+			"style": {
+				"navigationBarTitleText": "柳州市垃圾分类",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/exam/exam",
+			"style": {
+				"navigationBarTitleText": "柳州市垃圾分类",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/exam/randomExam/randomExam",
+			"style": {
+				"navigationBarTitleText": "柳州市垃圾分类",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/exam/submitResult/submitResult",
+			"style": {
+				"navigationBarTitleText": "柳州市垃圾分类",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/user/user",
+			"style": {
+				"navigationBarTitleText": "柳州市垃圾分类",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/user/userInfo/userInfo",
+			"style": {
+				"navigationBarTitleText": "柳州市垃圾分类",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/user/changePwd/changePwd",
+			"style": {
+				"navigationBarTitleText": "柳州市垃圾分类",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/user/topRate/topRate",
+			"style": {
+				"navigationBarTitleText": "柳州市垃圾分类",
+				"enablePullDownRefresh": false
+			}
+
+		}
+	],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "柳州市垃圾分类",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8"
+	},
+	"tabBar": {
+		"color": "#7A7E83",
+		"selectedColor": "#3cc51f",
+		"borderStyle": "black",
+		"backgroundColor": "#ffffff",
+		"list": [{
+				"pagePath": "pages/index/index",
+				"text": "首页"
+			}, {
+				"pagePath": "pages/search/search",
+				"text": "搜索"
+			}, {
+				"pagePath": "pages/exam/exam",
+				"text": "测试"
+			},
+			{
+				"pagePath": "pages/user/user",
+				"text": "个人中心"
+			}
+		]
+	}
+}
