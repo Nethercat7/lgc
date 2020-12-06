@@ -13,11 +13,14 @@ import RoleTable from '@/components/roleMgt/RoleTable';
 import RoleAdd from '@/components/roleMgt/RoleAdd';
 import RoleUpd from '@/components/roleMgt/RoleUpd';
 
+//分类管理模块
+import GarbageCateGoryTable from '@/components/garbage/GarbageCategoryTable';
+
 Vue.use(Router)
 
 
 const originalPush = Router.prototype.push
-  Router.prototype.push = function push(location) {
+Router.prototype.push = function push(location) {
   return originalPush.call(this, location).catch(err => err)
 }
 
@@ -59,6 +62,12 @@ export default new Router({
           path: '/roleMgt/upd',
           name: 'RoleUpd',
           component: RoleUpd
+        },
+        //分类管理
+        {
+          path: '/garbage/category',
+          name: 'GarbageCateGoryTable',
+          component: GarbageCateGoryTable
         }
       ]
     },

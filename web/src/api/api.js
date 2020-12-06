@@ -25,7 +25,20 @@ let api={
   },
   updRole(params){
     return http.post(`${request}/roleMgt/upd`,params)
+  },
+  //分类管理模块
+  addCategory(params) {
+    return http.post(`${request}/garbage/addCategory`,params)
+  },
+  getCategories(){
+    return http.get(`${request}/garbage/getCategories`)
+  },
+  delCategory(params){
+    return http.get(`${request}/garbage/delCategory?id=`+params)
+  },
+  updCategory(params){
+    return http.post(`${request}/garbage/updCategory`,params)
   }
-}
+};
 
 export default api
