@@ -11,16 +11,16 @@
 		</u-row>
 		<u-row gutter="16">
 			<u-col span="3">
-				<u-button :custom-style="green" size="default" @click="navigateTo('/pages/index/catalogList/catalogList?type=1')">厨余垃圾</u-button>
+				<u-button :custom-style="green" size="default" @click="navigateTo('/pages/index/catalogList/catalogList?type=厨余垃圾')">厨余垃圾</u-button>
 			</u-col>
 			<u-col span="3">
-				<u-button :custom-style="blue" size="default" @click="navigateTo('/pages/index/catalogList/catalogList?type=2')">可回收垃圾</u-button>
+				<u-button :custom-style="blue" size="default" @click="navigateTo('/pages/index/catalogList/catalogList?type=可回收垃圾')">可回收垃圾</u-button>
 			</u-col>
 			<u-col span="3">
-				<u-button :custom-style="red" size="default" @click="navigateTo('/pages/index/catalogList/catalogList?type=3')">有害垃圾</u-button>
+				<u-button :custom-style="red" size="default" @click="navigateTo('/pages/index/catalogList/catalogList?type=有害垃圾')">有害垃圾</u-button>
 			</u-col>
 			<u-col span="3">
-				<u-button :custom-style="gray" size="default" @click="navigateTo('/pages/index/catalogList/catalogList?type=4')">其他垃圾</u-button>
+				<u-button :custom-style="gray" size="default" @click="navigateTo('/pages/index/catalogList/catalogList?type=其他垃圾')">其他垃圾</u-button>
 			</u-col>
 		</u-row>
 		<!-- 分类检索 End -->

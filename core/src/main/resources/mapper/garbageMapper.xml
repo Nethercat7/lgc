@@ -45,9 +45,14 @@
         ON g.garbage_id=gcr.gcr_garbage_id
         LEFT JOIN garbage_category gc
         ON gc.gc_id=gcr.gcr_gc_id
-        <if test="name!=null">
-            WHERE g.garbage_name LIKE concat('%',#{name},'%')
-        </if>
+        <choose>
+            <when test="name!=null">
+                WHERE g.garbage_name LIKE concat('%',#{name},'%')
+            </when>
+            <when test="category!=null">
+                WHERE gc.gc_name=#{category}
+            </when>
+        </choose>
     </select>
 
     <update id="updGarbage" parameterType="Garbage">
