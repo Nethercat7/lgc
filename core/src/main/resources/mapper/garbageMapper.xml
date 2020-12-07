@@ -22,4 +22,50 @@
         SET gc_name=#{gcName}
         WHERE gc_id=#{gcId}
     </update>
+
+    <insert id="addGarbage" parameterType="Garbage">
+        INSERT INTO garbage VALUES (#{garbageId},#{garbageName})
+    </insert>
+
+    <insert id="addGarbageRelation" parameterType="Long">
+        INSERT INTO garbage_garbage_category_relation VALUES(#{gcrId},#{garbageId},#{gcId})
+    </insert>
+
+   <!-- <resultMap id="garbagesMap" type="Garbage">
+        <id column="garbage_id" property="garbageId"/>
+        <result column="garbage_name" property="garbageName"/>
+        <collection property="categories" ofType="GarbageCategory">
+            <id column="gc_id" property="gcId"/>
+            <result column="gc_name" property="gcName"/>
+        </collection>
+    </resultMap>-->
+    <select id="getGarbages" resultType="Garbage">
+        SELECT g.garbage_id,g.garbage_name,gc.gc_id,gc.gc_name FROM garbage g
+        LEFT JOIN garbage_garbage_category_relation gcr
+        ON g.garbage_id=gcr.gcr_garbage_id
+        LEFT JOIN garbage_category gc
+        ON gc.gc_id=gcr.gcr_gc_id
+    </select>
+
+    <update id="updGarbage" parameterType="Garbage">
+        UPDATE garbage
+        SET garbage_name=#{garbageName}
+        WHERE garbage_id=#{garbageId}
+    </update>
+
+    <update id="updGarbageRelation" parameterType="Garbage">
+        UPDATE garbage_garbage_category_relation
+        SET gcr_gc_id=#{gcId}
+        WHERE gcr_garbage_id=#{garbageId}
+    </update>
+
+    <delete id="delGarbage" parameterType="Long">
+        DELETE FROM garbage
+        WHERE garbage_id=#{garbageId}
+    </delete>
+
+    <delete id="delGarbageRelation" parameterType="Long">
+        DELETE FROM garbage_garbage_category_relation
+        WHERE gcr_garbage_id=#{garbageId}
+    </delete>
 </mapper>

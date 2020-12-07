@@ -77,7 +77,7 @@
         api.addCategory(this.garbageCategory).then(resp => {
           if (resp.data.code === 1) {
             this.getCategories();
-            this.garbageCategory.gcName = '';
+             this.garbageCategory.gcName = '';
           }
           this.$message({
             showClose: true,

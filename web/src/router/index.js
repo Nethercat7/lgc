@@ -15,6 +15,7 @@ import RoleUpd from '@/components/roleMgt/RoleUpd';
 
 //分类管理模块
 import GarbageCateGoryTable from '@/components/garbage/GarbageCategoryTable';
+import GarbageTable from '@/components/garbage/GarbageTable';
 
 Vue.use(Router)
 
@@ -68,6 +69,11 @@ export default new Router({
           path: '/garbage/category',
           name: 'GarbageCateGoryTable',
           component: GarbageCateGoryTable
+        },
+        {
+          path: '/garbage/table',
+          name: 'GarbageTable',
+          component: GarbageTable
         }
       ]
     },

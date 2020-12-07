@@ -1,6 +1,7 @@
 package com.lightning.lgc.core.controller;
 
 import com.lightning.lgc.core.config.Constant;
+import com.lightning.lgc.core.entity.Garbage;
 import com.lightning.lgc.core.entity.GarbageCategory;
 import com.lightning.lgc.core.entity.ResultBody;
 import com.lightning.lgc.core.serivce.GarbageService;
@@ -31,7 +32,7 @@ public class GarbageController {
     @GetMapping("getCategories")
     public ResultBody getCategory(){
         List<GarbageCategory> categories=garbageService.getCategories();
-        log.info("成功获取："+categories.size()+"数据");
+        log.info("成功获取："+categories.size()+"条数据");
         return new ResultBody(Constant.SUCCESS,categories,Constant.GET_SUCCESS);
     }
 
@@ -53,5 +54,42 @@ public class GarbageController {
             return new ResultBody(Constant.SUCCESS,Constant.UPD_SUCCESS,Constant.TYPE_SUCCESS);
         }
         return new ResultBody(Constant.FAILED,Constant.UPD_FAILED,Constant.TYPE_ERROR);
+    }
+
+    @PostMapping("addGarbage")
+    public ResultBody addGarbage(@RequestBody Garbage garbage){
+        int status=garbageService.addGarbage(garbage);
+        if(status==1){
+            log.info("成功添加分类物品："+garbage.getGarbageName());
+            return new ResultBody(Constant.SUCCESS,Constant.ADD_SUCCESS,Constant.TYPE_SUCCESS);
+        }
+        return new ResultBody(Constant.FAILED, Constant.ADD_FAILED, Constant.TYPE_ERROR);
+    }
+
+    @GetMapping("getGarbages")
+    public ResultBody getGarbages(){
+        List<Garbage> garbages=garbageService.getGarbages();
+        log.info("成功获取："+garbages.size()+"条数据");
+        return new ResultBody(Constant.SUCCESS,garbages,Constant.GET_SUCCESS,Constant.TYPE_SUCCESS);
+    }
+
+    @PostMapping("updGarbage")
+    public ResultBody udpGarbage(@RequestBody Garbage garbage){
+        int status=garbageService.updGarbage(garbage);
+        if(status==1){
+            log.info("成功修改："+garbage.getGarbageName());
+            return new ResultBody(Constant.SUCCESS,Constant.UPD_SUCCESS,Constant.TYPE_SUCCESS);
+        }
+        return new ResultBody(Constant.FAILED, Constant.UPD_FAILED, Constant.TYPE_ERROR);
+    }
+
+    @GetMapping("delGarbage")
+    public ResultBody delGarbage(Long garbageId){
+        int status=garbageService.delGarbage(garbageId);
+        if(status==1){
+            log.info("成功删除垃圾"+garbageId);
+            return new ResultBody(Constant.SUCCESS,Constant.DEL_SUCCESS,Constant.TYPE_SUCCESS);
+        }
+        return new ResultBody(Constant.FAILED,Constant.DEL_FAILED,Constant.TYPE_ERROR);
     }
 }

@@ -1,5 +1,6 @@
 package com.lightning.lgc.core.serivce;
 
+import com.lightning.lgc.core.entity.Garbage;
 import com.lightning.lgc.core.entity.GarbageCategory;
 
 import java.util.List;
@@ -16,4 +17,16 @@ public interface GarbageService {
 
     //修改分类类别
     int updCategory(GarbageCategory garbageCategory);
+
+    //添加分类物品
+    int addGarbage(Garbage garbage);
+
+    //获取所有的垃圾分类
+    List<Garbage> getGarbages();
+
+    //更新垃圾分类
+    int updGarbage(Garbage garbage);
+
+    //删除垃圾分类
+    int delGarbage(Long garbageId);
 }

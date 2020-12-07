@@ -40,7 +40,7 @@
           <el-submenu index="3">
             <template slot="title"><i class="el-icon-menu"></i>分类管理</template>
             <el-menu-item @click="garbageCategoryTable">类别列表</el-menu-item>
-            <el-menu-item>分类列表</el-menu-item>
+            <el-menu-item @click="garbageTable">分类列表</el-menu-item>
           </el-submenu>
         </el-menu>
       </el-aside>
@@ -94,6 +94,9 @@
       },
       garbageCategoryTable(){
         this.$router.push("/garbage/category");
+      },
+      garbageTable(){
+        this.$router.push("/garbage/table");
       }
     },
     created() {

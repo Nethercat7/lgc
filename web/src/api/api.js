@@ -38,6 +38,18 @@ let api={
   },
   updCategory(params){
     return http.post(`${request}/garbage/updCategory`,params)
+  },
+  addGarbage(params){
+    return http.post(`${request}/garbage/addGarbage`,params)
+  },
+  getGarbages(){
+    return http.get(`${request}/garbage/getGarbages`)
+  },
+  updGarbage(params){
+    return http.post(`${request}/garbage/updGarbage`,params)
+  },
+  delGarbage(params){
+    return http.get(`${request}/garbage/delGarbage?garbageId=`+params)
   }
 };
 
