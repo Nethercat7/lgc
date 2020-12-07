@@ -10,9 +10,16 @@
 		<u-row gutter="16">
 			<u-col span="12">
 				<u-table class="no-border" align="left">
+					<u-tr v-if='show'>
+						<u-th>名称</u-th>
+						<u-th>类别</u-th>
+					</u-tr>
 					<u-tr v-for='item in garbages'>
 						<u-td>{{item.garbageName}}</u-td>
 						<u-td>{{item.gcName}}</u-td>
+					</u-tr>
+					<u-tr v-if='emty'>
+						<u-td>未找到相关物品信息</u-td>
 					</u-tr>
 				</u-table>
 			</u-col>
@@ -26,16 +33,25 @@
 			return {
 				keyword: '',
 				garbages: [],
+				show:false,
+				emty:false
 			};
 		},
 		methods: {
 			search() {
 				if(this.keyword != ''){
 					this.$request('/garbage/getGarbages?name=' + this.keyword).then(resp => {
-						this.garbages = resp.obj
+						if(resp.obj.length>0){
+							this.garbages = resp.obj;
+							this.show=true;
+						}else{
+							this.emty=true;
+						}
 					})
 				}else{
 					this.garbages=[];
+					this.show=false;
+					this.emty=false;
 				}
 			}
 		}
