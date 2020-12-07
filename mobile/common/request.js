@@ -1,11 +1,13 @@
+import storage from './storage.js'
+
 const baseUrl = 'http://127.0.0.1:8080'
-const request = (url = '', data = {}, type = '', header = {}) => {
+const request = (url = '', data = {}, type = '') => {
 	return new Promise((resolve, reject) => {
 		uni.request({
 			method: type,
 			url: baseUrl + url,
 			data: data,
-			header: header,
+			header: {token:storage.get('token')},
 			dataType: 'json',
 		}).then((response) => {
 			setTimeout(function() {

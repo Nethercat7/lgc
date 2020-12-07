@@ -49,8 +49,8 @@ public class GarbageServiceImpl implements GarbageService {
     }
 
     @Override
-    public List<Garbage> getGarbages() {
-        return garbageDao.getGarbages();
+    public List<Garbage> getGarbages(String name) {
+        return garbageDao.getGarbages(name);
     }
 
     @Override

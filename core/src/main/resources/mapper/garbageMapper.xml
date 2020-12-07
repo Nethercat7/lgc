@@ -39,12 +39,15 @@
             <result column="gc_name" property="gcName"/>
         </collection>
     </resultMap>-->
-    <select id="getGarbages" resultType="Garbage">
+    <select id="getGarbages" resultType="Garbage" parameterType="String">
         SELECT g.garbage_id,g.garbage_name,gc.gc_id,gc.gc_name FROM garbage g
         LEFT JOIN garbage_garbage_category_relation gcr
         ON g.garbage_id=gcr.gcr_garbage_id
         LEFT JOIN garbage_category gc
         ON gc.gc_id=gcr.gcr_gc_id
+        <if test="name!=null">
+            WHERE g.garbage_name LIKE concat('%',#{name},'%')
+        </if>
     </select>
 
     <update id="updGarbage" parameterType="Garbage">

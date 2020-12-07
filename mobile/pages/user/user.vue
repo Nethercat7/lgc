@@ -79,7 +79,6 @@
 			login() {
 				this.$request('/user/login?name=' + this.name + '&pwd=' + this.pwd, {}, 'POST')
 					.then(resp => {
-						console.log(resp)
 						if (resp.code === 1) {
 							storage.set('token', resp.obj);
 							this.isLogin=true;
