@@ -86,10 +86,15 @@
 				uni.redirectTo({
 					url: url
 				})
+			},
+			getGarbages(){
+				this.$request('/garbage/getGarbages').then(resp=>{
+					console.log(resp);
+				})
 			}
 		},
 		onLoad() {
-			
+			this.getGarbages();
 		}
 	}
 </script>
