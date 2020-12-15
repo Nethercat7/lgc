@@ -22,10 +22,10 @@ public interface GarbageDao {
     int addGarbage(Garbage garbage);
 
     //保存物品与类别的关系
-    int addGarbageRelation(Long gcrId,Long garbageId,Long gcId);
+    int addGarbageRelation(String gcrId,String garbageId,String gcId);
 
     //获取所有的垃圾分类
-    List<Garbage> getGarbages(String name,String category);
+    List<Garbage> getGarbages(String name,String category,Integer num);
 
     //更新垃圾分类
     int updGarbage(Garbage garbage);

@@ -13,11 +13,11 @@ import java.util.List;
 @AllArgsConstructor
 @Accessors(chain = true)
 public class Garbage implements Serializable {
-    private long garbageId;
+    private String garbageId;
     private String garbageName;
 
     //类别ID
-    private long gcId;
+    private String gcId;
     private String gcName;
     private List<GarbageCategory> categories;
 }

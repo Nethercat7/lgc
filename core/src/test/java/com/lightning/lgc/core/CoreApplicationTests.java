@@ -11,7 +11,7 @@ class CoreApplicationTests {
     @Test
     void contextLoads() {
         SnowflakeIdGeneratorUntil snowflakeIdGeneratorUntil = new SnowflakeIdGeneratorUntil(0, 2);
-        System.out.println(snowflakeIdGeneratorUntil.nextId());
+        System.out.println(snowflakeIdGeneratorUntil.getId());
     }
 
 }

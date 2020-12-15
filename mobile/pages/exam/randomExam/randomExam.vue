@@ -3,22 +3,13 @@
 		<u-row gutter="16">
 			<u-col span="12">
 				<view class="u-text-center question">
-					{{data[total].item}}属于什么垃圾
+					{{data[total].garbageName}}属于什么垃圾？
 				</view>
 			</u-col>
 		</u-row>
-		<u-row gutter="16" class="answer-btn">
+		<u-row gutter="16" class="answer-btn" v-for='item in categories'>
 			<u-col span="12">
-				<u-button :custom-style="green" type="primary" size="default" @click="getNext('厨余垃圾')">厨余垃圾</u-button>
-			</u-col>
-			<u-col span="12">
-				<u-button :custom-style="blue" type="primary" size="default" @click="getNext('可回收垃圾')">可回收垃圾</u-button>
-			</u-col>
-			<u-col span="12">
-				<u-button :custom-style="red" type="primary" size="default" @click="getNext('有害垃圾')">有害垃圾</u-button>
-			</u-col>
-			<u-col span="12">
-				<u-button :custom-style="gray" type="primary" size="default" @click="getNext('其他垃圾')">其他垃圾</u-button>
+				<u-button type="primary" size="default" @click="getNext(item.gcName)">{{item.gcName}}</u-button>
 			</u-col>
 		</u-row>
 	</view>
@@ -28,26 +19,13 @@
 	export default {
 		data() {
 			return {
-				data: [{
-						item: "用过的尿不湿",
-						answer: "有害垃圾"
-					},
-					{
-						item: "手机壳",
-						answer: "可回收垃圾"
-					},
-					{
-						item: "苹果核",
-						answer: "厨余垃圾"
-					},
-					{
-						item: "餐巾纸",
-						answer: "其他垃圾"
-					}
+				data: [
+					{garbageName:'temp'}
 				],
 				count: 0,
 				total: 0,
 				wrong: [],
+				categories:[],
 				//button按钮样式
 				green: {
 					color: '#fff',
@@ -70,7 +48,7 @@
 		methods: {
 			getNext(value) {
 				if(this.count<this.data.length){
-					if(value!=this.data[this.count].answer){
+					if(value!=this.data[this.count].gcName){
 						this.data[this.count].errAnswer=value
 						this.wrong.push(this.data[this.count])
 					}
@@ -88,13 +66,21 @@
 				})
 			},
 			getGarbages(){
-				this.$request('/garbage/getGarbages').then(resp=>{
+				this.$request('/garbage/getGarbages?num='+5).then(resp=>{
+					this.data=resp.obj;
+					console.log(this.data);
+				})
+			},
+			getCategories(){
+				this.$request('/garbage/getCategories').then(resp=>{
+					this.categories=resp.obj
 					console.log(resp);
 				})
-			}
+			}		
 		},
 		onLoad() {
 			this.getGarbages();
+			this.getCategories();
 		}
 	}
 </script>
@@ -110,6 +96,6 @@
 	}
 
 	.answer-btn .u-col {
-		padding: 30rpx !important;
+		padding: 10rpx !important;
 	}
 </style>

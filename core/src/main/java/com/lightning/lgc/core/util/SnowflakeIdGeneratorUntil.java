@@ -92,6 +92,11 @@ public class SnowflakeIdGeneratorUntil {
                 | sequence;
     }
 
+    //将ID转换为String类型
+    public String getId(){
+        return String.valueOf(nextId());
+    }
+
     // 阻塞到下一个毫秒 即 直到获得新的时间戳
     protected long blockTillNextMillis(long lastTimestamp) {
         long timestamp = currentTime();

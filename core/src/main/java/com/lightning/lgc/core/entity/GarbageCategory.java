@@ -12,6 +12,6 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Accessors(chain = true)
 public class GarbageCategory implements Serializable {
-    private long gcId;
+    private String gcId;
     private String gcName;
 }

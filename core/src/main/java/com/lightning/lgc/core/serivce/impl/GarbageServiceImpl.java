@@ -19,7 +19,7 @@ public class GarbageServiceImpl implements GarbageService {
 
     @Override
     public int addCategory(GarbageCategory garbageCategory) {
-        garbageCategory.setGcId(snowflakeIdGeneratorUntil.nextId());
+        garbageCategory.setGcId(snowflakeIdGeneratorUntil.getId());
         return garbageDao.addCategory(garbageCategory);
     }
 
@@ -40,17 +40,17 @@ public class GarbageServiceImpl implements GarbageService {
 
     @Override
     public int addGarbage(Garbage garbage) {
-        garbage.setGarbageId(snowflakeIdGeneratorUntil.nextId());
+        garbage.setGarbageId(snowflakeIdGeneratorUntil.getId());
         int status=garbageDao.addGarbage(garbage);
         if(status==1){//如果成功了就保存垃圾与类别的关系
-            status=garbageDao.addGarbageRelation(snowflakeIdGeneratorUntil.nextId(),garbage.getGarbageId(),garbage.getGcId());
+            status=garbageDao.addGarbageRelation(snowflakeIdGeneratorUntil.getId(),garbage.getGarbageId(),garbage.getGcId());
         }
         return status;
     }
 
     @Override
-    public List<Garbage> getGarbages(String name,String category) {
-        return garbageDao.getGarbages(name,category);
+    public List<Garbage> getGarbages(String name,String category,Integer num) {
+        return garbageDao.getGarbages(name,category,num);
     }
 
     @Override

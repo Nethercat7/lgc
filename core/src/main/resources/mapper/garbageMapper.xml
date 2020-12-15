@@ -31,15 +31,7 @@
         INSERT INTO garbage_garbage_category_relation VALUES(#{gcrId},#{garbageId},#{gcId})
     </insert>
 
-   <!-- <resultMap id="garbagesMap" type="Garbage">
-        <id column="garbage_id" property="garbageId"/>
-        <result column="garbage_name" property="garbageName"/>
-        <collection property="categories" ofType="GarbageCategory">
-            <id column="gc_id" property="gcId"/>
-            <result column="gc_name" property="gcName"/>
-        </collection>
-    </resultMap>-->
-    <select id="getGarbages" resultType="Garbage" parameterType="String">
+    <select id="getGarbages" resultType="Garbage" parameterType="Object">
         SELECT g.garbage_id,g.garbage_name,gc.gc_id,gc.gc_name FROM garbage g
         LEFT JOIN garbage_garbage_category_relation gcr
         ON g.garbage_id=gcr.gcr_garbage_id
@@ -51,6 +43,9 @@
             </when>
             <when test="category!=null">
                 WHERE gc.gc_name=#{category}
+            </when>
+            <when test="num!=null">
+                ORDER BY RAND() LIMIT #{num}
             </when>
         </choose>
     </select>
