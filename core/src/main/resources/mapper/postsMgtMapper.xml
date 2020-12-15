@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lightning.lgc.core.dao.PostsMgtDao">
+    <insert id="addPosts" parameterType="Posts">
+        INSERT INTO posts(posts_id,posts_title,posts_content,posts_author)
+        VALUES (#{postsId},#{postsTitle},#{postsContent},#{postsAuthor})
+    </insert>
+</mapper>

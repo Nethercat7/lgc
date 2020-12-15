@@ -12,6 +12,7 @@ BMS是一款以Spirng boot为核心，集成Vue、Shiro、JWT等框架开发的�
 * UI框架：Element UI
 * 异步请求：Axios
 * 跨域认证：JSON Web Token
+* cnpm install vue-quill-editor --save
 
 ### 后台
 

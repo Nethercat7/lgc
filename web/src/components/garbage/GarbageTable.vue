@@ -83,9 +83,6 @@
     methods:{
       getCategories() {
         api.getCategories().then(resp => {
-          for (let i = 0; i < resp.data.obj.length; i++) {
-            resp.data.obj[i].gcId = resp.data.obj[i].gcId.toFixed(0);
-          }
           this.categories = resp.data.obj;
         })
       },
@@ -105,10 +102,6 @@
       },
       getGarbages(){
         api.getGarbages().then(resp=>{
-          for(let i=0;i<resp.data.obj.length;i++){
-            resp.data.obj[i].garbageId=resp.data.obj[i].garbageId.toFixed(0);
-            resp.data.obj[i].gcId=resp.data.obj[i].gcId.toFixed(0);
-          }
           this.garbages=resp.data.obj;
         })
       },

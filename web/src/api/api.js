@@ -50,6 +50,10 @@ let api={
   },
   delGarbage(params){
     return http.get(`${request}/garbage/delGarbage?garbageId=`+params)
+  },
+  //文章管理模块
+  addPosts(params){
+    return http.post(`${request}/postsMgt/addPosts`,params)
   }
 };
 

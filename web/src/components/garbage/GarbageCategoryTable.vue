@@ -102,9 +102,6 @@
       },
       getCategories() {
         api.getCategories().then(resp => {
-          for (let i = 0; i < resp.data.obj.length; i++) {
-            resp.data.obj[i].gcId = resp.data.obj[i].gcId.toFixed(0);
-          }
           this.categories = resp.data.obj;
         })
       },

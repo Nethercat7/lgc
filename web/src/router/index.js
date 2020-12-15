@@ -17,6 +17,10 @@ import RoleUpd from '@/components/roleMgt/RoleUpd';
 import GarbageCateGoryTable from '@/components/garbage/GarbageCategoryTable';
 import GarbageTable from '@/components/garbage/GarbageTable';
 
+//文章管理模块
+import PostsList from "../components/postsMgt/PostsList";
+import AddPosts from "../components/postsMgt/AddPosts";
+
 Vue.use(Router)
 
 
@@ -74,6 +78,17 @@ export default new Router({
           path: '/garbage/table',
           name: 'GarbageTable',
           component: GarbageTable
+        },
+        //文章管理
+        {
+          path: '/posts/table',
+          name: 'PostsTable',
+          component: PostsList
+        },
+        {
+          path: '/posts/add',
+          name: 'AddPosts',
+          component: AddPosts
         }
       ]
     },
