@@ -21,6 +21,7 @@
           <template slot="title"><i class="el-icon-menu"></i>文章管理</template>
           <el-menu-item @click="postsTable">所有文章</el-menu-item>
           <el-menu-item @click="addPosts">发布文章</el-menu-item>
+          <el-menu-item @click="postsCategories">文章类别</el-menu-item>
         </el-submenu>
       </el-menu>
     </el-col>
@@ -78,10 +79,13 @@
         this.$router.push("/garbage/table");
       },
       postsTable() {
-        this.$router.push("/posts/table");
+        this.$router.push("/postsMgt/table");
       },
       addPosts() {
-        this.$router.push("/posts/add");
+        this.$router.push("/postsMgt/add");
+      },
+      postsCategories(){
+        this.$router.push("/postsMgt/categories");
       }
     },
     created() {

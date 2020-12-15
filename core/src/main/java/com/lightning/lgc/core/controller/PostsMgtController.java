@@ -2,6 +2,7 @@ package com.lightning.lgc.core.controller;
 
 import com.lightning.lgc.core.config.Constant;
 import com.lightning.lgc.core.entity.Posts;
+import com.lightning.lgc.core.entity.PostsCategory;
 import com.lightning.lgc.core.entity.ResultBody;
 import com.lightning.lgc.core.serivce.PostsMgtService;
 import lombok.extern.slf4j.Slf4j;
@@ -59,5 +60,15 @@ public class PostsMgtController {
             return new ResultBody(Constant.SUCCESS,Constant.DEL_SUCCESS,Constant.TYPE_SUCCESS);
         }
         return new ResultBody(Constant.FAILED,Constant.DEL_FAILED,Constant.TYPE_ERROR);
+    }
+
+    @PostMapping("addCategory")
+    public ResultBody addCategory(@RequestBody PostsCategory postsCategory){
+        int status=postsMgtService.addPostsCategory(postsCategory);
+        if(status==1){
+            log.info("成功添加分类目录："+postsCategory.getPcName());
+            return new ResultBody(Constant.SUCCESS,Constant.ADD_SUCCESS,Constant.TYPE_SUCCESS);
+        }
+        return new ResultBody(Constant.FAILED,Constant.ADD_FAILED,Constant.TYPE_ERROR);
     }
 }

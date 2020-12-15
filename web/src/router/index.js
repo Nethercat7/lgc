@@ -20,6 +20,7 @@ import GarbageTable from '@/components/garbage/GarbageTable';
 //文章管理模块
 import PostsList from "../components/postsMgt/PostsList";
 import AddPosts from "../components/postsMgt/AddPosts";
+import PostsCategories from "../components/postsMgt/PostsCategories";
 
 Vue.use(Router)
 
@@ -81,14 +82,19 @@ export default new Router({
         },
         //文章管理
         {
-          path: '/posts/table',
+          path: '/postsMgt/table',
           name: 'PostsTable',
           component: PostsList
         },
         {
-          path: '/posts/add',
+          path: '/postsMgt/add',
           name: 'AddPosts',
           component: AddPosts
+        },
+        {
+          path: '/postsMgt/categories',
+          name: 'PostsCategories',
+          component: PostsCategories
         }
       ]
     },

@@ -2,6 +2,7 @@ package com.lightning.lgc.core.serivce.impl;
 
 import com.lightning.lgc.core.dao.PostsMgtDao;
 import com.lightning.lgc.core.entity.Posts;
+import com.lightning.lgc.core.entity.PostsCategory;
 import com.lightning.lgc.core.serivce.PostsMgtService;
 import com.lightning.lgc.core.util.SnowflakeIdGeneratorUntil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,5 +48,16 @@ public class PostsMgtServiceImpl implements PostsMgtService {
     @Override
     public int delPosts(String id) {
         return postsMgtDao.delPosts(id);
+    }
+
+    @Override
+    public int addPostsCategory(PostsCategory postsCategory) {
+        postsCategory.setPcId(snowflakeIdGeneratorUntil.getId());
+        return postsMgtDao.addPostsCategory(postsCategory);
+    }
+
+    @Override
+    public List<PostsCategory> getCategories() {
+        return null;
     }
 }

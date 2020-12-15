@@ -28,4 +28,13 @@
         DELETE FROM posts
         WHERE posts_id=#{id}
     </delete>
+
+    <insert id="addPostsCategory" parameterType="PostsCategory">
+        INSERT INTO posts_category(pc_id,pc_name,pc_description)
+        VALUES(#{pcId},#{pcName},#{pcDescription})
+    </insert>
+
+    <select id="getCategories" resultType="PostsCategory">
+        SELECT * FROM posts_category
+    </select>
 </mapper>

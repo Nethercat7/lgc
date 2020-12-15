@@ -1,6 +1,7 @@
 package com.lightning.lgc.core.serivce;
 
 import com.lightning.lgc.core.entity.Posts;
+import com.lightning.lgc.core.entity.PostsCategory;
 
 import java.util.List;
 
@@ -19,4 +20,10 @@ public interface PostsMgtService {
 
     //删除文章
     int delPosts(String id);
+
+    //添加分类目录
+    int addPostsCategory(PostsCategory postsCategory);
+
+    //获取分类目录
+    List<PostsCategory> getCategories();
 }
