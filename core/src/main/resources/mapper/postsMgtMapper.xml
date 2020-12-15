@@ -5,7 +5,11 @@
 
 <mapper namespace="com.lightning.lgc.core.dao.PostsMgtDao">
     <insert id="addPosts" parameterType="Posts">
-        INSERT INTO posts(posts_id,posts_title,posts_content,posts_author)
-        VALUES (#{postsId},#{postsTitle},#{postsContent},#{postsAuthor})
+        INSERT INTO posts(posts_id,posts_title,posts_title_img,posts_content,posts_author)
+        VALUES (#{postsId},#{postsTitle},#{postsTitleImg},#{postsContent},#{postsAuthor})
     </insert>
+
+    <select id="getPosts" resultType="Posts">
+        SELECT * FROM posts;
+    </select>
 </mapper>

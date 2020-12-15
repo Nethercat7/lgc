@@ -1,6 +1,6 @@
 <template>
 	<view class="wrap">
-		<u-swiper :list="list" :title="true"></u-swiper>
+		<u-swiper :list="postsList" :title="true" @click='goPosts'></u-swiper>
 		<!-- 分类检索 Start -->
 		<u-row gutter="16">
 			<u-col span="12">
@@ -45,6 +45,11 @@
 			</u-col>
 		</u-row>
 		<!-- 知识科普 End -->
+		<u-row gutter="16">
+			<u-col span="12">
+				<u-button :custom-style="gray" size="default" @click="navigateTo('/pages/posts/posts')">其他垃圾</u-button>
+			</u-col>
+		</u-row>
 	</view>
 </template>
 
@@ -53,27 +58,15 @@
 		data() {
 			return {
 				//轮播图数据
-				list: [{
-						image: 'https://cdn.uviewui.com/uview/swiper/1.jpg',
-						title: '昨夜星辰昨夜风，画楼西畔桂堂东'
-					},
-					{
-						image: 'https://cdn.uviewui.com/uview/swiper/2.jpg',
-						title: '身无彩凤双飞翼，心有灵犀一点通'
-					},
-					{
-						image: 'https://cdn.uviewui.com/uview/swiper/3.jpg',
-						title: '谁念西风独自凉，萧萧黄叶闭疏窗，沉思往事立残阳'
-					},
-				],
+				postsList: [],
 				//知识科普数据
 				data: [{
 					image: 'https://cdn.uviewui.com/uview/example/fade.jpg',
 					title: '震惊！某高校学生因为扔垃圾时未进行垃圾分类被扔进有害垃圾桶'
-				},{
+				}, {
 					image: 'https://cdn.uviewui.com/uview/example/fade.jpg',
 					title: '震惊！某高校学生因为扔垃圾时未进行垃圾分类被扔进有害垃圾桶'
-				},{
+				}, {
 					image: 'https://cdn.uviewui.com/uview/example/fade.jpg',
 					title: '震惊！某高校学生因为扔垃圾时未进行垃圾分类被扔进有害垃圾桶'
 				}],
@@ -101,7 +94,7 @@
 			}
 		},
 		onLoad() {
-
+			this.getPosts();
 		},
 		methods: {
 			navigateTo(url) {
@@ -109,8 +102,15 @@
 					url: url
 				})
 			},
-			test() {
-				console.log("clicked")
+			getPosts() {
+				this.$request('/postsMgt/getPosts').then(resp => {
+					this.postsList = resp.obj;
+					console.log(this.postsList);
+				})
+			},
+			goPosts(index){
+				this.navigateTo('/pages/posts/posts?obj='+encodeURIComponent(JSON.stringify(this.postsList[index])));
+				console.log("jumping")
 			}
 		}
 	}

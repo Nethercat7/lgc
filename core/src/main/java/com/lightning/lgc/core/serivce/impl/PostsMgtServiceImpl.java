@@ -7,6 +7,8 @@ import com.lightning.lgc.core.util.SnowflakeIdGeneratorUntil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PostsMgtServiceImpl implements PostsMgtService {
     @Autowired
@@ -18,6 +20,14 @@ public class PostsMgtServiceImpl implements PostsMgtService {
     public int addPosts(Posts posts) {
         posts.setPostsId(snowflakeIdGeneratorUntil.getId());
         posts.setPostsAuthor("444465749134671872");
+        if(posts.getPostsTitleImg()==null){
+            posts.setPostsTitleImg("https://cdn.uviewui.com/uview/swiper/1.jpg");
+        }
         return postsMgtDao.addPosts(posts);
+    }
+
+    @Override
+    public List<Posts> getPosts() {
+        return postsMgtDao.getPosts();
     }
 }

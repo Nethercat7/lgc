@@ -8,7 +8,7 @@
     <el-col :span="19">
       <el-row class="editor">
         <el-col :span="24">
-          <el-input v-model="posts.postsTitle" placeholder="请输入标题"/>
+          <el-input v-model="posts.title" placeholder="请输入标题"/>
         </el-col>
         <el-col :span="24">
           <quill-editor v-model="posts.postsContent"/>
@@ -17,6 +17,26 @@
     </el-col>
     <!--右侧操作栏-->
     <el-col :span="5">
+      <!--设置封图片-->
+      <el-row class="operate-bar">
+        <el-col :span="24" class="title">
+          <span>设置封面图片</span>
+        </el-col>
+        <el-col :span="24">
+          <el-upload
+            action="http://127.0.0.1:8080/file/uploadTitlePic"
+            :limit="1"
+            :file-list="fileList"
+            :before-remove="beforeRemove"
+            :on-remove="handelRemove"
+            :on-success="handleSuccess"
+            :on-exceed="handleExceed">
+            <el-button size="small" type="primary" plain>点击上传</el-button>
+            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+          </el-upload>
+        </el-col>
+      </el-row>
+      <!--发布-->
       <el-row class="operate-bar">
         <el-col :span="24" class="title">
           <span>发布</span>
@@ -44,9 +64,10 @@
     data() {
       return {
         posts: {
-          postsTitle: '',
+          title: '',
           postsContent: ''
-        }
+        },
+        fileList: []
       }
     },
     methods: {
@@ -59,8 +80,21 @@
               duration: 1000
             })
           }
-          console.log(resp);
         })
+      },
+      beforeRemove(file) {
+        return this.$confirm(`确定移除 ${ file.name }？`);
+      },
+      handleSuccess(response){
+        if(response.code===1){
+          this.posts.image='http://127.0.0.1:8080/pic/title/'+response.obj;
+        }
+      },
+      handleExceed() {
+        this.$message.warning(`最多只能上传一张封面图片`);
+      },
+      handelRemove(){
+        this.posts.image=null;
       }
     }
   }

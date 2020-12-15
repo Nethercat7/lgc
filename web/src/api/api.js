@@ -54,6 +54,13 @@ let api={
   //文章管理模块
   addPosts(params){
     return http.post(`${request}/postsMgt/addPosts`,params)
+  },
+  getPosts(){
+    return http.get(`${request}/postsMgt/getPosts`)
+  },
+  //文件模块
+  delFile(params){
+    return http.post(`${request}/file/del`,params)
   }
 };
 

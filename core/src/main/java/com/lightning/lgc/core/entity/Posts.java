@@ -1,5 +1,6 @@
 package com.lightning.lgc.core.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,7 +16,10 @@ import java.util.List;
 @Accessors(chain = true)
 public class Posts implements Serializable {
     private String postsId;
+    @JsonProperty("title")
     private String postsTitle;
+    @JsonProperty("image")
+    private String postsTitleImg;
     private String postsContent;
     private String postsAuthor;
     private LocalDateTime postsAddTime;
