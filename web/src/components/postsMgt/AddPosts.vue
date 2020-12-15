@@ -72,14 +72,36 @@
     },
     methods: {
       submit() {
-        api.addPosts(this.posts).then(resp => {
-          if (resp.data.code === 1) {
-            this.$message({
-              type: resp.data.type,
-              message: resp.data.msg,
-              duration: 1000
-            })
-          }
+        //如果参数中存在文章ID则为更新，否则为添加
+        if(this.$route.query.id){
+          api.updPosts(this.posts).then(resp => {
+            if (resp.data.code === 1) {
+              this.$message({
+                type: resp.data.type,
+                message: resp.data.msg,
+                duration: 1000
+              })
+            }
+          })
+        }else{
+          api.addPosts(this.posts).then(resp => {
+            if (resp.data.code === 1) {
+              this.$message({
+                type: resp.data.type,
+                message: resp.data.msg,
+                duration: 1000
+              })
+            }
+          })
+        }
+      },
+      getPostsById(id){
+        api.getPostsById(id).then(resp=>{
+          this.posts=resp.data.obj;
+          //将封面图片添加至fileList中
+          let start=this.posts.image.lastIndexOf('/')+1;
+          let end=this.posts.image.length;
+          this.fileList.push({name:this.posts.image.substr(start, end),url:this.posts.image})
         })
       },
       beforeRemove(file) {
@@ -95,6 +117,11 @@
       },
       handelRemove(){
         this.posts.image=null;
+      }
+    },
+    created() {
+      if(this.$route.query.id){
+        this.getPostsById(this.$route.query.id);
       }
     }
   }

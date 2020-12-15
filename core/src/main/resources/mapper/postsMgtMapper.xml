@@ -12,4 +12,15 @@
     <select id="getPosts" resultType="Posts">
         SELECT * FROM posts;
     </select>
+
+    <update id="updPosts" parameterType="Posts">
+        UPDATE posts
+        SET posts_title=#{postsTitle},posts_title_img=#{postsTitleImg},posts_content=#{postsContent}
+        WHERE posts_id=#{postsId}
+    </update>
+
+    <select id="getPostsById" parameterType="String" resultType="Posts">
+        SELECT * FROM posts
+        WHERE posts_id=#{id}
+    </select>
 </mapper>

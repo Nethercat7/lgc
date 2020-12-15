@@ -8,7 +8,7 @@
         <el-table-column prop="postsUpdTime" label="修改日期"></el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button type="info">修改</el-button>
+            <el-button type="info" @click="updPosts(scope.row.postsId)">修改</el-button>
             <el-button type="danger">删除</el-button>
           </template>
         </el-table-column>
@@ -31,8 +31,10 @@
       getPosts(){
         api.getPosts().then(resp=>{
           this.postsList=resp.data.obj;
-          console.log(this.postsList);
         })
+      },
+      updPosts(id){
+        this.$router.push({path:"/posts/add",query:{id:id}})
       }
     },
     created() {

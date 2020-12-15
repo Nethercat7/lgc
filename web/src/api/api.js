@@ -58,6 +58,12 @@ let api={
   getPosts(){
     return http.get(`${request}/postsMgt/getPosts`)
   },
+  updPosts(params) {
+    return http.post(`${request}/postsMgt/updPosts`,params)
+  },
+  getPostsById(params){
+    return http.get(`${request}/postsMgt/getPostsById?id=`+params)
+  },
   //文件模块
   delFile(params){
     return http.post(`${request}/file/del`,params)

@@ -10,4 +10,10 @@ public interface PostsMgtDao {
 
     //获取文章
     List<Posts> getPosts();
+
+    //修改文章
+    int updPosts(Posts posts);
+
+    //通过ID获取文章
+    Posts getPostsById(String id);
 }

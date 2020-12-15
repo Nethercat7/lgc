@@ -30,4 +30,17 @@ public class PostsMgtServiceImpl implements PostsMgtService {
     public List<Posts> getPosts() {
         return postsMgtDao.getPosts();
     }
+
+    @Override
+    public int updPosts(Posts posts) {
+        if(posts.getPostsTitleImg()==null){
+            posts.setPostsTitleImg("https://cdn.uviewui.com/uview/swiper/1.jpg");
+        }
+        return postsMgtDao.updPosts(posts);
+    }
+
+    @Override
+    public Posts getPostsById(String id) {
+        return postsMgtDao.getPostsById(id);
+    }
 }
