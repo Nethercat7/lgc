@@ -1,6 +1,9 @@
 <template>
   <el-row class="row">
     <el-col :span="24">
+      <h3>文章</h3>
+    </el-col>
+    <el-col :span="24">
       <el-table :data="postsList" stripe>
         <el-table-column prop="title" label="标题"></el-table-column>
         <el-table-column prop="postsAuthor" label="作者"></el-table-column>
@@ -9,7 +12,7 @@
         <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button type="info" @click="updPosts(scope.row.postsId)">修改</el-button>
-            <el-button type="danger">删除</el-button>
+            <el-button type="danger" @click="delPosts(scope.row.postsId)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -22,19 +25,31 @@
 
   export default {
     name: "PostsList",
-    data(){
-      return{
-        postsList:[]
+    data() {
+      return {
+        postsList: []
       }
     },
-    methods:{
-      getPosts(){
-        api.getPosts().then(resp=>{
-          this.postsList=resp.data.obj;
+    methods: {
+      getPosts() {
+        api.getPosts().then(resp => {
+          this.postsList = resp.data.obj;
         })
       },
-      updPosts(id){
-        this.$router.push({path:"/posts/add",query:{id:id}})
+      updPosts(id) {
+        this.$router.push({path: "/posts/add", query: {id: id}})
+      },
+      delPosts(id) {
+        api.delPosts(id).then(resp => {
+          if (resp.data.code === 1) {
+            this.getPosts();
+            this.$message({
+              type: resp.data.type,
+              message: resp.data.msg,
+              duration: 1000
+            })
+          }
+        })
       }
     },
     created() {

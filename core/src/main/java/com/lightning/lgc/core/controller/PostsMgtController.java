@@ -50,4 +50,14 @@ public class PostsMgtController {
         log.info("找到文章："+posts.getPostsTitle());
         return new ResultBody(Constant.SUCCESS,posts,Constant.GET_SUCCESS);
     }
+
+    @GetMapping("delPosts")
+    public ResultBody delPosts(String id){
+        int status=postsMgtService.delPosts(id);
+        if(status==1){
+            log.info("成功删除文章："+id);
+            return new ResultBody(Constant.SUCCESS,Constant.DEL_SUCCESS,Constant.TYPE_SUCCESS);
+        }
+        return new ResultBody(Constant.FAILED,Constant.DEL_FAILED,Constant.TYPE_ERROR);
+    }
 }

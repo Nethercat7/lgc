@@ -23,4 +23,9 @@
         SELECT * FROM posts
         WHERE posts_id=#{id}
     </select>
+
+    <delete id="delPosts" parameterType="String">
+        DELETE FROM posts
+        WHERE posts_id=#{id}
+    </delete>
 </mapper>

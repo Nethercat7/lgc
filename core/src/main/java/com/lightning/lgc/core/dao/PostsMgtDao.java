@@ -16,4 +16,7 @@ public interface PostsMgtDao {
 
     //通过ID获取文章
     Posts getPostsById(String id);
+
+    //删除文章
+    int delPosts(String id);
 }

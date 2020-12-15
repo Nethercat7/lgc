@@ -43,4 +43,9 @@ public class PostsMgtServiceImpl implements PostsMgtService {
     public Posts getPostsById(String id) {
         return postsMgtDao.getPostsById(id);
     }
+
+    @Override
+    public int delPosts(String id) {
+        return postsMgtDao.delPosts(id);
+    }
 }
