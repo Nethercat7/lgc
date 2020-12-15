@@ -12,7 +12,13 @@
         <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button type="info" @click="updPosts(scope.row.postsId)">修改</el-button>
-            <el-button type="danger" @click="delPosts(scope.row.postsId)">删除</el-button>
+            <el-popconfirm
+              title="确定删除吗？"
+              icon="el-icon-info"
+              icon-color="red"
+              @confirm="delPosts(scope.row.postsId)">
+              <el-button type="danger" slot="reference">删除</el-button>
+            </el-popconfirm>
           </template>
         </el-table-column>
       </el-table>
@@ -37,7 +43,7 @@
         })
       },
       updPosts(id) {
-        this.$router.push({path: "/posts/add", query: {id: id}})
+        this.$router.push({path: "/postsMgt/add", query: {id: id}})
       },
       delPosts(id) {
         api.delPosts(id).then(resp => {

@@ -24,11 +24,9 @@
           <template slot-scope="scope">
             <el-button type="info" @click="openDialog(scope.row.garbageId,scope.row.garbageName,scope.row.gcId)">修改</el-button>
             <el-popconfirm
-              confirm-button-text='好的'
-              cancel-button-text='不用了'
+              title="确定删除吗？"
               icon="el-icon-info"
               icon-color="red"
-              title="确定删除吗？"
               @confirm="delGarbage(scope.row.garbageId)"
             >
               <el-button type="danger" slot="reference">删除</el-button>

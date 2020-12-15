@@ -26,7 +26,14 @@
     <el-table-column label="操作">
       <template slot-scope="scope">
         <el-button type="info" @click="updUser(scope.row.userName)">修改</el-button>
-        <el-button type="danger" @click="delUser(scope.row.userId.toFixed(0))">删除</el-button>
+        <el-popconfirm
+          title="确定删除吗？"
+          icon="el-icon-info"
+          icon-color="red"
+          @confirm="delUser(scope.row.userId.toFixed(0))"
+        >
+          <el-button type="danger" slot="reference">删除</el-button>
+        </el-popconfirm>
       </template>
     </el-table-column>
     <router-view/>

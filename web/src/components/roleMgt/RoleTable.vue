@@ -27,7 +27,15 @@
       <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button type="info" @click="updRole(scope.row.roleName)">修改</el-button>
-          <el-button type="danger" @click="delRole(scope.row.roleId)">删除</el-button>
+          <el-popconfirm
+            title="确定删除吗？"
+            icon="el-icon-info"
+            icon-color="red"
+            @confirm="delRole(scope.row.roleId)"
+          >
+            <el-button type="danger" slot="reference">删除</el-button>
+          </el-popconfirm>
+
         </template>
       </el-table-column>
     </el-table>
