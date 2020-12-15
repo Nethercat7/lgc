@@ -70,6 +70,15 @@ let api={
   addPostsCategory(params){
     return http.post(`${request}/postsMgt/addCategory`,params)
   },
+  getPostsCategories(){
+    return http.get(`${request}/postsMgt/getCategories`)
+  },
+  getPostsCategory(params){
+    return http.get(`${request}/postsMgt/getCategoryById?id=`+params)
+  },
+  updPostsCategory(params){
+    return http.post(`${request}/postsMgt/updCategory`,params)
+  },
   //文件模块
   delFile(params){
     return http.post(`${request}/file/del`,params)

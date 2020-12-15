@@ -37,4 +37,15 @@
     <select id="getCategories" resultType="PostsCategory">
         SELECT * FROM posts_category
     </select>
+
+    <select id="getCategoryById" parameterType="String" resultType="PostsCategory">
+        SELECT * FROM posts_category
+        WHERE pc_id=#{id}
+    </select>
+
+    <update id="updCategory" parameterType="PostsCategory">
+        UPDATE posts_category
+        SET pc_name=#{pcName},pc_description=#{pcDescription},pc_status=#{pcStatus}
+        WHERE pc_id=#{pcId}
+    </update>
 </mapper>

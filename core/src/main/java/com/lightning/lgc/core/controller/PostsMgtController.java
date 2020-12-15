@@ -71,4 +71,28 @@ public class PostsMgtController {
         }
         return new ResultBody(Constant.FAILED,Constant.ADD_FAILED,Constant.TYPE_ERROR);
     }
+
+    @GetMapping("getCategories")
+    public ResultBody getCategories(){
+        List<PostsCategory> categories=postsMgtService.getCategories();
+        log.info("找到："+categories.size()+"个分类目录");
+        return new ResultBody(Constant.SUCCESS,categories,Constant.GET_SUCCESS);
+    }
+
+    @GetMapping("getCategoryById")
+    public ResultBody getCategoryById(String id){
+        PostsCategory category=postsMgtService.getCategoryById(id);
+        log.info("找到分类目录："+category.getPcName());
+        return new ResultBody(Constant.SUCCESS,category,Constant.GET_SUCCESS);
+    }
+
+    @PostMapping("updCategory")
+    public ResultBody updCategory(@RequestBody PostsCategory postsCategory){
+        int status=postsMgtService.updCategory(postsCategory);
+        if(status==1){
+            log.info("成功修改分类目录："+postsCategory.getPcName());
+            return new ResultBody(Constant.SUCCESS,Constant.UPD_SUCCESS,Constant.TYPE_SUCCESS);
+        }
+        return new ResultBody(Constant.FAILED,Constant.UPD_FAILED,Constant.TYPE_ERROR);
+    }
 }

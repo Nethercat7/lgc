@@ -42,4 +42,6 @@ public class Constant {
 
     //状态
     public static final String NORMAL="正常";
+    public static final String enable="启用";
+    public static final String disable="禁用";
 }

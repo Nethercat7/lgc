@@ -26,4 +26,10 @@ public interface PostsMgtDao {
 
     //获取分类目录
     List<PostsCategory> getCategories();
+
+    //根据ID获取分类目录
+    PostsCategory getCategoryById(String id);
+
+    //修改分类目录
+    int updCategory(PostsCategory postsCategory);
 }

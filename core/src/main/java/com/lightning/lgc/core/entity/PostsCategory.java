@@ -14,5 +14,7 @@ public class PostsCategory implements Serializable {
     private String pcDescription;
     private LocalDateTime pcAddTime;
     private LocalDateTime pcUpdTime;
-    private String pcStatus;
+    private int pcStatus;
+
+    private String pcStatus2String;
 }

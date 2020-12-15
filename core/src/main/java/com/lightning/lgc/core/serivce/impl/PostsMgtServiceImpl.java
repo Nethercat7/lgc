@@ -1,5 +1,6 @@
 package com.lightning.lgc.core.serivce.impl;
 
+import com.lightning.lgc.core.config.Constant;
 import com.lightning.lgc.core.dao.PostsMgtDao;
 import com.lightning.lgc.core.entity.Posts;
 import com.lightning.lgc.core.entity.PostsCategory;
@@ -15,13 +16,13 @@ public class PostsMgtServiceImpl implements PostsMgtService {
     @Autowired
     private PostsMgtDao postsMgtDao;
 
-    SnowflakeIdGeneratorUntil snowflakeIdGeneratorUntil=new SnowflakeIdGeneratorUntil(0,3);
+    SnowflakeIdGeneratorUntil snowflakeIdGeneratorUntil = new SnowflakeIdGeneratorUntil(0, 3);
 
     @Override
     public int addPosts(Posts posts) {
         posts.setPostsId(snowflakeIdGeneratorUntil.getId());
         posts.setPostsAuthor("444465749134671872");
-        if(posts.getPostsTitleImg()==null){
+        if (posts.getPostsTitleImg() == null) {
             posts.setPostsTitleImg("https://cdn.uviewui.com/uview/swiper/1.jpg");
         }
         return postsMgtDao.addPosts(posts);
@@ -34,7 +35,7 @@ public class PostsMgtServiceImpl implements PostsMgtService {
 
     @Override
     public int updPosts(Posts posts) {
-        if(posts.getPostsTitleImg()==null){
+        if (posts.getPostsTitleImg() == null) {
             posts.setPostsTitleImg("https://cdn.uviewui.com/uview/swiper/1.jpg");
         }
         return postsMgtDao.updPosts(posts);
@@ -58,6 +59,24 @@ public class PostsMgtServiceImpl implements PostsMgtService {
 
     @Override
     public List<PostsCategory> getCategories() {
-        return null;
+        List<PostsCategory> postsCategories = postsMgtDao.getCategories();
+        for (PostsCategory p : postsCategories) {
+            if (p.getPcStatus() == 0) {
+                p.setPcStatus2String(Constant.enable);
+            } else {
+                p.setPcStatus2String(Constant.disable);
+            }
+        }
+        return postsCategories;
+    }
+
+    @Override
+    public PostsCategory getCategoryById(String id) {
+        return postsMgtDao.getCategoryById(id);
+    }
+
+    @Override
+    public int updCategory(PostsCategory postsCategory) {
+        return postsMgtDao.updCategory(postsCategory);
     }
 }
