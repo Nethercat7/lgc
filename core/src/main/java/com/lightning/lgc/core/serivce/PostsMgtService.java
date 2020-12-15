@@ -32,4 +32,7 @@ public interface PostsMgtService {
 
     //修改分类目录
     int updCategory(PostsCategory postsCategory);
+
+    //根据ID删除分类目录
+    int delCategory(String id);
 }

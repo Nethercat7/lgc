@@ -79,4 +79,9 @@ public class PostsMgtServiceImpl implements PostsMgtService {
     public int updCategory(PostsCategory postsCategory) {
         return postsMgtDao.updCategory(postsCategory);
     }
+
+    @Override
+    public int delCategory(String id) {
+        return postsMgtDao.delCategory(id);
+    }
 }

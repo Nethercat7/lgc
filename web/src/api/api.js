@@ -79,6 +79,9 @@ let api={
   updPostsCategory(params){
     return http.post(`${request}/postsMgt/updCategory`,params)
   },
+  delPostsCategory(params){
+    return http.get(`${request}/postsMgt/delCategory?id=`+params)
+  },
   //文件模块
   delFile(params){
     return http.post(`${request}/file/del`,params)

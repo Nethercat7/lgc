@@ -37,7 +37,16 @@
         <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button type="info" @click="getCategory(scope.row.pcId)">修改</el-button>
-            <el-button type="danger">删除</el-button>
+            <el-popconfirm
+              confirm-button-text='好的'
+              cancel-button-text='不用了'
+              icon="el-icon-info"
+              icon-color="red"
+              title="确定删除吗？"
+              @confirm="delCategory(scope.row.pcId)"
+            >
+              <el-button type="danger" slot="reference">删除</el-button>
+            </el-popconfirm>
           </template>
         </el-table-column>
       </el-table>
@@ -55,18 +64,18 @@
         postsCategory: {
           pcName: '',
           pcDescription: '',
-          pcStatus:''
+          pcStatus: ''
         },
-        categories:[],
-        add:true
+        categories: [],
+        add: true
       }
     },
     methods: {
       submit(type) {
-        if(type==='ADD'){
+        if (type === 'ADD') {
           api.addPostsCategory(this.postsCategory).then(resp => {
-            if(resp.data.code===1){
-              this.postsCategory={};
+            if (resp.data.code === 1) {
+              this.postsCategory = {};
               this.getCategories();
             }
             this.$message({
@@ -75,9 +84,9 @@
               duration: 1000
             })
           })
-        }else{
+        } else {
           api.updPostsCategory(this.postsCategory).then(resp => {
-            if(resp.data.code===1){
+            if (resp.data.code === 1) {
               this.getCategories();
             }
             this.$message({
@@ -88,20 +97,32 @@
           })
         }
       },
-      cancel(){
-        this.postsCategory={};
-        this.add=true;
+      cancel() {
+        this.postsCategory = {};
+        this.add = true;
       },
-      getCategories(){
-        api.getPostsCategories().then(resp=>{
-          this.categories=resp.data.obj;
+      getCategories() {
+        api.getPostsCategories().then(resp => {
+          this.categories = resp.data.obj;
         })
       },
-      getCategory(id){
-        api.getPostsCategory(id).then(resp=>{
-          this.postsCategory=resp.data.obj;
-          this.add=false;
+      getCategory(id) {
+        api.getPostsCategory(id).then(resp => {
+          this.postsCategory = resp.data.obj;
+          this.add = false;
           console.log(this.postsCategory);
+        })
+      },
+      delCategory(id) {
+        api.delPostsCategory(id).then(resp => {
+          if (resp.data.code === 1) {
+            this.getCategories();
+          }
+          this.$message({
+            type: resp.data.type,
+            message: resp.data.msg,
+            duration: 1000
+          })
         })
       }
     },

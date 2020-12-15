@@ -48,4 +48,9 @@
         SET pc_name=#{pcName},pc_description=#{pcDescription},pc_status=#{pcStatus}
         WHERE pc_id=#{pcId}
     </update>
+
+    <delete id="delCategory" parameterType="String">
+        DELETE FROM posts_category
+        WHERE pc_id=#{pcId}
+    </delete>
 </mapper>
