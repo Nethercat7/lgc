@@ -86,23 +86,22 @@
         //如果参数中存在文章ID则为更新，否则为添加
         if(this.$route.query.id){
           api.updPosts(this.posts).then(resp => {
-            if (resp.data.code === 1) {
-              this.$message({
-                type: resp.data.type,
-                message: resp.data.msg,
-                duration: 1000
-              })
-            }
+            this.$message({
+              type: resp.data.type,
+              message: resp.data.msg,
+              duration: 1000
+            })
           })
         }else{
           api.addPosts(this.posts).then(resp => {
             if (resp.data.code === 1) {
-              this.$message({
-                type: resp.data.type,
-                message: resp.data.msg,
-                duration: 1000
-              })
+              this.posts={};
             }
+            this.$message({
+              type: resp.data.type,
+              message: resp.data.msg,
+              duration: 1000
+            })
           })
         }
       },

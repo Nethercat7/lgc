@@ -56,7 +56,11 @@ public class PostsMgtServiceImpl implements PostsMgtService {
 
     @Override
     public int delPosts(String id) {
-        return postsMgtDao.delPosts(id);
+        int status=postsMgtDao.delPosts(id);
+        if(status==1){
+            status=postsMgtDao.delPostsCategoryRelation(id);
+        }
+        return status;
     }
 
     @Override

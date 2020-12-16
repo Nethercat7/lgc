@@ -55,7 +55,7 @@ public class PostsMgtController {
     @GetMapping("delPosts")
     public ResultBody delPosts(String id) {
         int status = postsMgtService.delPosts(id);
-        if (status == 1) {
+        if (status > 0) {
             log.info("成功删除文章：" + id);
             return new ResultBody(Constant.SUCCESS, Constant.DEL_SUCCESS, Constant.TYPE_SUCCESS);
         }

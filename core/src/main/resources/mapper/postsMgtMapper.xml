@@ -74,4 +74,9 @@
         SET pcr_pc_id=#{pcId}
         WHERE pcr_posts_id=#{postsId}
     </update>
+
+    <delete id="delPostsCategoryRelation" parameterType="String">
+        DELETE FROM posts_category_relation
+        WHERE pcr_posts_id=#{id}
+    </delete>
 </mapper>
