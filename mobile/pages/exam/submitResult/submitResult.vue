@@ -38,7 +38,7 @@
 		<u-row gutter="16">
 			<u-col span="12">
 				<u-button :custom-style="style" @click="redirectTo('/pages/exam/randomExam/randomExam')">再答一次</u-button>
-				<u-button @click="redirectTo">返回首页</u-button>
+				<u-button @click="redirectTo('/pages/index/index')">返回首页</u-button>
 			</u-col>
 		</u-row>
 	</view>
@@ -61,7 +61,7 @@
 		},
 		methods: {
 			redirectTo(url) {
-				window.name = "";
+				storage.remove('isLoad');
 				uni.redirectTo({
 					url: url
 				})
@@ -75,8 +75,8 @@
 				this.score = total;
 				this.integral = num - this.answer.length;
 				//更新用户积分，仅限第一次刷新
-				if (window.name == "") {
-					window.name = "isReload";
+				if (storage.get('isLoad').length<=0) {
+					storage.set('isLoad', true);
 					this.updIntegral();
 				}
 			},
@@ -85,10 +85,10 @@
 					integral: this.integral,
 					id: storage.getUser('token').userId
 				}).then(resp => {
-					if (resp.code != 1) {
+					if (resp.data.code != 1) {
 						this.$refs.uToast.show({
-							title: resp.msg,
-							type: resp.type,
+							title: resp.data.msg,
+							type: resp.data.type,
 							position: 'top'
 						})
 					}

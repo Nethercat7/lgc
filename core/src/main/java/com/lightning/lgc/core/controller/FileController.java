@@ -2,6 +2,7 @@ package com.lightning.lgc.core.controller;
 
 import com.lightning.lgc.core.config.Constant;
 import com.lightning.lgc.core.entity.ResultBody;
+import com.lightning.lgc.core.util.SnowflakeIdGeneratorUntil;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,9 +17,11 @@ import java.io.IOException;
 @RequestMapping("file")
 public class FileController {
 
+    SnowflakeIdGeneratorUntil snowflakeIdGeneratorUntil =new SnowflakeIdGeneratorUntil(0,4);
+
     @PostMapping("uploadTitlePic")
     public ResultBody uploadFile(MultipartFile file) {
-        String filename = file.getOriginalFilename();
+        String filename = "title_"+snowflakeIdGeneratorUntil.getId();
         String filepath = "D:/Projects/lgc/core/src/main/resources/static/pic/title/";
         File dest = new File(filepath + filename);
         try {

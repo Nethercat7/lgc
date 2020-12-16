@@ -100,7 +100,7 @@
         WHERE u.user_id=#{id}
     </select>
 
-    <select id="getIntegral" resultType="String" parameterType="String">
+    <select id="getIntegral" resultType="Long" parameterType="String">
         SELECT user_integral FROM user
         WHERE user_id=#{id}
     </select>
