@@ -63,25 +63,23 @@
         this.$router.push({path: '/userMgt/upd', query: {name}})
       },
       delUser(id) {
-        if (confirm("确认删除?")) {
-          this.$http.get("/userMgt/del?id=" + id, {
-            headers: {
-              token: storage.get('token')
-            }
-          }).then(resp => {
-            if (resp.data.code === 1) {
-              this.getUsers();
-            }
-            this.$message({
-              showClose: true,
-              message: resp.data.msg,
-              type: resp.data.obj,
-              duration: "1000"
-            });
-          }).catch(err => {
-            console.log(err);
-          })
-        }
+        this.$http.get("/userMgt/del?id=" + id, {
+          headers: {
+            token: storage.get('token')
+          }
+        }).then(resp => {
+          if (resp.data.code === 1) {
+            this.getUsers();
+          }
+          this.$message({
+            showClose: true,
+            message: resp.data.msg,
+            type: resp.data.obj,
+            duration: "1000"
+          });
+        }).catch(err => {
+          console.log(err);
+        })
       }
     },
     created() {
