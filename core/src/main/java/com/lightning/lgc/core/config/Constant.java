@@ -42,6 +42,9 @@ public class Constant {
 
     //状态
     public static final String NORMAL="正常";
-    public static final String enable="启用";
-    public static final String disable="禁用";
+    public static final String ENABLE="启用";
+    public static final String DISABLE="禁用";
+
+    //积分
+    public static final String UPD_INTEGRAL_FAILED="更新积分失败，请与管理员联系";
 }

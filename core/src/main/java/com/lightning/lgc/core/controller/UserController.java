@@ -42,4 +42,14 @@ public class UserController{
         }
         return new ResultBody(Constant.FAILED,Constant.UPD_FAILED,Constant.TYPE_ERROR);
     }
+
+    @GetMapping("updIntegral")
+    public ResultBody updIntegral(Long integral,String id){
+        int status=userService.updIntegral(integral,id);
+        if (status>0){
+            log.info("用户:"+id+"增加积分:"+integral);
+            return new ResultBody(Constant.SUCCESS,Constant.UPD_SUCCESS,Constant.TYPE_SUCCESS);
+        }
+        return new ResultBody(Constant.FAILED,Constant.UPD_INTEGRAL_FAILED,Constant.TYPE_ERROR);
+    }
 }

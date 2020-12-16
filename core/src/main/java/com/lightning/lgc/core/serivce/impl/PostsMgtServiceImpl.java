@@ -74,9 +74,9 @@ public class PostsMgtServiceImpl implements PostsMgtService {
         List<PostsCategory> postsCategories = postsMgtDao.getCategories();
         for (PostsCategory p : postsCategories) {
             if (p.getPcStatus() == 0) {
-                p.setPcStatus2String(Constant.enable);
+                p.setPcStatus2String(Constant.ENABLE);
             } else {
-                p.setPcStatus2String(Constant.disable);
+                p.setPcStatus2String(Constant.DISABLE);
             }
         }
         return postsCategories;

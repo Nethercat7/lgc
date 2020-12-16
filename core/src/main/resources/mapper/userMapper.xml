@@ -101,6 +101,13 @@
     </select>
 
     <select id="getIntegral" resultType="Long" parameterType="String">
-
+        SELECT user_integral FROM user
+        WHERE user_id=#{id}
     </select>
+
+    <update id="updIntegral" parameterType="Object">
+        UPDATE user
+        SET user_integral=#{integral}
+        WHERE user_id=#{id}
+    </update>
 </mapper>

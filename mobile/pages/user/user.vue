@@ -10,7 +10,7 @@
 							{{user.userName}}
 						</view>
 						<view class="u-font-xl title">
-							
+
 						</view>
 						<view class="u-font-xl">
 							积分：{{user.userIntegral}}
@@ -55,7 +55,7 @@
 	export default {
 		data() {
 			return {
-				user:{},
+				user: {},
 				isLogin: false,
 				name: '',
 				pwd: ''
@@ -78,7 +78,8 @@
 					.then(resp => {
 						if (resp.code === 1) {
 							storage.set('token', resp.obj);
-							this.isLogin=true;
+							this.getUser(storage.getUser('token').username);
+							this.isLogin = true;
 						}
 						this.$refs.toast.show({
 							title: resp.msg,
@@ -91,19 +92,19 @@
 				storage.remove('token');
 				this.isLogin = false;
 			},
-			getUser(name){
-				this.$request('/user/getUserByName?name='+name).then(resp=>{
-					this.user=resp.obj;
+			getUser(name) {
+				this.$request('/user/getUserByName?name=' + name).then(resp => {
+					this.user = resp.obj;
 				})
 			}
 		},
-		onLoad() {
-			let user = storage.getUser('token');
-			if(JSON.stringify(user)=='{}'){
-				this.isLogin=false;
-			}else{
-				this.getUser(user.username);
+		onShow() {
+			//从导航栏切换过来时刷新用户数据
+			if (storage.get('token').length>0) {
+				this.getUser(storage.getUser('token').username);
 				this.isLogin=true;
+			}else{
+				this.isLogin=false;
 			}
 		}
 	}

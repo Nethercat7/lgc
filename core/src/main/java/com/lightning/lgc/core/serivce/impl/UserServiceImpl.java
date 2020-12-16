@@ -130,4 +130,13 @@ public class UserServiceImpl implements UserService {
         ids.put("urRoleId", roleId);
         return userDao.addUserRoleRelation(ids);
     }
+
+    @Override
+    public int updIntegral(Long integral, String id) {
+        //先获取用户积分
+        Long userIntegral=userDao.getIntegral(id);
+        //把获取到的积分+上本次的积分
+        userIntegral+=integral;
+        return userDao.updIntegral(userIntegral,id);
+    }
 }

@@ -1,5 +1,6 @@
 <template>
 	<view class="wrap">
+		<u-toast ref="uToast" />
 		<u-row gutter="16">
 			<u-col span="12">
 				<view class="u-text-center question">
@@ -36,48 +37,70 @@
 		</u-row>
 		<u-row gutter="16">
 			<u-col span="12">
-				<u-button @click="redirectTo('/pages/exam/randomExam/randomExam')" v-if="count>0">再答一次</u-button>
-				<u-button @click="redirectTo('/pages/index/index')" v-if="count==0">返回首页</u-button>
+				<u-button :custom-style="style" @click="redirectTo('/pages/exam/randomExam/randomExam')">再答一次</u-button>
+				<u-button @click="redirectTo">返回首页</u-button>
 			</u-col>
 		</u-row>
 	</view>
 </template>
 
 <script>
+	import storage from '../../../common/storage.js';
+
 	export default {
 		data() {
 			return {
 				score: 0,
 				answer: [],
-				count:0,
-				integral:0
+				count: 0,
+				integral: 0,
+				style:{
+					'margin-bottom':'0.625em'
+				}
 			}
 		},
 		methods: {
-			redirectTo(url){
+			redirectTo(url) {
+				window.name="";
 				uni.redirectTo({
-					url:url
+					url: url
 				})
 			},
 			calculateScore(num) {
-				let total = 100;//总分
-				let single = 100 / num;//总分÷题目数量=平均每题的分数
+				let total = 100; //总分
+				let single = 100 / num; //总分÷题目数量=平均每题的分数
 				for (let i = 0; i < this.answer.length; i++) {
 					total = total - single
 				}
-				this.integral=num-this.answer.length;
 				this.score = total;
+				this.integral = num - this.answer.length;
+				//更新用户积分，仅限第一次刷新
+				if (window.name == "") {
+					window.name = "isReload";
+					this.updIntegral();
+				}
+			},
+			updIntegral() {
+				this.$request('/user/updIntegral?integral=' + this.integral + '&id=' + storage.getUser('token').userId).then(resp => {
+					if (resp.code != 1) {
+						this.$refs.uToast.show({
+							title: resp.msg,
+							type: resp.type,
+							position: 'top'
+						})
+					}
+				})
 			}
 		},
 		onLoad(option) {
 			let result = JSON.parse(decodeURIComponent(option.answer));
 			this.answer = result;
-			this.count=this.answer.length;
+			this.count = this.answer.length;
 			//一共有多少题，按照题目数量平均分配分数。
 			this.calculateScore(5);
 		},
 		onBackPress() {
-			this.redirectTo("/pages/exam/exam")
+			this.redirectTo("/pages/exam/exam");
 		}
 	}
 </script>

@@ -26,4 +26,7 @@ public interface UserService {
 
     //获取用户权限
     List<String> getUserPerms(String id);
+
+    //更新用户积分
+    int updIntegral(Long integral,String id);
 }
