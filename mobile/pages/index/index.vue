@@ -114,7 +114,6 @@
 		onLoad() {
 			this.getAnnouncement();
 			this.getKnowledgePopularization();
-			console.log(this.announcementList);
 		}
 	}
 </script>

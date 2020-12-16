@@ -26,8 +26,10 @@
 		},
 		methods: {
 			getGarbages(category){
-				this.$request('/garbage/getGarbages?category='+category).then(resp=>{
-					this.data=resp.obj
+				this.$u.api.getGarbages({
+					category:category
+				}).then(resp=>{
+					this.data=resp.data.obj
 				})
 			}
 		},

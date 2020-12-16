@@ -9,21 +9,13 @@
 				"navigationBarTitleText": "柳州市垃圾分类"
 			}
 		}, {
-			"path": "pages/search/search",
-			"style": {
-				"navigationBarTitleText": "柳州市垃圾分类",
-				"enablePullDownRefresh": false
-			}
-
-		}, {
-			"path": "pages/search/searchList/searchList",
-			"style": {
-				"navigationBarTitleText": "柳州市垃圾分类",
-				"enablePullDownRefresh": false
-			}
-
-		}, {
 			"path": "pages/index/catalogList/catalogList",
+			"style": {
+				"navigationBarTitleText": "柳州市垃圾分类",
+				"enablePullDownRefresh": false
+			}
+		}, {
+			"path": "pages/search/search",
 			"style": {
 				"navigationBarTitleText": "柳州市垃圾分类",
 				"enablePullDownRefresh": false
@@ -78,17 +70,15 @@
 				"enablePullDownRefresh": false
 			}
 
+		}, {
+			"path": "pages/posts/posts",
+			"style": {
+				"navigationBarTitleText": "柳州市垃圾分类",
+				"enablePullDownRefresh": false
+			}
+
 		}
-	    ,{
-            "path" : "pages/posts/posts",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "柳州市垃圾分类",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-    ],
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "柳州市垃圾分类",
