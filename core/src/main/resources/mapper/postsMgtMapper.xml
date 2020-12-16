@@ -53,4 +53,9 @@
         DELETE FROM posts_category
         WHERE pc_id=#{pcId}
     </delete>
+
+    <insert id="addPostsCategoryRelation" parameterType="String">
+        INSERT INTO posts_category_relation(pcr_id,pcr_posts_id,pcr_pc_id)
+        VALUES(#{pcrId},#{postsId},#{categoryId})
+    </insert>
 </mapper>

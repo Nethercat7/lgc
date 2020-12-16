@@ -1,7 +1,7 @@
 <template>
   <el-row class="row">
     <el-col :span="24">
-      <h3>分类目录</h3>
+      <h3>文章类别</h3>
     </el-col>
     <!--添加类别-->
     <el-col :span="7">

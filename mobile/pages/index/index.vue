@@ -110,7 +110,6 @@
 			},
 			goPosts(index){
 				this.navigateTo('/pages/posts/posts?obj='+encodeURIComponent(JSON.stringify(this.postsList[index])));
-				console.log("jumping")
 			}
 		}
 	}

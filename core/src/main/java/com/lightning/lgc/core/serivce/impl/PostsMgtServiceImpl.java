@@ -25,7 +25,11 @@ public class PostsMgtServiceImpl implements PostsMgtService {
         if (posts.getPostsTitleImg() == null) {
             posts.setPostsTitleImg("https://cdn.uviewui.com/uview/swiper/1.jpg");
         }
-        return postsMgtDao.addPosts(posts);
+        int status=postsMgtDao.addPosts(posts);
+        if(status==1){
+            status=postsMgtDao.addPostsCategoryRelation(snowflakeIdGeneratorUntil.getId(),posts.getPostsId(),posts.getPcId());
+        }
+        return status;
     }
 
     @Override

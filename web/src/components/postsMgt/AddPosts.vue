@@ -42,6 +42,16 @@
           <span>发布</span>
         </el-col>
         <el-col :span="24">
+          <div style="padding-bottom: 10px;">选择文章类别：</div>
+          <el-select v-model="posts.pcId" placeholder="请选择文章类别">
+            <el-option
+            v-for="item in categories"
+            :key="item.pcId"
+            :label="item.pcName"
+            :value="item.pcId"></el-option>
+          </el-select>
+        </el-col>
+        <el-col :span="24">
           <el-button type="primary" plain @click="submit">发布</el-button>
         </el-col>
       </el-row>
@@ -67,7 +77,8 @@
           title: '',
           postsContent: ''
         },
-        fileList: []
+        fileList: [],
+        categories:[]
       }
     },
     methods: {
@@ -117,12 +128,18 @@
       },
       handelRemove(){
         this.posts.image=null;
+      },
+      getCategories(){
+        api.getPostsCategories().then(resp=>{
+          this.categories=resp.data.obj;
+        })
       }
     },
     created() {
       if(this.$route.query.id){
         this.getPostsById(this.$route.query.id);
       }
+      this.getCategories();
     }
   }
 

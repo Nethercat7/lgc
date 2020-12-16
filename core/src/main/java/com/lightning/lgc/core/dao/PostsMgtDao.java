@@ -35,4 +35,7 @@ public interface PostsMgtDao {
 
     //根据ID删除分类目录
     int delCategory(String id);
+
+    //添加文章和文章类别之间的关系
+    int addPostsCategoryRelation(String pcrId,String postsId,String categoryId);
 }

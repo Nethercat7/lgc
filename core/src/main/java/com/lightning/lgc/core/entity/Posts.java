@@ -8,7 +8,6 @@ import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -26,5 +25,6 @@ public class Posts implements Serializable {
     private LocalDateTime postsUpdTime;
 
     //文章菜单关联
-    List<PostsCategory> postsCategoryList;
+    private String pcId;
+    private String pcName;
 }
