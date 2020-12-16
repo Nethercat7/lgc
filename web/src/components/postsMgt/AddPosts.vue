@@ -48,7 +48,8 @@
             v-for="item in categories"
             :key="item.pcId"
             :label="item.pcName"
-            :value="item.pcId"></el-option>
+            :value="item.pcId"
+            v-if="item.pcStatus==0"></el-option>
           </el-select>
         </el-col>
         <el-col :span="24">
