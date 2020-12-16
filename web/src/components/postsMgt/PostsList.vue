@@ -7,6 +7,7 @@
       <el-table :data="postsList" stripe>
         <el-table-column prop="title" label="标题"></el-table-column>
         <el-table-column prop="postsAuthor" label="作者"></el-table-column>
+        <el-table-column prop="pcName" label="类型"></el-table-column>
         <el-table-column prop="postsAddTime" label="发布日期"></el-table-column>
         <el-table-column prop="postsUpdTime" label="修改日期"></el-table-column>
         <el-table-column label="操作">

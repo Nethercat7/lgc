@@ -33,8 +33,8 @@ public class PostsMgtServiceImpl implements PostsMgtService {
     }
 
     @Override
-    public List<Posts> getPosts() {
-        return postsMgtDao.getPosts();
+    public List<Posts> getPosts(String id) {
+        return postsMgtDao.getPosts(id);
     }
 
     @Override

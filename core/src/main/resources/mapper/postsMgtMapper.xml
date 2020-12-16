@@ -9,13 +9,18 @@
         VALUES (#{postsId},#{postsTitle},#{postsTitleImg},#{postsContent},#{postsAuthor})
     </insert>
 
-    <select id="getPosts" resultType="Posts">
+    <select id="getPosts" resultType="Posts" parameterType="String">
         SELECT p.posts_id,p.posts_title,p.posts_title_img,p.posts_content,p.posts_author,p.posts_add_time,p.posts_upd_time,pc.pc_id,pc.pc_name
         FROM posts p
         LEFT JOIN posts_category_relation pcr
         ON p.posts_id=pcr.pcr_posts_id
         LEFT JOIN posts_category pc
         ON pc.pc_id=pcr.pcr_pc_id
+        <choose>
+            <when test="id!=null">
+                WHERE pc.pc_id=#{id}
+            </when>
+        </choose>
     </select>
 
     <update id="updPosts" parameterType="Posts">

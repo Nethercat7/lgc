@@ -10,7 +10,7 @@ public interface PostsMgtDao {
     int addPosts(Posts posts);
 
     //获取文章
-    List<Posts> getPosts();
+    List<Posts> getPosts(String pcId);
 
     //修改文章
     int updPosts(Posts posts);

@@ -1,6 +1,6 @@
 <template>
 	<view class="wrap">
-		<u-swiper :list="postsList" :title="true" @click='goPosts'></u-swiper>
+		<u-swiper :list="announcementList" :title="true" @click='goAnnouncement'></u-swiper>
 		<!-- 分类检索 Start -->
 		<u-row gutter="16">
 			<u-col span="12">
@@ -34,7 +34,7 @@
 		</u-row>
 		<u-row gutter="16">
 			<u-col span="12">
-				<view class="post-card" v-for="(item,index) in data">
+				<view class="post-card" v-for="(item,index) in posts" @click="goPosts(index)">
 					<view class="post-pic">
 						<u-image :src="item.image"></u-image>
 					</view>
@@ -45,11 +45,6 @@
 			</u-col>
 		</u-row>
 		<!-- 知识科普 End -->
-		<u-row gutter="16">
-			<u-col span="12">
-				<u-button :custom-style="gray" size="default" @click="navigateTo('/pages/posts/posts')">其他垃圾</u-button>
-			</u-col>
-		</u-row>
 	</view>
 </template>
 
@@ -58,18 +53,9 @@
 		data() {
 			return {
 				//轮播图数据
-				postsList: [],
+				announcementList: [],
 				//知识科普数据
-				data: [{
-					image: 'https://cdn.uviewui.com/uview/example/fade.jpg',
-					title: '震惊！某高校学生因为扔垃圾时未进行垃圾分类被扔进有害垃圾桶'
-				}, {
-					image: 'https://cdn.uviewui.com/uview/example/fade.jpg',
-					title: '震惊！某高校学生因为扔垃圾时未进行垃圾分类被扔进有害垃圾桶'
-				}, {
-					image: 'https://cdn.uviewui.com/uview/example/fade.jpg',
-					title: '震惊！某高校学生因为扔垃圾时未进行垃圾分类被扔进有害垃圾桶'
-				}],
+				posts: [],
 				//button按钮样式
 				green: {
 					color: '#fff',
@@ -94,6 +80,7 @@
 			}
 		},
 		onLoad() {
+			this.getAnnouncement();
 			this.getPosts();
 		},
 		methods: {
@@ -102,14 +89,21 @@
 					url: url
 				})
 			},
-			getPosts() {
-				this.$request('/postsMgt/getPosts').then(resp => {
-					this.postsList = resp.obj;
-					console.log(this.postsList);
+			getAnnouncement() {
+				this.$request('/postsMgt/getPosts?id=459039470344601600').then(resp => {
+					this.announcementList = resp.obj;
 				})
 			},
+			getPosts(){
+				this.$request('/postsMgt/getPosts?id=459039281823219712').then(resp=>{
+					this.posts=resp.obj;
+				})
+			},
+			goAnnouncement(index){
+				this.navigateTo('/pages/posts/posts?obj='+encodeURIComponent(JSON.stringify(this.announcementList[index])));
+			},
 			goPosts(index){
-				this.navigateTo('/pages/posts/posts?obj='+encodeURIComponent(JSON.stringify(this.postsList[index])));
+				this.navigateTo('/pages/posts/posts?obj='+encodeURIComponent(JSON.stringify(this.posts[index])));
 			}
 		}
 	}

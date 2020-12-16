@@ -30,8 +30,8 @@ public class PostsMgtController {
     }
 
     @GetMapping("getPosts")
-    public ResultBody getPosts() {
-        List<Posts> postsList = postsMgtService.getPosts();
+    public ResultBody getPosts(String id) {
+        List<Posts> postsList = postsMgtService.getPosts(id);
         return new ResultBody(Constant.SUCCESS, postsList, Constant.GET_SUCCESS);
     }
 

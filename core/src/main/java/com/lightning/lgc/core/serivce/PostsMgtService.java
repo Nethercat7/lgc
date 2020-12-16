@@ -10,7 +10,7 @@ public interface PostsMgtService {
     int addPosts(Posts posts);
 
     //获取文章
-    List<Posts> getPosts();
+    List<Posts> getPosts(String id);
 
     //修改文章
     int updPosts(Posts posts);
