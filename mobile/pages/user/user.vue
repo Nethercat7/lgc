@@ -51,7 +51,8 @@
 </template>
 
 <script>
-	import storage from "../../common/storage.js"
+	import storage from '@/common/storage.js';
+
 	export default {
 		data() {
 			return {
@@ -74,37 +75,38 @@
 				}
 			},
 			login() {
-				this.$request('/user/login?name=' + this.name + '&pwd=' + this.pwd, {}, 'POST')
-					.then(resp => {
-						if (resp.code === 1) {
-							storage.set('token', resp.obj);
-							this.getUser(storage.getUser('token').username);
-							this.isLogin = true;
-						}
-						this.$refs.toast.show({
-							title: resp.msg,
-							type: resp.type,
-							position: 'top'
-						})
+				this.$u.post('/user/login?name=' + this.name + '&pwd=' + this.pwd).then(resp => {
+					if (resp.data.code === 1) {
+						storage.set('token', resp.data.obj);
+						this.getUser();
+						this.isLogin = true;
+					}
+					this.$refs.toast.show({
+						title: resp.data.msg,
+						type: resp.data.type,
+						position: 'top'
 					})
+				})
 			},
 			exit() {
 				storage.remove('token');
 				this.isLogin = false;
 			},
-			getUser(name) {
-				this.$request('/user/getUserByName?name=' + name).then(resp => {
-					this.user = resp.obj;
+			getUser() {
+				this.$u.api.getUser({
+					name: storage.getUser('token').username
+				}).then(resp => {
+					this.user = resp.data.obj;
 				})
 			}
 		},
 		onShow() {
 			//从导航栏切换过来时刷新用户数据
-			if (storage.get('token').length>0) {
-				this.getUser(storage.getUser('token').username);
-				this.isLogin=true;
-			}else{
-				this.isLogin=false;
+			if (storage.get('token').length > 0) {
+				this.getUser();
+				this.isLogin = true;
+			} else {
+				this.isLogin = false;
 			}
 		}
 	}

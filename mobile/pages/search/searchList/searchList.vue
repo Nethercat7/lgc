@@ -40,10 +40,13 @@
 		methods: {
 			search() {
 				if(this.keyword != ''){
-					this.$request('/garbage/getGarbages?name=' + this.keyword).then(resp => {
-						if(resp.obj.length>0){
-							this.garbages = resp.obj;
+					this.$u.api.getGarbages({
+						name:this.keyword
+					}).then(resp=>{
+						if(resp.data.obj.length>0){
+							this.garbages = resp.data.obj;
 							this.show=true;
+							this.emty=false;
 						}else{
 							this.emty=true;
 						}

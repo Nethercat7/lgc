@@ -54,14 +54,14 @@
 				answer: [],
 				count: 0,
 				integral: 0,
-				style:{
-					'margin-bottom':'0.625em'
+				style: {
+					'margin-bottom': '0.625em'
 				}
 			}
 		},
 		methods: {
 			redirectTo(url) {
-				window.name="";
+				window.name = "";
 				uni.redirectTo({
 					url: url
 				})
@@ -81,7 +81,10 @@
 				}
 			},
 			updIntegral() {
-				this.$request('/user/updIntegral?integral=' + this.integral + '&id=' + storage.getUser('token').userId).then(resp => {
+				this.$u.api.updIntegral({
+					integral: this.integral,
+					id: storage.getUser('token').userId
+				}).then(resp => {
 					if (resp.code != 1) {
 						this.$refs.uToast.show({
 							title: resp.msg,

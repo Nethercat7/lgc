@@ -32,6 +32,7 @@ public class PostsMgtController {
     @GetMapping("getPosts")
     public ResultBody getPosts(String id) {
         List<Posts> postsList = postsMgtService.getPosts(id);
+        log.info("找到:"+postsList.size()+"条文章");
         return new ResultBody(Constant.SUCCESS, postsList, Constant.GET_SUCCESS);
     }
 

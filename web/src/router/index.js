@@ -22,13 +22,16 @@ import PostsList from "../components/postsMgt/PostsList";
 import AddPosts from "../components/postsMgt/AddPosts";
 import PostsCategories from "../components/postsMgt/PostsCategories";
 
-Vue.use(Router)
+//系统设置
+import TitleMgt from "../components/sys/TitleMgt";
+
+Vue.use(Router);
 
 
-const originalPush = Router.prototype.push
+const originalPush = Router.prototype.push;
 Router.prototype.push = function push(location) {
   return originalPush.call(this, location).catch(err => err)
-}
+};
 
 export default new Router({
   routes: [
@@ -95,6 +98,11 @@ export default new Router({
           path: '/postsMgt/categories',
           name: 'PostsCategories',
           component: PostsCategories
+        },
+        {
+          path:'/sys/titleMgt',
+          name:'TitleMgt',
+          component:TitleMgt
         }
       ]
     },

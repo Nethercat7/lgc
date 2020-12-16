@@ -28,8 +28,8 @@
 </template>
 
 <script>
-	import storage from '../../../common/storage.js'
-	
+	import storage from '@/common/storage.js'
+
 	export default {
 		data() {
 			return {
@@ -44,7 +44,7 @@
 						label: '女'
 					}
 				],
-				gender:'',
+				gender: '',
 				position: 'top',
 				action: 'http://www.example.com/upload',
 				fileList: [{
@@ -60,9 +60,11 @@
 				this.gender = obj[0].label
 				this.user.userGender = obj[0].value
 			},
-			getUser(){
-				this.$request('/user/getUserByName?name='+storage.getUser('token').username).then(resp=>{
-					this.user=resp.obj
+			getUser() {
+				this.$u.api.getUser({
+					name: storage.getUser('token').username
+				}).then(resp => {
+					this.user = resp.data.obj;
 					if(this.user.userGender=="1"){
 						this.gender="男"
 					}else{
@@ -70,17 +72,17 @@
 					}
 				})
 			},
-			updUser(){
-				this.$request('/user/upd',this.user,"POST").then(resp=>{
+			updUser() {
+				this.$u.api.updUser(this.user).then(resp => {
 					this.$refs.toast.show({
-						title: resp.msg,
-						type: resp.type,
+						title: resp.data.msg,
+						type: resp.data.type,
 						position: 'top'
 					})
 				})
 			}
 		},
-		onLoad(){
+		onLoad() {
 			this.getUser()
 		}
 	}

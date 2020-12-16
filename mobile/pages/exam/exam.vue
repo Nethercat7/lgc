@@ -22,11 +22,6 @@
 				uni.navigateTo({
 					url:url
 				})
-			},
-			redirectTo(url){
-				uni.redirectTo({
-					url:url
-				})
 			}
 		}
 	}

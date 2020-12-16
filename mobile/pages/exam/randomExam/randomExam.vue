@@ -66,15 +66,15 @@
 				})
 			},
 			getGarbages(){
-				this.$request('/garbage/getGarbages?num='+5).then(resp=>{
-					this.data=resp.obj;
-					console.log(this.data);
+				this.$u.api.getGarbages({
+					num:5
+				}).then(resp=>{
+					this.data=resp.data.obj;
 				})
 			},
 			getCategories(){
-				this.$request('/garbage/getCategories').then(resp=>{
-					this.categories=resp.obj
-					console.log(resp);
+				this.$u.api.getGarbageCategories().then(resp=>{
+					this.categories=resp.data.obj
 				})
 			}		
 		},

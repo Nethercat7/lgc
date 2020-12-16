@@ -1,6 +1,8 @@
 <template>
 	<view class="wrap">
+		<!-- 轮播图 -->
 		<u-swiper :list="announcementList" :title="true" @click='goAnnouncement'></u-swiper>
+		
 		<!-- 分类检索 Start -->
 		<u-row gutter="16">
 			<u-col span="12">
@@ -24,6 +26,7 @@
 			</u-col>
 		</u-row>
 		<!-- 分类检索 End -->
+		
 		<!-- 知识科普 Start -->
 		<u-row gutter="16">
 			<u-col span="12">
@@ -34,9 +37,9 @@
 		</u-row>
 		<u-row gutter="16">
 			<u-col span="12">
-				<view class="post-card" v-for="(item,index) in posts" @click="goPosts(index)">
-					<view class="post-pic">
-						<u-image :src="item.image"></u-image>
+				<view class="post-card" v-for="(item,index) in knowledgePopularization" @click="goKnowledgePopularization(index)">
+					<view>
+						<u-image width="100%" height="7em" :src="item.image"></u-image>
 					</view>
 					<view class="post-title u-line-1 u-font-lg u-padding-10">
 						{{item.title}}
@@ -49,13 +52,15 @@
 </template>
 
 <script>
+	import storage from '../../common/storage.js';
+
 	export default {
 		data() {
 			return {
 				//轮播图数据
 				announcementList: [],
 				//知识科普数据
-				posts: [],
+				knowledgePopularization: [],
 				//button按钮样式
 				green: {
 					color: '#fff',
@@ -79,32 +84,36 @@
 				}
 			}
 		},
-		onLoad() {
-			this.getAnnouncement();
-			this.getPosts();
-		},
 		methods: {
 			navigateTo(url) {
 				uni.navigateTo({
-					url: url
+					url:url
 				})
 			},
 			getAnnouncement() {
-				this.$request('/postsMgt/getPosts?id=459039470344601600').then(resp => {
-					this.announcementList = resp.obj;
+				this.$u.api.getPosts({
+					id: '459039470344601600'
+				}).then(resp => {
+					this.announcementList = resp.data.obj;
 				})
 			},
-			getPosts(){
-				this.$request('/postsMgt/getPosts?id=459039281823219712').then(resp=>{
-					this.posts=resp.obj;
+			getKnowledgePopularization() {
+				this.$u.api.getPosts({
+					id: '459039281823219712'
+				}).then(resp => {
+					this.knowledgePopularization = resp.data.obj;
 				})
 			},
-			goAnnouncement(index){
-				this.navigateTo('/pages/posts/posts?obj='+encodeURIComponent(JSON.stringify(this.announcementList[index])));
+			goAnnouncement(index) {
+				this.navigateTo('/pages/posts/posts?obj=' + encodeURIComponent(JSON.stringify(this.announcementList[index])));
 			},
-			goPosts(index){
-				this.navigateTo('/pages/posts/posts?obj='+encodeURIComponent(JSON.stringify(this.posts[index])));
+			goKnowledgePopularization(index) {
+				this.navigateTo('/pages/posts/posts?obj=' + encodeURIComponent(JSON.stringify(this.knowledgePopularization[index])));
 			}
+		},
+		onLoad() {
+			this.getAnnouncement();
+			this.getKnowledgePopularization();
 		}
 	}
 </script>
@@ -114,9 +123,5 @@
 	.post-card {
 		border: 1px solid $lgc-post-card-border;
 		margin-bottom: 10px;
-	}
-
-	.post-pic .u-image {
-		height: 7em !important;
 	}
 </style>
