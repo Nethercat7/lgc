@@ -42,7 +42,11 @@ public class PostsMgtServiceImpl implements PostsMgtService {
         if (posts.getPostsTitleImg() == null) {
             posts.setPostsTitleImg("https://cdn.uviewui.com/uview/swiper/1.jpg");
         }
-        return postsMgtDao.updPosts(posts);
+        int status=postsMgtDao.updPosts(posts);
+        if(status==1){
+            status=postsMgtDao.updPostsCategoryRelation(posts.getPcId(),posts.getPostsId());
+        }
+        return status;
     }
 
     @Override

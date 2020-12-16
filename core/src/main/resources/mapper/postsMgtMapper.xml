@@ -10,7 +10,12 @@
     </insert>
 
     <select id="getPosts" resultType="Posts">
-        SELECT * FROM posts;
+        SELECT p.posts_id,p.posts_title,p.posts_title_img,p.posts_content,p.posts_author,p.posts_add_time,p.posts_upd_time,pc.pc_id,pc.pc_name
+        FROM posts p
+        LEFT JOIN posts_category_relation pcr
+        ON p.posts_id=pcr.pcr_posts_id
+        LEFT JOIN posts_category pc
+        ON pc.pc_id=pcr.pcr_pc_id
     </select>
 
     <update id="updPosts" parameterType="Posts">
@@ -20,8 +25,13 @@
     </update>
 
     <select id="getPostsById" parameterType="String" resultType="Posts">
-        SELECT * FROM posts
-        WHERE posts_id=#{id}
+        SELECT p.posts_id,p.posts_title,p.posts_title_img,p.posts_content,p.posts_author,p.posts_add_time,p.posts_upd_time,pc.pc_id,pc.pc_name
+        FROM posts p
+        LEFT JOIN posts_category_relation pcr
+        ON p.posts_id=pcr.pcr_posts_id
+        LEFT JOIN posts_category pc
+        ON pc.pc_id=pcr.pcr_pc_id
+        WHERE p.posts_id=#{id}
     </select>
 
     <delete id="delPosts" parameterType="String">
@@ -58,4 +68,10 @@
         INSERT INTO posts_category_relation(pcr_id,pcr_posts_id,pcr_pc_id)
         VALUES(#{pcrId},#{postsId},#{categoryId})
     </insert>
+
+    <update id="updPostsCategoryRelation" parameterType="String">
+        UPDATE posts_category_relation
+        SET pcr_pc_id=#{pcId}
+        WHERE pcr_posts_id=#{postsId}
+    </update>
 </mapper>

@@ -38,4 +38,6 @@ public interface PostsMgtDao {
 
     //添加文章和文章类别之间的关系
     int addPostsCategoryRelation(String pcrId,String postsId,String categoryId);
+
+    int updPostsCategoryRelation(String pcId,String postsId);
 }
