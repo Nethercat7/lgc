@@ -10,6 +10,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @CrossOrigin
@@ -46,8 +47,8 @@ public class UserMgtController {
 
     @GetMapping("getUsers")
     //@RequiresPermissions("usermgt:usertable")
-    public ResultBody getUsers(){
-        List<User> users=userService.getUsers();
+    public ResultBody getUsers(Boolean rate){
+        List<User> users=userService.getUsers(rate);
         if(!ObjectUtils.isEmpty(users)){
             log.info("找到"+users.size()+"个用户");
             for (User user : users) {
@@ -88,5 +89,11 @@ public class UserMgtController {
             return new ResultBody(Constant.SUCCESS,Constant.TYPE_SUCCESS,Constant.DEL_SUCCESS);
         }
         return new ResultBody(Constant.FAILED,Constant.TYPE_ERROR,Constant.DEL_FAILED);
+    }
+
+    @GetMapping("getUserRate")
+    public ResultBody getUserRate(String id){
+        Map<String,Object> user=userService.getUserRate(id);
+        return new ResultBody(Constant.SUCCESS,user,Constant.GET_SUCCESS);
     }
 }

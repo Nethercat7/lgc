@@ -45,7 +45,7 @@
 </template>
 
 <script>
-	import storage from '../../../common/storage.js';
+	import storage from '@/common/storage.js';
 
 	export default {
 		data() {

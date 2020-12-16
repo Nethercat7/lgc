@@ -13,7 +13,7 @@ public interface UserDao {
     int add(User user);
 
     //获取所有用户
-    List<User> getUsers();
+    List<User> getUsers(Boolean rate);
 
     //修改用户
     int upd(User user);
@@ -44,4 +44,7 @@ public interface UserDao {
 
     //更新用户积分
     int updIntegral(Long integral,String id);
+
+    //获取指定用户的排名
+    Map<String,Object> getUserRate(String id);
 }

@@ -104,7 +104,6 @@
 					num: 1
 				}).then(resp => {
 					this.tips = resp.data.obj[0];
-					console.log(resp.data.obj[0]);
 				})
 			}
 		},

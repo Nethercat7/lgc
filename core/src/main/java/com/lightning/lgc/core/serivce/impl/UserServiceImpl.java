@@ -73,8 +73,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getUsers() {
-        return userDao.getUsers();
+    public List<User> getUsers(Boolean rate) {
+        return userDao.getUsers(rate);
     }
 
     @Override
@@ -138,5 +138,10 @@ public class UserServiceImpl implements UserService {
         //把获取到的积分+上本次的积分
         userIntegral+=integral;
         return userDao.updIntegral(userIntegral,id);
+    }
+
+    @Override
+    public Map<String,Object> getUserRate(String id) {
+        return userDao.getUserRate(id);
     }
 }

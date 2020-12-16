@@ -4,6 +4,7 @@ import com.lightning.lgc.core.entity.ResultBody;
 import com.lightning.lgc.core.entity.User;
 
 import java.util.List;
+import java.util.Map;
 
 public interface UserService {
     //添加用户
@@ -16,7 +17,7 @@ public interface UserService {
     ResultBody login(String name, String pwd);
 
     //获取所有用户
-    List<User> getUsers();
+    List<User> getUsers(Boolean rate);
 
     //根据ID修改用户
     int upd(User user);
@@ -29,4 +30,7 @@ public interface UserService {
 
     //更新用户积分
     int updIntegral(Long integral,String id);
+
+    //获取指定用户的排名
+    Map<String,Object> getUserRate(String id);
 }

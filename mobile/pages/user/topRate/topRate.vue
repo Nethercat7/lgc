@@ -10,18 +10,15 @@
 		<u-row gutter="16">
 			<u-col span="12">
 				<u-table>
-					<u-tr class="u-tr" v-for="(item,index) in data" :key="item.index">
+					<u-tr class="u-tr" v-for="(item,index) in users" :key="item.index">
 						<u-td class="u-td">
-							{{item.index}}
+							{{index+1}}
 						</u-td>
 						<u-td class="u-td">
-							{{item.name}}
+							{{item.userName}}
 						</u-td>
 						<u-td class="u-td">
-							{{item.score}}
-						</u-td>
-						<u-td class="u-td">
-							{{item.title}}
+							{{item.userIntegral}}
 						</u-td>
 					</u-tr>
 					<view class="border-left">
@@ -29,16 +26,13 @@
 					</view>
 					<u-tr class="u-tr">
 						<u-td class="u-td">
-							{{userRange.index}}
+							{{user.rate}}
 						</u-td>
 						<u-td class="u-td">
-							{{userRange.name}}
+							{{user.name}}
 						</u-td>
 						<u-td class="u-td">
-							{{userRange.score}}
-						</u-td>
-						<u-td class="u-td">
-							{{userRange.title}}
+							{{user.integral}}
 						</u-td>
 					</u-tr>
 				</u-table>
@@ -51,74 +45,29 @@
 	export default {
 		data() {
 			return {
-				data: [{
-						name: "nethercat1",
-						score: 777,
-						title: "垃圾大王",
-						index: 1
-					},
-					{
-						name: "nethercat2",
-						score: 777,
-						title: "垃圾大王",
-						index: 2
-					},
-					{
-						name: "nethercat3",
-						score: 777,
-						title: "垃圾大王",
-						index: 3
-					},
-					{
-						name: "nethercat4",
-						score: 777,
-						title: "垃圾大王",
-						index: 4
-					},
-					{
-						name: "nethercat5",
-						score: 777,
-						title: "垃圾大王",
-						index: 5
-					},
-					{
-						name: "nethercat6",
-						score: 777,
-						title: "垃圾大王",
-						index: 6
-					},
-					{
-						name: "nethercat7",
-						score: 777,
-						title: "垃圾大王",
-						index: 7
-					},
-					{
-						name: "nethercat8",
-						score: 777,
-						title: "垃圾大王",
-						index: 8
-					},
-					{
-						name: "nethercat9",
-						score: 777,
-						title: "垃圾大王",
-						index: 9
-					},
-					{
-						name: "nethercat10",
-						score: 777,
-						title: "垃圾大王",
-						index: 10
-					},
-				],
-				userRange:{
-					name:"nethercat7",
-					score:777,
-					title:"垃圾大王",
-					index:7
-				}
-			};
+				users: [],
+				user: {}
+			}
+		},
+		methods: {
+			getTop10Users() {
+				this.$u.api.getUsers({
+					rate: true
+				}).then(resp => {
+					this.users = resp.data.obj;
+				})
+			},
+			getUserRate(id){
+				this.$u.api.getUserRate({
+					id:id
+				}).then(resp=>{
+					this.user=resp.data.obj;
+				})
+			}
+		},
+		onLoad(option) {
+			this.getTop10Users();
+			this.getUserRate(option.id);
 		}
 	}
 </script>

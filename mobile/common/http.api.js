@@ -17,6 +17,12 @@ const install = (Vue, vm) => {
 
 	//更新用户信息
 	let updUser = (params = {}) => vm.$u.post('/user/upd', params);
+	
+	//获取所有用户
+	let getUsers = (params = {}) => vm.$u.get('/userMgt/getUsers', params);
+	
+	//获取指定用户排名
+	let getUserRate = (params = {}) => vm.$u.get('/userMgt/getUserRate', params);
 
 	vm.$u.api = {
 		getPosts,
@@ -24,7 +30,9 @@ const install = (Vue, vm) => {
 		getGarbageCategories,
 		updIntegral,
 		getUser,
-		updUser
+		updUser,
+		getUsers,
+		getUserRate
 	};
 }
 

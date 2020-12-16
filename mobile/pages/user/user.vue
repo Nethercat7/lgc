@@ -21,7 +21,7 @@
 			<u-row gutter="16">
 				<u-col span="12">
 					<u-cell-group>
-						<u-cell-item icon="list" title="排行榜" @click="goto('/pages/user/topRate/topRate')"></u-cell-item>
+						<u-cell-item icon="list" title="排行榜" @click="toRate"></u-cell-item>
 						<u-cell-item icon="file-text-fill" title="个人资料" @click="goto('/pages/user/userInfo/userInfo')"></u-cell-item>
 						<u-cell-item icon="lock-fill" title="修改密码" @click="goto('/pages/user/changePwd/changePwd')"></u-cell-item>
 						<u-cell-item icon="setting-fill" title="系统设置"></u-cell-item>
@@ -98,6 +98,9 @@
 				}).then(resp => {
 					this.user = resp.data.obj;
 				})
+			},
+			toRate(){
+				this.goto('/pages/user/topRate/topRate?id='+this.user.userId);
 			}
 		},
 		onShow() {

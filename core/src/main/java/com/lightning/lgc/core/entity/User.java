@@ -26,7 +26,7 @@ public class User implements Serializable {
     private LocalDateTime userAddTime;
     private LocalDateTime userUpdTime;
     private String userSalt;
-    private String userIntegral;
+    private Long userIntegral;
     private String userAvatar;
     private String userStatus;
 
