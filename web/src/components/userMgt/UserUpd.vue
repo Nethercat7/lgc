@@ -94,10 +94,6 @@
             token: storage.get('token')
           }
         }).then(resp => {
-          for (let i = 0; i < resp.data.obj.roleIds.length; i++) {
-            resp.data.obj.roleIds[i] = resp.data.obj.roleIds[i].toFixed(0);
-          }
-          resp.data.obj.userId = resp.data.obj.userId.toFixed(0);
           this.user = resp.data.obj;
         })
       },
@@ -106,7 +102,7 @@
           const arr = [];
           for (let i = 0; i < resp.data.obj.length; i++) {
             arr.push({
-              key: resp.data.obj[i].roleId.toFixed(0),
+              key: resp.data.obj[i].roleId,
               label: resp.data.obj[i].roleName,
             });
           }

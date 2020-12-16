@@ -23,7 +23,7 @@
         WHERE role_id=#{roleId}
     </update>
 
-    <delete id="delRole" parameterType="Long">
+    <delete id="delRole" parameterType="String">
         DELETE FROM role
         WHERE role_id=#{id}
     </delete>
@@ -47,7 +47,7 @@
         VALUES(#{prId},#{prRoleId},#{prPermsId})
     </insert>
 
-    <select id="getRolePerms" parameterType="Long" resultType="Perms">
+    <select id="getRolePerms" parameterType="String" resultType="Perms">
         SELECT p.* FROM perms p
         LEFT JOIN role_perms_relation rp
         ON p.perms_id=rp.rp_perms_id
@@ -56,7 +56,7 @@
         WHERE role_id=#{roleId}
     </select>
 
-    <select id="getRolePermsId" resultType="Long">
+    <select id="getRolePermsId" resultType="String">
         SELECT p.perms_id FROM perms p
         LEFT JOIN role_perms_relation rp
         ON p.perms_id=rp.rp_perms_id
@@ -65,13 +65,13 @@
         WHERE role_id=#{roleId}
     </select>
 
-    <delete id="delRolePerms" parameterType="Long">
+    <delete id="delRolePerms" parameterType="String">
         DELETE FROM role_perms_relation
         WHERE rp_role_id=#{rpRoleId}
         AND rp_perms_id=#{rpPermsId}
     </delete>
 
-    <delete id="delAllRolePerms" parameterType="Long">
+    <delete id="delAllRolePerms" parameterType="String">
         DELETE FROM role_perms_relation
         WHERE rp_role_id=#{rpRoleId}
     </delete>

@@ -13,19 +13,21 @@
         <result property="userEmail" column="user_email"/>
         <result property="userAddTime" column="user_add_time"/>
         <result property="userUpdTime" column="user_upd_time"/>
+        <result property="userIntegral" column="user_integral"/>
+        <result property="userAvatar" column="user_avatar"/>
         <result property="userStatus" column="user_status"/>
         <collection property="roleList" ofType="Role">
             <id property="roleId" column="role_id"/>
             <result property="roleCode" column="role_code"/>
             <result property="roleName" column="role_name"/>
         </collection>
-        <collection property="roleIds" ofType="Long">
-            <id property="Long" column="role_id"/>
+        <collection property="roleIds" ofType="String">
+            <id property="String" column="role_id"/>
         </collection>
     </resultMap>
 
     <select id="getUserByName" parameterType="String" resultMap="userMap">
-        SELECT u.user_id,u.user_name,u.user_gender,u.user_birthday,u.user_phone,u.user_email,u.user_add_time,u.user_upd_time,u.user_status,r.role_id,r.role_code,r.role_name
+        SELECT u.user_id,u.user_name,u.user_gender,u.user_birthday,u.user_phone,u.user_email,u.user_add_time,u.user_upd_time,u.user_integral,u.user_avatar,u.user_status,r.role_id,r.role_code,r.role_name
         FROM user u
         LEFT JOIN user_role_relation ur
         ON u.user_id=ur.ur_user_id
@@ -68,24 +70,24 @@
         VALUES(#{urId},#{urUserId},#{urRoleId})
     </insert>
 
-    <select id="getUrRoleId" resultType="Long">
+    <select id="getUrRoleId" resultType="String">
         SELECT ur_role_id FROM user_role_relation
         WHERE ur_user_id=#{id}
     </select>
 
-    <delete id="delUserRoleRelation" parameterType="Long">
+    <delete id="delUserRoleRelation" parameterType="String">
         DELETE FROM user_role_relation
         WHERE ur_user_id=#{userId}
         AND ur_role_id=#{roleId}
     </delete>
 
-    <delete id="delUserRoleRelations" parameterType="Long">
+    <delete id="delUserRoleRelations" parameterType="String">
         DELETE FROM user_role_relation
         WHERE ur_user_id=#{id}
         OR ur_role_id=#{id}
     </delete>
 
-    <select id="getUserPerms" parameterType="Long" resultType="String">
+    <select id="getUserPerms" parameterType="String" resultType="String">
         SELECT p.perms_code FROM perms p
         LEFT JOIN role_perms_relation rp
         ON p.perms_id=rp_perms_id
@@ -96,5 +98,9 @@
         LEFT JOIN user u
         ON u.user_id=ur.ur_user_id
         WHERE u.user_id=#{id}
+    </select>
+
+    <select id="getIntegral" resultType="Long" parameterType="String">
+
     </select>
 </mapper>

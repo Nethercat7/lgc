@@ -1,14 +1,13 @@
 package com.lightning.lgc.core.controller;
 
+import com.lightning.lgc.core.config.Constant;
 import com.lightning.lgc.core.entity.ResultBody;
+import com.lightning.lgc.core.entity.User;
+import com.lightning.lgc.core.serivce.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
-import com.lightning.lgc.core.config.Constant;
-import com.lightning.lgc.core.entity.User;
-import com.lightning.lgc.core.serivce.UserService;
 
 import java.util.List;
 
@@ -16,13 +15,13 @@ import java.util.List;
 @CrossOrigin
 @RestController
 @RequestMapping("userMgt")
-@RequiresPermissions("userMgt")
+//@RequiresPermissions("userMgt")
 public class UserMgtController {
     @Autowired
     private UserService userService;
 
     @PostMapping("add")
-    @RequiresPermissions("usermgt:addUser:add")
+    //@RequiresPermissions("usermgt:addUser:add")
     public ResultBody add(@RequestBody User user){
         int status=userService.add(user);
         if(status== Constant.SUCCESS){
@@ -34,7 +33,7 @@ public class UserMgtController {
     }
 
     @GetMapping("getUserByName")
-    @RequiresPermissions("usermgt:usertable:upd")
+    //@RequiresPermissions("usermgt:usertable:upd")
     public ResultBody getUserByName(String name){
         User user=userService.getUserByName(name);
         if(!ObjectUtils.isEmpty(user)){
@@ -46,7 +45,7 @@ public class UserMgtController {
     }
 
     @GetMapping("getUsers")
-    @RequiresPermissions("usermgt:usertable")
+    //@RequiresPermissions("usermgt:usertable")
     public ResultBody getUsers(){
         List<User> users=userService.getUsers();
         if(!ObjectUtils.isEmpty(users)){
@@ -70,7 +69,7 @@ public class UserMgtController {
     }
 
     @PostMapping("upd")
-    @RequiresPermissions("usermgt:usertable:upd")
+    //@RequiresPermissions("usermgt:usertable:upd")
     public ResultBody upd(@RequestBody User user){
         int status=userService.upd(user);
         if(status==Constant.SUCCESS){
@@ -81,8 +80,8 @@ public class UserMgtController {
     }
 
     @GetMapping("del")
-    @RequiresPermissions("usermgt:usertable:del")
-    public ResultBody del(Long id){
+    //@RequiresPermissions("usermgt:usertable:del")
+    public ResultBody del(String id){
         int status=userService.del(id);
         if(status==Constant.SUCCESS){
             log.info("成功删除1个用户");

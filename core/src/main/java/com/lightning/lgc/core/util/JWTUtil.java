@@ -14,7 +14,7 @@ public class JWTUtil {
     private final static String SECRET = "*******";
     private final static Algorithm ALGORITHM = Algorithm.HMAC256(SECRET);
 
-    public static String createToken(Long userId, String username) {
+    public static String createToken(String userId, String username) {
         //设置Token过期时间
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DATE, EXPIRE_TIME);
@@ -26,15 +26,15 @@ public class JWTUtil {
                 .sign(ALGORITHM);
     }
 
-    public static Long getUserId(String token) {
-        return JWT.require(ALGORITHM).build().verify(token).getClaim("userId").asLong();
+    public static String getUserId(String token) {
+        return JWT.require(ALGORITHM).build().verify(token).getClaim("userId").toString();
     }
 
     public static String getUsername(String token) {
         return JWT.require(ALGORITHM).build().verify(token).getClaim("username").asString();
     }
 
-    public static boolean verify(String token, Long userId, String username) throws Exception {
+    public static boolean verify(String token, String userId, String username) throws Exception {
         JWT.require(ALGORITHM).withClaim("userId", userId).withClaim("username", username).build().verify(token);
         return true;
     }

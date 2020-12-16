@@ -86,14 +86,12 @@
           }
         }).then(resp => {
           let obj = resp.data.obj;
-          //将长数字转为字符串，防止精度丢失
-          obj.roleId = obj.roleId.toFixed(0);
           this.role = obj;
           //设置已经拥有的权限
           let perms = this.role.perms;
           let permsData = [];
           for (let i = 0; i < perms.length; i++) {
-            permsData.push(perms[i].permsId.toFixed(0));
+            permsData.push(perms[i].permsId);
           }
           node.setCheckedKeys(this.$refs, permsData);
         })

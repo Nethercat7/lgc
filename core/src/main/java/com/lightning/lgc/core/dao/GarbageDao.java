@@ -13,7 +13,7 @@ public interface GarbageDao {
     List<GarbageCategory> getCategories();
 
     //删除分类类别
-    int delCategory(Long id);
+    int delCategory(String id);
 
     //修改分类类别
     int updCategory(GarbageCategory garbageCategory);
@@ -34,8 +34,8 @@ public interface GarbageDao {
     int updGarbageRelation(Garbage garbage);
 
     //删除垃圾分类
-    int delGarbage(Long garbageId);
+    int delGarbage(String garbageId);
 
     //删除垃圾与类别的关系
-    int delGarbageRelation(Long garbageId);
+    int delGarbageRelation(String garbageId);
 }

@@ -30,7 +30,7 @@
           title="确定删除吗？"
           icon="el-icon-info"
           icon-color="red"
-          @confirm="delUser(scope.row.userId.toFixed(0))"
+          @confirm="delUser(scope.row.userId)"
         >
           <el-button type="danger" slot="reference">删除</el-button>
         </el-popconfirm>

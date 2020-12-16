@@ -29,7 +29,7 @@ public class GarbageServiceImpl implements GarbageService {
     }
 
     @Override
-    public int delCategory(Long id) {
+    public int delCategory(String id) {
         return garbageDao.delCategory(id);
     }
 
@@ -63,7 +63,7 @@ public class GarbageServiceImpl implements GarbageService {
     }
 
     @Override
-    public int delGarbage(Long garbageId) {
+    public int delGarbage(String garbageId) {
         int status=garbageDao.delGarbage(garbageId);
         if(status==1){
             status=garbageDao.delGarbageRelation(garbageId);

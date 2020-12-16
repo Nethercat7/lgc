@@ -15,8 +15,8 @@ import java.util.List;
 @Accessors(chain = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Perms {
-    private long permsId;
-    private long permsPid;
+    private String permsId;
+    private String permsPid;
     private String permsName;
     private String permsCode;
     private int permsType;
@@ -35,7 +35,7 @@ public class Perms {
     private String pid2String;
     private String type2String;
 
-    public Perms(long permsPid) {
+    public Perms(String permsPid) {
         this.permsPid = permsPid;
     }
 }

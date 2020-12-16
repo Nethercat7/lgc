@@ -13,7 +13,7 @@ public interface GarbageService {
     List<GarbageCategory> getCategories();
 
     //删除分类类别
-    int delCategory(Long id);
+    int delCategory(String id);
 
     //修改分类类别
     int updCategory(GarbageCategory garbageCategory);
@@ -28,5 +28,5 @@ public interface GarbageService {
     int updGarbage(Garbage garbage);
 
     //删除垃圾分类
-    int delGarbage(Long garbageId);
+    int delGarbage(String garbageId);
 }

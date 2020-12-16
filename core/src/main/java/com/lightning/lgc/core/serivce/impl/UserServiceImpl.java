@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int add(User user) {
-        user.setUserId(snowflakeIdGeneratorUntil.nextId());
+        user.setUserId(snowflakeIdGeneratorUntil.getId());
         String salt = PwdUtil.getSalt(SALT);
         user.setUserPwd(PwdUtil.pwd2MD5(user.getUserPwd(), salt, HASH));
         user.setUserSalt(salt);
@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
         if (status == 1) {
             //添加用户的角色
             if (user.getRoleIds().size() > 0) {
-                for (Long id : user.getRoleIds()) {
+                for (String id : user.getRoleIds()) {
                     status = addUserRoleRelation(user.getUserId(), id);
                     if (status == 0) {
                         break;
@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
                 }
             } else {
                 //如果添加用户时没有选择角色，默认为普通用户
-                status = addUserRoleRelation(user.getUserId(), 444519257385074688L);
+                status = addUserRoleRelation(user.getUserId(), "444519257385074688");
             }
         }
         return status;
@@ -81,10 +81,10 @@ public class UserServiceImpl implements UserService {
     public int upd(User user) {
         int status = userDao.upd(user);
         if (status == 1) {
-            List<Long> ids = userDao.getUrRoleId(user.getUserId());
+            List<String> ids = userDao.getUrRoleId(user.getUserId());
             //如果前端传入的角色ID小于数据库中已存在的ID，那么就删除用户和角色的关系，否则即更新。
             if (ids.size() > user.getRoleIds().size()) {
-                for (Long id : ids) {
+                for (String id : ids) {
                     if (!user.getRoleIds().contains(id)) {
                         status = userDao.delUserRoleRelation(user.getUserId(), id);
                     }
@@ -93,7 +93,7 @@ public class UserServiceImpl implements UserService {
                     }
                 }
             } else {
-                for(Long id:user.getRoleIds()){
+                for(String id:user.getRoleIds()){
                     if(!ids.contains(id)){
                         status=addUserRoleRelation(user.getUserId(),id);
                     }
@@ -107,7 +107,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int del(Long id) {
+    public int del(String id) {
         int status=userDao.del(id);
         if(status==1) {
             //删除和用户相关联的角色
@@ -119,13 +119,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<String> getUserPerms(Long id) {
+    public List<String> getUserPerms(String id) {
         return userDao.getUserPerms(id);
     }
 
-    private int addUserRoleRelation(Long userId, Long roleId) {
-        Map<String, Long> ids = new HashMap<>();
-        ids.put("urId", snowflakeIdGeneratorUntil.nextId());
+    private int addUserRoleRelation(String userId, String roleId) {
+        Map<String, String> ids = new HashMap<>();
+        ids.put("urId", snowflakeIdGeneratorUntil.getId());
         ids.put("urUserId", userId);
         ids.put("urRoleId", roleId);
         return userDao.addUserRoleRelation(ids);

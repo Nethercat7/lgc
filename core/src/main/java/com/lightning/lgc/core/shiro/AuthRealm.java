@@ -37,7 +37,7 @@ public class AuthRealm extends AuthorizingRealm {
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         log.info("进入授权认证");
         SimpleAuthorizationInfo simpleAuthorizationInfo=new SimpleAuthorizationInfo();
-        Long id= JWTUtil.getUserId((String) principalCollection.getPrimaryPrincipal());
+        String id= JWTUtil.getUserId((String) principalCollection.getPrimaryPrincipal());
         List<String> perms=userService.getUserPerms(id);
         simpleAuthorizationInfo.addStringPermissions(perms);
         return simpleAuthorizationInfo;

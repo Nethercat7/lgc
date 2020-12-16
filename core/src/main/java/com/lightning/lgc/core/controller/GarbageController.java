@@ -37,7 +37,7 @@ public class GarbageController {
     }
 
     @GetMapping("delCategory")
-    public ResultBody delCategory(Long id){
+    public ResultBody delCategory(String id){
         int status=garbageService.delCategory(id);
         if(status==1){
             log.info("成功删除1条类别");
@@ -84,7 +84,7 @@ public class GarbageController {
     }
 
     @GetMapping("delGarbage")
-    public ResultBody delGarbage(Long garbageId){
+    public ResultBody delGarbage(String garbageId){
         int status=garbageService.delGarbage(garbageId);
         if(status==1){
             log.info("成功删除垃圾"+garbageId);

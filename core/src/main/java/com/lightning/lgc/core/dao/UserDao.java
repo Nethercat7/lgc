@@ -19,23 +19,23 @@ public interface UserDao {
     int upd(User user);
 
     //删除用户
-    int del(Long id);
+    int del(String id);
 
     //添加用户的角色
-    int addUserRoleRelation(Map<String,Long> ids);
+    int addUserRoleRelation(Map<String,String> ids);
 
     //根据用户ID获取用户与角色的关系
-    List<Long> getUrRoleId(Long id);
+    List<String> getUrRoleId(String id);
 
     //删除用户与角色之间的关系
-    int delUserRoleRelation(Long userId,Long roleId);
+    int delUserRoleRelation(String userId,String roleId);
 
     //删除用户时删除所有与用户相关联的角色关系
-    int delUserRoleRelations(Long id);
+    int delUserRoleRelations(String id);
 
     //获取用户登入信息，用户登入验证
     User getUserLoginInfo(String name);
 
     //获取用户权限
-    List<String> getUserPerms(Long id);
+    List<String> getUserPerms(String id);
 }

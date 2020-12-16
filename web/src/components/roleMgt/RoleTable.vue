@@ -57,9 +57,6 @@
     methods:{
       getRoles(){
         api.getRoles().then(resp=>{
-          for(let i=0;i<resp.data.obj.length;i++){
-            resp.data.obj[i].roleId=resp.data.obj[i].roleId.toFixed(0);
-          }
           this.roles=resp.data.obj;
         })
       },

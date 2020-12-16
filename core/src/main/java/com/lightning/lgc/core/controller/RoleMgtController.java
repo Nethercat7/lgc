@@ -1,15 +1,13 @@
 package com.lightning.lgc.core.controller;
 
+import com.lightning.lgc.core.config.Constant;
 import com.lightning.lgc.core.entity.ResultBody;
+import com.lightning.lgc.core.entity.Role;
+import com.lightning.lgc.core.serivce.RoleMgtService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.shiro.authz.annotation.Logical;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
-import com.lightning.lgc.core.config.Constant;
-import com.lightning.lgc.core.entity.Role;
-import com.lightning.lgc.core.serivce.RoleMgtService;
 
 import java.util.List;
 
@@ -17,13 +15,13 @@ import java.util.List;
 @CrossOrigin
 @RestController
 @RequestMapping("roleMgt")
-@RequiresPermissions("rolemgt")
+//@RequiresPermissions("rolemgt")
 public class RoleMgtController {
     @Autowired
     private RoleMgtService roleMgtService;
 
     @PostMapping("add")
-    @RequiresPermissions("rolemgt:addrole:add")
+    //@RequiresPermissions("rolemgt:addrole:add")
     public ResultBody add(@RequestBody Role role) {
         int status = roleMgtService.add(role);
         if (status == Constant.SUCCESS) {
@@ -34,7 +32,7 @@ public class RoleMgtController {
     }
 
     @GetMapping("getRoleByName")
-    @RequiresPermissions("rolemgt:roletable:upd")
+   // @RequiresPermissions("rolemgt:roletable:upd")
     public ResultBody getRoleByName(String name) {
         Role role = roleMgtService.getRoleByName(name);
         if (!ObjectUtils.isEmpty(role)) {
@@ -45,7 +43,7 @@ public class RoleMgtController {
     }
 
     @GetMapping("getRoles")
-    @RequiresPermissions(value = {"rolemgt:roletable", "usermgt:useradd:add", "usermgt:usertable:upd"}, logical = Logical.OR)
+    //@RequiresPermissions(value = {"rolemgt:roletable", "usermgt:useradd:add", "usermgt:usertable:upd"}, logical = Logical.OR)
     public ResultBody getRoles() {
         List<Role> roles = roleMgtService.getRoles();
         if (!ObjectUtils.isEmpty(roles)) {
@@ -56,7 +54,7 @@ public class RoleMgtController {
     }
 
     @PostMapping("upd")
-    @RequiresPermissions("rolemgt:roletable:upd")
+    //@RequiresPermissions("rolemgt:roletable:upd")
     public ResultBody updRole(@RequestBody Role role) {
         int status = roleMgtService.updRole(role);
         if (status == Constant.SUCCESS) {
@@ -67,8 +65,8 @@ public class RoleMgtController {
     }
 
     @GetMapping("del")
-    @RequiresPermissions("rolemgt:roletable:del")
-    public ResultBody delRole(Long id) {
+   // @RequiresPermissions("rolemgt:roletable:del")
+    public ResultBody delRole(String id) {
         int status = roleMgtService.delRole(id);
         if (status == Constant.SUCCESS) {
             return new ResultBody(Constant.SUCCESS, Constant.TYPE_SUCCESS, Constant.DEL_SUCCESS);
@@ -77,7 +75,7 @@ public class RoleMgtController {
     }
 
     @GetMapping("getPerms")
-    @RequiresPermissions(value = {"rolemgt:roletable:add", "rolemgt:roletable:upd"}, logical = Logical.OR)
+    //@RequiresPermissions(value = {"rolemgt:roletable:add", "rolemgt:roletable:upd"}, logical = Logical.OR)
     public ResultBody getPerms() {
         return new ResultBody(Constant.SUCCESS, roleMgtService.getPerms(null), Constant.GET_SUCCESS);
     }

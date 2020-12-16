@@ -5,15 +5,15 @@
 			<u-row gutter="16">
 				<u-col span="12">
 					<view class="u-text-center profile">
-						<u-avatar :src="src" size="150"></u-avatar>
+						<u-avatar :src="user.userAvatar" size="150"></u-avatar>
 						<view class="u-font-xl">
-							{{username}}
+							{{user.userName}}
 						</view>
 						<view class="u-font-xl title">
-							{{title}}
+							
 						</view>
 						<view class="u-font-xl">
-							积分：{{score}}
+							积分：{{user.userIntegral}}
 						</view>
 					</view>
 				</u-col>
@@ -55,10 +55,7 @@
 	export default {
 		data() {
 			return {
-				src: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1605900949663&di=3d1d282f8783f6eac45afc4f7511ed6c&imgtype=0&src=http%3A%2F%2Fpic4.zhimg.com%2F80%2Fv2-9a6828c2682d4cc28e9a24d49e87d99b_hd.jpg',
-				username: 'Nethercat7',
-				title: '垃圾大王',
-				score: '77',
+				user:{},
 				isLogin: false,
 				name: '',
 				pwd: ''
@@ -93,6 +90,11 @@
 			exit() {
 				storage.remove('token');
 				this.isLogin = false;
+			},
+			getUser(name){
+				this.$request('/user/getUserByName?name='+name).then(resp=>{
+					this.user=resp.obj;
+				})
 			}
 		},
 		onLoad() {
@@ -100,8 +102,8 @@
 			if(JSON.stringify(user)=='{}'){
 				this.isLogin=false;
 			}else{
+				this.getUser(user.username);
 				this.isLogin=true;
-				this.username=user.username;
 			}
 		}
 	}

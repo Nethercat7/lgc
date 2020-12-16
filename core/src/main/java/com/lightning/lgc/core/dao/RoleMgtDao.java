@@ -20,23 +20,23 @@ public interface RoleMgtDao {
     int updRole(Role role);
 
     //通过角色名删除角色
-    int delRole(Long id);
+    int delRole(String id);
 
     //获取所有权限
     List<Perms> getPerms(Perms perms);
 
     //添加角色与权限的关系
-    int addRolePermsRelation(Map<String,Long> ids);
+    int addRolePermsRelation(Map<String,String> ids);
 
     //获取角色拥有的权限
-    List<Perms> getRolePerms(Long roleId);
+    List<Perms> getRolePerms(String roleId);
 
     //获取角色拥有的权限ID
-    List<Long> getRolePermsId(Long roleId);
+    List<String> getRolePermsId(String roleId);
 
     //删除角色权限
-    int delRolePerms(Long rpRoleId,Long rpPermsId);
+    int delRolePerms(String rpRoleId,String rpPermsId);
 
     //删除所有角色权限
-    int delAllRolePerms(Long rpRoleId);
+    int delAllRolePerms(String rpRoleId);
 }

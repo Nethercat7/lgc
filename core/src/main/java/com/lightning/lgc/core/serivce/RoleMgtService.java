@@ -19,11 +19,11 @@ public interface RoleMgtService {
     int updRole(Role role);
 
     //通过角色名删除角色
-    int delRole(Long id);
+    int delRole(String id);
 
     //获取所有权限
     List<Perms> getPerms(Perms perms);
 
     //获取角色拥有的权限
-    List<Perms> getRolePerms(Long roleId);
+    List<Perms> getRolePerms(String roleId);
 }

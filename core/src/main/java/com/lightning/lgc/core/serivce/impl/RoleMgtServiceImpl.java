@@ -26,7 +26,7 @@ public class RoleMgtServiceImpl implements RoleMgtService {
 
     @Override
     public int add(Role role) {
-        role.setRoleId(snowflakeIdGeneratorUntil.nextId());
+        role.setRoleId(snowflakeIdGeneratorUntil.getId());
         int status = roleMgtDao.add(role);
         if (status == 1 && role.getPermsId().size() > 0) {
             //添加角色成功之后添加角色与权限之间的关系
@@ -60,9 +60,9 @@ public class RoleMgtServiceImpl implements RoleMgtService {
     public int updRole(Role role) {
         int status = roleMgtDao.updRole(role);
         if (status == 1) {
-            List<Long> ids = roleMgtDao.getRolePermsId(role.getRoleId());
+            List<String> ids = roleMgtDao.getRolePermsId(role.getRoleId());
             if (ids.size() > role.getPermsId().size()) {
-                for (Long id : ids) {
+                for (String id : ids) {
                     if (!role.getPermsId().contains(id)) {
                         status = roleMgtDao.delRolePerms(role.getRoleId(), id);
                         if (status != 1) {
@@ -71,7 +71,7 @@ public class RoleMgtServiceImpl implements RoleMgtService {
                     }
                 }
             }else{
-                for(Long id:role.getPermsId()){
+                for(String id:role.getPermsId()){
                     if(!ids.contains(id)){
                         status=addRolePermsRelation(role.getRoleId(),id);
                         if (status != 1) {
@@ -85,7 +85,7 @@ public class RoleMgtServiceImpl implements RoleMgtService {
     }
 
     @Override
-    public int delRole(Long id) {
+    public int delRole(String id) {
         int status=roleMgtDao.delRole(id);
         if(status==1){
             userDao.delUserRoleRelations(id);
@@ -116,13 +116,13 @@ public class RoleMgtServiceImpl implements RoleMgtService {
     }
 
     @Override
-    public List<Perms> getRolePerms(Long roleId) {
+    public List<Perms> getRolePerms(String roleId) {
         return roleMgtDao.getRolePerms(roleId);
     }
 
-    private int addRolePermsRelation(Long roleId, Long PermsId) {
-        Map<String, Long> ids = new HashMap<>();
-        ids.put("prId", snowflakeIdGeneratorUntil.nextId());
+    private int addRolePermsRelation(String roleId, String PermsId) {
+        Map<String, String> ids = new HashMap<>();
+        ids.put("prId", snowflakeIdGeneratorUntil.getId());
         ids.put("prRoleId", roleId);
         ids.put("prPermsId", PermsId);
         return roleMgtDao.addRolePermsRelation(ids);

@@ -115,7 +115,7 @@
           let arr = [];
           for (let i = 0; i < resp.data.obj.length; i++) {
             arr.push({
-              key: resp.data.obj[i].roleId.toFixed(0),
+              key: resp.data.obj[i].roleId,
               label: resp.data.obj[i].roleName,
             });
           }

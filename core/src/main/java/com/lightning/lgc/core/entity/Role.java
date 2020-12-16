@@ -15,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Role {
-    private long roleId;
+    private String roleId;
     private String roleCode;
     private String roleName;
     private LocalDateTime roleAddTime;
@@ -23,5 +23,5 @@ public class Role {
     private String roleStatus;
 
     private List<Perms> perms;
-    private List<Long> permsId;
+    private List<String> permsId;
 }

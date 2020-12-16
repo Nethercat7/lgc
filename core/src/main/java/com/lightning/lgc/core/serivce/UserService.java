@@ -22,8 +22,8 @@ public interface UserService {
     int upd(User user);
 
     //删除用户
-    int del(Long id);
+    int del(String id);
 
     //获取用户权限
-    List<String> getUserPerms(Long id);
+    List<String> getUserPerms(String id);
 }

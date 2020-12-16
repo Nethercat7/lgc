@@ -10,7 +10,7 @@
 						{{score}}
 					</view>
 					<view>
-						获得77点积分
+						获得{{integral}}点积分
 					</view>
 				</view>
 			</u-col>
@@ -49,7 +49,8 @@
 			return {
 				score: 0,
 				answer: [],
-				count:0
+				count:0,
+				integral:0
 			}
 		},
 		methods: {
@@ -60,11 +61,12 @@
 			},
 			calculateScore(num) {
 				let total = 100;//总分
-				let single = 100 / num //总分÷题目数量=平均每题的分数
+				let single = 100 / num;//总分÷题目数量=平均每题的分数
 				for (let i = 0; i < this.answer.length; i++) {
 					total = total - single
 				}
-				this.score = total
+				this.integral=num-this.answer.length;
+				this.score = total;
 			}
 		},
 		onLoad(option) {
