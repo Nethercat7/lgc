@@ -57,13 +57,6 @@
 			}
 
 		}, {
-			"path": "pages/user/changePwd/changePwd",
-			"style": {
-				"navigationBarTitleText": "柳州市垃圾分类",
-				"enablePullDownRefresh": false
-			}
-
-		}, {
 			"path": "pages/user/topRate/topRate",
 			"style": {
 				"navigationBarTitleText": "柳州市垃圾分类",
@@ -82,7 +75,7 @@
             "path" : "pages/user/login/login",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "",
+                "navigationBarTitleText": "柳州市垃圾分类",
                 "enablePullDownRefresh": false
             }
             
@@ -91,7 +84,7 @@
             "path" : "pages/user/register/register",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "",
+                "navigationBarTitleText": "柳州市垃圾分类",
                 "enablePullDownRefresh": false
             }
             
@@ -110,16 +103,24 @@
 		"backgroundColor": "#ffffff",
 		"list": [{
 				"pagePath": "pages/index/index",
+				"iconPath":"static/icon/baseline_home_black_18dp.png",
+				"selectedIconPath":"static/icon/baseline_home_black_18dp.png",
 				"text": "首页"
 			}, {
 				"pagePath": "pages/search/search",
+				"iconPath":"static/icon/baseline_search_black_18dp.png",
+				"selectedIconPath":"static/icon/baseline_search_black_18dp.png",
 				"text": "搜索"
 			}, {
 				"pagePath": "pages/exam/exam",
-				"text": "测试"
+				"iconPath":"static/icon/baseline_assessment_black_18dp.png",
+				"selectedIconPath":"static/icon/baseline_assessment_black_18dp.png",
+				"text": "测验"
 			},
 			{
 				"pagePath": "pages/user/user",
+				"iconPath":"static/icon/baseline_perm_identity_black_18dp.png",
+				"selectedIconPath":"static/icon/baseline_perm_identity_black_18dp.png",
 				"text": "个人中心"
 			}
 		]

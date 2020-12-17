@@ -20,9 +20,19 @@ public class FileController {
     SnowflakeIdGeneratorUntil snowflakeIdGeneratorUntil =new SnowflakeIdGeneratorUntil(0,4);
 
     @PostMapping("uploadTitlePic")
-    public ResultBody uploadFile(MultipartFile file) {
-        String filename = "title_"+snowflakeIdGeneratorUntil.getId();
+    public ResultBody uploadTitlePic(MultipartFile file) {
+        String filename = snowflakeIdGeneratorUntil.getId();
         String filepath = "D:/Projects/lgc/core/src/main/resources/static/pic/title/";
+        return getResultBody(file, filename, filepath);
+    }
+
+    @PostMapping("uploadAvatar")
+    public ResultBody uploadAvatar(MultipartFile file,String id) {
+        String filepath = "D:/Projects/lgc/core/src/main/resources/static/pic/avatar/";
+        return getResultBody(file, id, filepath);
+    }
+
+    private ResultBody getResultBody(MultipartFile file, String filename, String filepath) {
         File dest = new File(filepath + filename);
         try {
             file.transferTo(dest);

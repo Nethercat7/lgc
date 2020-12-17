@@ -12,16 +12,16 @@
 		</u-row>
 		<u-row gutter="16">
 			<u-col span="3">
-				<u-button :custom-style="green" size="default" @click="navigateTo('/pages/index/catalogList/catalogList?type=厨余垃圾')">厨余垃圾</u-button>
+				<u-button :custom-style="green" size="default" @click="$jump.navigate('/pages/index/catalogList/catalogList?type=厨余垃圾')">厨余垃圾</u-button>
 			</u-col>
 			<u-col span="3">
-				<u-button :custom-style="blue" size="default" @click="navigateTo('/pages/index/catalogList/catalogList?type=可回收垃圾')">可回收垃圾</u-button>
+				<u-button :custom-style="blue" size="default" @click="$jump.navigate('/pages/index/catalogList/catalogList?type=可回收垃圾')">可回收垃圾</u-button>
 			</u-col>
 			<u-col span="3">
-				<u-button :custom-style="red" size="default" @click="navigateTo('/pages/index/catalogList/catalogList?type=有害垃圾')">有害垃圾</u-button>
+				<u-button :custom-style="red" size="default" @click="$jump.navigate('/pages/index/catalogList/catalogList?type=有害垃圾')">有害垃圾</u-button>
 			</u-col>
 			<u-col span="3">
-				<u-button :custom-style="gray" size="default" @click="navigateTo('/pages/index/catalogList/catalogList?type=其他垃圾')">其他垃圾</u-button>
+				<u-button :custom-style="gray" size="default" @click="$jump.navigate('/pages/index/catalogList/catalogList?type=其他垃圾')">其他垃圾</u-button>
 			</u-col>
 		</u-row>
 		<!-- 分类检索 End -->
@@ -84,11 +84,6 @@
 			}
 		},
 		methods: {
-			navigateTo(url) {
-				uni.navigateTo({
-					url: url
-				})
-			},
 			getAnnouncement() {
 				this.$u.api.getPosts({
 					id: '459039470344601600'
@@ -104,10 +99,10 @@
 				})
 			},
 			goAnnouncement(index) {
-				this.navigateTo('/pages/posts/posts?obj=' + encodeURIComponent(JSON.stringify(this.announcementList[index])));
+				this.$jump.navigate('/pages/posts/posts?obj=' + encodeURIComponent(JSON.stringify(this.announcementList[index])));
 			},
 			goKnowledgePopularization(index) {
-				this.navigateTo('/pages/posts/posts?obj=' + encodeURIComponent(JSON.stringify(this.knowledgePopularization[index])));
+				this.$jump.navigate('/pages/posts/posts?obj=' + encodeURIComponent(JSON.stringify(this.knowledgePopularization[index])));
 			}
 		},
 		onLoad() {

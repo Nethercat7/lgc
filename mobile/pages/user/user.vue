@@ -20,9 +20,8 @@
 			<u-row gutter="16">
 				<u-col span="12">
 					<u-cell-group>
-						<u-cell-item icon="list" title="排行榜" @click="toRate"></u-cell-item>
-						<u-cell-item icon="file-text-fill" title="个人资料" @click="goto('/pages/user/userInfo/userInfo')"></u-cell-item>
-						<u-cell-item icon="lock-fill" title="修改密码" @click="goto('/pages/user/changePwd/changePwd')"></u-cell-item>
+						<u-cell-item icon="list" title="排行榜" @click="$jump.navigate('/pages/user/topRate/topRate?id='+user.userId)"></u-cell-item>
+						<u-cell-item icon="file-text-fill" title="个人资料" @click="$jump.navigate('/pages/user/userInfo/userInfo')"></u-cell-item>
 						<u-cell-item icon="setting-fill" title="系统设置"></u-cell-item>
 						<u-cell-item icon="integral-fill" title="退出登入" @click="exit"></u-cell-item>
 					</u-cell-group>
@@ -33,14 +32,14 @@
 			<!-- 微信登录 -->
 			<u-row gutter="16">
 				<u-col span="12">
-					<u-button open-type="getUserInfo">微信登录</u-button>
+					<u-button open-type="getUserInfo" @click="getInfo">微信登录</u-button>
 				</u-col>
 			</u-row>
-			
+
 			<!-- 用户名登录 -->
 			<u-row gutter="16">
 				<u-col span="12">
-					<u-button @click="goto('/pages/user/login/login')">用户名登录</u-button>
+					<u-button @click="$jump.navigate('/pages/user/login/login')">用户名登录</u-button>
 				</u-col>
 			</u-row>
 		</view>
@@ -55,20 +54,9 @@
 			return {
 				user: {},
 				isLogin: false,
-			};
+			}
 		},
 		methods: {
-			goto(url, type) {
-				if (type == 'redirect') {
-					uni.redirectTo({
-						url: url
-					})
-				} else {
-					uni.navigateTo({
-						url: url
-					})
-				}
-			},
 			exit() {
 				storage.remove('token');
 				this.isLogin = false;
@@ -80,12 +68,17 @@
 					this.user = resp.data.obj;
 				})
 			},
-			toRate(){
-				this.goto('/pages/user/topRate/topRate?id='+this.user.userId);
+			getInfo() {
+				uni.login({
+					success(resp) {
+						uni.getUserInfo({
+							success(resp) {
+								console.log(resp);
+							}
+						})
+					}
+				})
 			}
-		},
-		onLoad(option){
-			this.isLogin=option.isLogin;
 		},
 		onShow() {
 			//从导航栏切换过来时刷新用户数据

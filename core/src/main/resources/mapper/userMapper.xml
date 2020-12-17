@@ -62,7 +62,7 @@
     </select>
 
     <update id="upd" parameterType="User">
-        UPDATE user SET user_gender=#{userGender},user_phone=#{userPhone},user_email=#{userEmail}
+        UPDATE user SET user_gender=#{userGender},user_phone=#{userPhone},user_email=#{userEmail},user_avatar=#{userAvatar}
         WHERE user_name=#{userName}
     </update>
 
