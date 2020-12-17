@@ -4,7 +4,7 @@ import storage from '@/common/storage.js';
 const install = (Vue, vm) => {
 	//配置参数
 	Vue.prototype.$u.http.setConfig({
-		baseUrl: 'http://127.0.0.1:8080',
+		baseUrl: 'http://192.168.1.106:8080',
 		loadingText: '正在加载...',
 		loadingTime: 800,
 		originalData: true,

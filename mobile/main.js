@@ -3,12 +3,15 @@ import App from './App';
 import uView from "uview-ui";
 import httpInterceptor from "@/common/http.interceptor.js";
 import httpApi from '@/common/http.api.js';
+import jump from '@/common/jump.js';
 
 Vue.use(uView);
 
 Vue.config.productionTip = false;
 
 App.mpType = 'app';
+
+Vue.prototype.$jump=jump;
 
 const app = new Vue({
 	...App

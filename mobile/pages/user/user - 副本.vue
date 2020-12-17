@@ -1,5 +1,6 @@
 <template>
 	<view class="wrap">
+		<u-toast ref="toast" />
 		<view v-if="isLogin">
 			<u-row gutter="16">
 				<u-col span="12">
@@ -30,19 +31,21 @@
 			</u-row>
 		</view>
 		<view v-if="!isLogin">
-			<!-- 微信登录 -->
 			<u-row gutter="16">
 				<u-col span="12">
-					<u-button open-type="getUserInfo">微信登录</u-button>
+					<u-form label-position="top">
+						<u-form-item label="用户名">
+							<u-input v-model="name" />
+						</u-form-item>
+						<u-form-item label="密码">
+							<u-input v-model="pwd" type="password" />
+						</u-form-item>
+					</u-form>
 				</u-col>
 			</u-row>
-			
-			<!-- 用户名登录 -->
-			<u-row gutter="16">
-				<u-col span="12">
-					<u-button @click="goto('/pages/user/login/login')">用户名登录</u-button>
-				</u-col>
-			</u-row>
+			<u-col span="12">
+				<u-button type="primary" @click="login">登入</u-button>
+			</u-col>
 		</view>
 	</view>
 </template>
@@ -55,6 +58,8 @@
 			return {
 				user: {},
 				isLogin: false,
+				name: '',
+				pwd: ''
 			};
 		},
 		methods: {
@@ -68,6 +73,20 @@
 						url: url
 					})
 				}
+			},
+			login() {
+				this.$u.post('/user/login?name=' + this.name + '&pwd=' + this.pwd).then(resp => {
+					if (resp.data.code === 1) {
+						storage.set('token', resp.data.obj);
+						this.getUser();
+						this.isLogin = true;
+					}
+					this.$refs.toast.show({
+						title: resp.data.msg,
+						type: resp.data.type,
+						position: 'top'
+					})
+				})
 			},
 			exit() {
 				storage.remove('token');
@@ -83,9 +102,6 @@
 			toRate(){
 				this.goto('/pages/user/topRate/topRate?id='+this.user.userId);
 			}
-		},
-		onLoad(option){
-			this.isLogin=option.isLogin;
 		},
 		onShow() {
 			//从导航栏切换过来时刷新用户数据

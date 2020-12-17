@@ -37,8 +37,8 @@
 		</u-row>
 		<u-row gutter="16">
 			<u-col span="12">
-				<u-button :custom-style="style" @click="redirectTo('/pages/exam/randomExam/randomExam')">再答一次</u-button>
-				<u-button @click="redirectTo('/pages/index/index')">返回首页</u-button>
+				<u-button :custom-style="style" @click="$jump.redirectTo('/pages/exam/randomExam/randomExam')">再答一次</u-button>
+				<u-button @click="$jump.switchTab('/pages/index/index')">返回首页</u-button>
 			</u-col>
 		</u-row>
 	</view>
@@ -60,12 +60,6 @@
 			}
 		},
 		methods: {
-			redirectTo(url) {
-				storage.remove('isLoad');
-				uni.redirectTo({
-					url: url
-				})
-			},
 			calculateScore(num) {
 				let total = 100; //总分
 				let single = 100 / num; //总分÷题目数量=平均每题的分数

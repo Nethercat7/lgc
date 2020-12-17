@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
         int status = userDao.add(user);
         if (status == 1) {
             //添加用户的角色
-            if (user.getRoleIds().size() > 0) {
+            if (user.getRoleIds()!=null&&user.getRoleIds().size() > 0) {
                 for (String id : user.getRoleIds()) {
                     status = addUserRoleRelation(user.getUserId(), id);
                     if (status == 0) {

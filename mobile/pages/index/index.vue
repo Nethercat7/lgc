@@ -2,7 +2,6 @@
 	<view class="wrap">
 		<!-- 轮播图 -->
 		<u-swiper :list="announcementList" :title="true" @click='goAnnouncement'></u-swiper>
-		
 		<!-- 分类检索 Start -->
 		<u-row gutter="16">
 			<u-col span="12">
@@ -26,7 +25,7 @@
 			</u-col>
 		</u-row>
 		<!-- 分类检索 End -->
-		
+
 		<!-- 知识科普 Start -->
 		<u-row gutter="16">
 			<u-col span="12">
@@ -87,7 +86,7 @@
 		methods: {
 			navigateTo(url) {
 				uni.navigateTo({
-					url:url
+					url: url
 				})
 			},
 			getAnnouncement() {

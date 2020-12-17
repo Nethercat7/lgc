@@ -23,6 +23,10 @@ const install = (Vue, vm) => {
 	
 	//获取指定用户排名
 	let getUserRate = (params = {}) => vm.$u.get('/userMgt/getUserRate', params);
+	
+	//用户注册
+	let userRegister = (params = {}) => vm.$u.post('/userMgt/add', params);
+	
 
 	vm.$u.api = {
 		getPosts,
@@ -32,7 +36,8 @@ const install = (Vue, vm) => {
 		getUser,
 		updUser,
 		getUsers,
-		getUserRate
+		getUserRate,
+		userRegister
 	};
 }
 
