@@ -129,23 +129,6 @@
 		border-radius: 12rpx;
 	}
 
-	.result-data {
-		width: 90%;
-		margin: auto;
-		border-radius: 30rpx;
-		background-color: #FFFFFF;
-		position: relative;
-		bottom: 30rpx;
-	}
-
-	.result {
-		padding: 30rpx;
-	}
-
-	.result u-tag {
-		float: right;
-	}
-
 	.result-btn {
 		width: 90%;
 		margin: auto;

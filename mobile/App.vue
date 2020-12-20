@@ -14,9 +14,10 @@
 
 <style lang="scss">
 	@import "uview-ui/index.scss";
-	
-	page{
-		background-color: $u-bg-color;;
+
+	page {
+		background-color: $u-bg-color;
+		;
 	}
 
 	.wrap {
@@ -56,21 +57,21 @@
 	button[type='recyclable'] {
 		background-color: #2979ff;
 	}
-	
-	button[type='kitchen']:active{
-		background-color: rgba($color:#19be6b,$alpha:0.5);
+
+	button[type='kitchen']:active {
+		background-color: rgba($color:#19be6b, $alpha:0.5);
 	}
-	
-	button[type='hazardous']:active{
-		background-color: rgba($color:#fa3534,$alpha:0.5);
+
+	button[type='hazardous']:active {
+		background-color: rgba($color:#fa3534, $alpha:0.5);
 	}
-	
-	button[type='other']:active{
-		background-color: rgba($color:#909399,$alpha:0.5);
+
+	button[type='other']:active {
+		background-color: rgba($color:#909399, $alpha:0.5);
 	}
-	
-	button[type='recyclable']:active{
-		background-color: rgba($color:#2979ff,$alpha:0.5);
+
+	button[type='recyclable']:active {
+		background-color: rgba($color:#2979ff, $alpha:0.5);
 	}
 
 	.float-left {
@@ -81,5 +82,22 @@
 	.float-right {
 		float: right;
 		padding-right: 30rpx;
+	}
+
+	.result-data {
+		width: 90%;
+		margin: auto;
+		border-radius: 30rpx;
+		background-color: #FFFFFF;
+		position: relative;
+		bottom: 30rpx;
+	}
+
+	.result {
+		padding: 30rpx;
+	}
+
+	.result u-tag {
+		float: right;
 	}
 </style>
