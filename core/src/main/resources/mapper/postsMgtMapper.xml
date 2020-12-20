@@ -21,6 +21,7 @@
                 WHERE pc.pc_id=#{id}
             </when>
         </choose>
+        ORDER BY p.posts_add_time DESC
     </select>
 
     <update id="updPosts" parameterType="Posts">

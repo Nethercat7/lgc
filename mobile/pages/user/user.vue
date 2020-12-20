@@ -36,33 +36,29 @@
 				</u-col>
 			</u-row>
 
-			<!-- <u-row>
-				<u-col span="6">
-					<u-cell-group>
-						<u-cell-item icon="list" title="问答挑战" @click="$jump.navigate('/pages/exam/randomExam/randomExam')"></u-cell-item>
-						<u-cell-item icon="list" title="排行榜" @click="$jump.navigate('/pages/user/topRate/topRate?id='+user.userId)"></u-cell-item>
-						<u-cell-item icon="file-text-fill" title="个人资料" @click="$jump.navigate('/pages/user/userInfo/userInfo')"></u-cell-item>
-						<u-cell-item icon="setting-fill" title="系统设置"></u-cell-item>
-						<u-cell-item icon="integral-fill" title="退出登入" @click="exit"></u-cell-item>
-					</u-cell-group>
-				</u-col>
-			</u-row> -->
-
 		</view>
-		<view v-if="!isLogin">
-			<!-- 微信登录 -->
-			<u-row gutter="16">
-				<u-col span="12">
-					<u-button open-type="getUserInfo" @click="getInfo">微信登录</u-button>
-				</u-col>
-			</u-row>
-
-			<!-- 用户名登录 -->
-			<u-row gutter="16">
-				<u-col span="12">
-					<u-button @click="$jump.navigate('/pages/user/login/login')">用户名登录</u-button>
-				</u-col>
-			</u-row>
+		<view v-if="!isLogin" class="login">
+			<view class="login-form">
+				<view class="logo">
+					<u-image style="display: inline-block;" width="200" height="200" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1608492122005&di=d9797f03974a2acd2e684e16e2424e1b&imgtype=0&src=http%3A%2F%2Fa2.att.hudong.com%2F86%2F10%2F01300000184180121920108394217.jpg"
+					 shape="circle"></u-image>
+				</view>
+				<view>
+					<u-form class="form">
+						<u-form-item left-icon="info-circle" :left-icon-style="white" :border-bottom="false">
+							<u-input v-model="name" placeholder="请输入用户名" placeholder-style="color:white" />
+						</u-form-item>
+						<u-form-item left-icon="lock-open" :left-icon-style="white" :border-bottom="false">
+							<u-input v-model="pwd" type="password" placeholder="请输入密码" placeholder-style="color:white" />
+						</u-form-item>
+					</u-form>
+				</view>
+				<view class="login-btn" style="padding-top: 3em;">
+					<button @click="login">登录</button>
+					<button @click="$jump.navigate('/pages/user/register/register')">注册</button>
+				</view>
+			</view>
+			<u-toast ref="toast" />
 		</view>
 	</view>
 </template>
@@ -75,6 +71,11 @@
 			return {
 				user: {},
 				isLogin: false,
+				name: '',
+				pwd: '',
+				white: {
+					"color": "white"
+				}
 			}
 		},
 		methods: {
@@ -89,15 +90,18 @@
 					this.user = resp.data.obj;
 				})
 			},
-			getInfo() {
-				uni.login({
-					success(resp) {
-						uni.getUserInfo({
-							success(resp) {
-								console.log(resp);
-							}
-						})
+			login() {
+				this.$u.post('/user/login?name=' + this.name + '&pwd=' + this.pwd).then(resp => {
+					if (resp.data.code === 1) {
+						storage.set('token', resp.data.obj);
+						this.isLogin = true;
+						this.getUser();
 					}
+					this.$refs.toast.show({
+						title: resp.data.msg,
+						type: resp.data.type,
+						position: 'top'
+					})
 				})
 			}
 		},
@@ -156,5 +160,37 @@
 
 	.opt-card:active {
 		background-color: rgba($color: #f9f9f9, $alpha: 0.5);
+	}
+
+	.login-btn button {
+		margin-bottom: 1em;
+		border-radius: 15rpx;
+		color: $u-type-success;
+	}
+
+	.login {
+		background-color: $u-type-success;
+		min-height: 100vh;
+		color: #FFFFFF;
+	}
+
+	.login-form {
+		width: 70%;
+		margin: auto;
+	}
+
+	.logo {
+		padding-top: 70rpx;
+		text-align: center;
+	}
+
+	.form u-form-item {
+		display: block;
+		border-bottom: 1px solid white;
+	}
+
+	.u-icon text,
+	input {
+		color: white !important;
 	}
 </style>
