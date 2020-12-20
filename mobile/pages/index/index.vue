@@ -22,11 +22,11 @@
 			<view class="border-left">
 				<span class="u-padding-10">知识科普</span>
 			</view>
-			<view class="shadow" style="margin-bottom: 0.9375em;" v-for="(item,index) in knowledgePopularization" @click="goKnowledgePopularization(index)">
+			<view style="margin-bottom: 0.9375em;" v-for="(item,index) in knowledgePopularization" @click="goKnowledgePopularization(index)">
 				<view>
 					<u-image width="100%" height="7em" :src="item.image"></u-image>
 				</view>
-				<view class="post-title u-line-1 u-font-lg u-padding-10">
+				<view class="u-line-1 u-font-lg u-padding-10" style="background-color: #FFFFFF;">
 					{{item.title}}
 				</view>
 			</view>
@@ -98,7 +98,12 @@
 		color: #FFFFFF;
 		margin-bottom: 30rpx;
 	}
-
+	
+	/deep/ .u-image image {
+		border-top-left-radius: 15rpx !important;
+		border-top-right-radius: 15rpx !important;
+	}
+	
 	/deep/ .u-swiper-wrap {
 		box-shadow: 0 0 8px 0 rgba($color: #000000, $alpha: 0.7);
 	}
