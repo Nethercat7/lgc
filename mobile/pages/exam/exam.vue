@@ -1,10 +1,6 @@
 <template>
 	<view class="wrap">
-		<u-row gutter="16">
-			<u-col span="12">
-				<u-button :custom-style="optionCard" type="primary" @click="navigateTo('/pages/exam/randomExam/randomExam')">开始随机小测试</u-button>
-			</u-col>
-		</u-row>
+		<button class="shadow opt-btn" type="primary" @click="navigateTo('/pages/exam/randomExam/randomExam')">开始随机小测验</button>
 	</view>
 </template>
 
@@ -28,5 +24,8 @@
 </script>
 
 <style lang="scss">
-
+	.opt-btn{
+		height:5em;
+		line-height: 5em;
+	}
 </style>

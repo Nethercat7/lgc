@@ -9,6 +9,7 @@ import com.lightning.lgc.core.util.SnowflakeIdGeneratorUntil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -17,6 +18,7 @@ public class PostsMgtServiceImpl implements PostsMgtService {
     private PostsMgtDao postsMgtDao;
 
     SnowflakeIdGeneratorUntil snowflakeIdGeneratorUntil = new SnowflakeIdGeneratorUntil(0, 3);
+    DateTimeFormatter dtf=DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     @Override
     public int addPosts(Posts posts) {
@@ -33,7 +35,7 @@ public class PostsMgtServiceImpl implements PostsMgtService {
     }
 
     @Override
-    public List<Posts> getPosts(String id) {
+    public List<Posts> getPosts(String id){
         return postsMgtDao.getPosts(id);
     }
 

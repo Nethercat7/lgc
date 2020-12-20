@@ -14,4 +14,5 @@ import java.io.Serializable;
 public class GarbageCategory implements Serializable {
     private String gcId;
     private String gcName;
+    private String gcType;
 }

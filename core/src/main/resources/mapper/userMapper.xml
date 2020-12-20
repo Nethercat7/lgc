@@ -118,7 +118,7 @@
     </update>
 
     <select id="getUserRate" resultType="Map" parameterType="String">
-        SELECT b.user_id AS id,b.user_name AS name,b.rate,b.user_integral AS integral FROM
+        SELECT b.user_id AS id,b.user_name AS name,b.rate,b.user_integral AS integral,b.user_avatar AS avatar FROM
         (SELECT t.*, @rownum := @rownum + 1 AS rate FROM
         (SELECT @rownum := 0) r,
         (SELECT * FROM user ORDER BY user_integral DESC) AS t) AS b

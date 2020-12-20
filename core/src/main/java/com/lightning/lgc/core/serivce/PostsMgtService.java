@@ -3,6 +3,7 @@ package com.lightning.lgc.core.serivce;
 import com.lightning.lgc.core.entity.Posts;
 import com.lightning.lgc.core.entity.PostsCategory;
 
+import java.text.ParseException;
 import java.util.List;
 
 public interface PostsMgtService {
@@ -10,7 +11,7 @@ public interface PostsMgtService {
     int addPosts(Posts posts);
 
     //获取文章
-    List<Posts> getPosts(String id);
+    List<Posts> getPosts(String id) throws ParseException;
 
     //修改文章
     int updPosts(Posts posts);

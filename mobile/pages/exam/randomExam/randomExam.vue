@@ -1,17 +1,27 @@
 <template>
-	<view class="wrap">
-		<u-row gutter="16">
-			<u-col span="12">
-				<view class="u-text-center question">
-					{{data[total].garbageName}}属于什么垃圾？
-				</view>
-			</u-col>
-		</u-row>
-		<u-row gutter="16" class="answer-btn" v-for='item in categories'>
-			<u-col span="12">
-				<u-button type="primary" size="default" @click="getNext(item.gcName)">{{item.gcName}}</u-button>
-			</u-col>
-		</u-row>
+	<view>
+		<!-- 封面图片 -->
+		<view class="exam-header"></view>
+		<!-- 内容 -->
+		<view style="padding:50rpx" class="exam-content">
+			<view class="exam-question">
+				<u-tag :text="count<5?count+1+'/'+5:count+'/'+5" shape="circle" type="info" style="height:30rpx" />
+				<span style="padding-left: 15rpx;">
+					<span style="font-size: 40rpx;">{{data[count].garbageName}}</span>
+					<span>属于什么垃圾？</span>
+				</span>
+			</view>
+
+			<view>
+				<u-row>
+					<u-col span="6" v-for="item in categories" :key="item.gcId">
+						<button class="exam-answer" :type="item.gcType" @click="getNext(item.gcName)">{{item.gcName}}</button>
+					</u-col>
+				</u-row>
+			</view>
+
+			<u-modal v-model="showModal" title="答错啦" :content="modalContent" @confirm="submit"></u-modal>
+		</view>
 	</view>
 </template>
 
@@ -19,64 +29,56 @@
 	export default {
 		data() {
 			return {
-				data: [
-					{garbageName:'temp'}
-				],
+				data: [{
+					garbageName: 'temp'
+				}],
 				count: 0,
 				total: 0,
 				wrong: [],
-				categories:[],
-				//button按钮样式
-				green: {
-					color: '#fff',
-					backgroundColor: 'rgb(41, 152, 86) !important'
-				},
-				blue: {
-					color: '#fff',
-					backgroundColor: 'rgb(71, 154, 214) !important'
-				},
-				red: {
-					color: '#fff',
-					backgroundColor: 'rgb(220, 108, 125) !important'
-				},
-				gray: {
-					color: '#fff',
-					backgroundColor: 'rgb(145, 152, 158) !important'
-				}
+				categories: [],
+				showModal: false,
+				modalContent: 'Content'
 			};
 		},
 		methods: {
 			getNext(value) {
-				if(this.count<this.data.length){
-					if(value!=this.data[this.count].gcName){
-						this.data[this.count].errAnswer=value
-						this.wrong.push(this.data[this.count])
+				if (this.count < this.data.length) {
+					//答错时的操作
+					if (value != this.data[this.count].gcName) {
+						this.data[this.count].errAnswer = value;
+						this.wrong.push(this.data[this.count]);
+						this.showModal = true;
+						this.modalContent=this.data[this.count].garbageName+' 属于 '+this.data[this.count].gcName
 					}
 					this.count++;
-					if(this.total<this.data.length-1){
+					
+					//题目全部答完时的操作
+					if (this.total < this.data.length - 1) {
 						this.total++;
-					}else{
-						this.goto('/pages/exam/submitResult/submitResult?answer='+encodeURIComponent(JSON.stringify(this.wrong)))
+					} else {
+						if(!this.showModal){
+							this.$jump.redirect('/pages/exam/submitResult/submitResult?answer=' + encodeURIComponent(JSON.stringify(this.wrong))+'&garbages='+encodeURIComponent(JSON.stringify(this.data)));
+						}
 					}
 				}
 			},
-			goto(url) {
-				uni.redirectTo({
-					url: url
-				})
-			},
-			getGarbages(){
+			getGarbages() {
 				this.$u.api.getGarbages({
-					num:5
-				}).then(resp=>{
-					this.data=resp.data.obj;
+					num: 5
+				}).then(resp => {
+					this.data = resp.data.obj;
 				})
 			},
-			getCategories(){
-				this.$u.api.getGarbageCategories().then(resp=>{
-					this.categories=resp.data.obj
+			getCategories() {
+				this.$u.api.getGarbageCategories().then(resp => {
+					this.categories = resp.data.obj
 				})
-			}		
+			},
+			submit(){
+				if(this.count==5){
+					this.$jump.redirect('/pages/exam/submitResult/submitResult?answer=' + encodeURIComponent(JSON.stringify(this.wrong))+'&garbages='+encodeURIComponent(JSON.stringify(this.data)));
+				}
+			}
 		},
 		onLoad() {
 			this.getGarbages();
@@ -86,16 +88,16 @@
 </script>
 
 <style lang="scss">
-	.question {
+	.exam-header {
 		width: 100%;
-		height: 10em;
-		background-color: $uni-color-success;
-		line-height: 10em;
-		color: #FFFFFF;
-		font-size: 35rpx;
+		height: 300rpx;
+		background-color: #19be6b;
 	}
 
-	.answer-btn .u-col {
-		padding: 10rpx !important;
+	.exam-answer {
+		height: 300rpx;
+		margin-bottom: 15rpx;
+		line-height: 300rpx;
+		color: #FFFFFF;
 	}
 </style>

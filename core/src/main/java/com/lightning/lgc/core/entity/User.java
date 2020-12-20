@@ -19,7 +19,7 @@ public class User implements Serializable {
     private String userId;
     private String userName;
     private String userPwd;
-    private String userGender;
+    private int userGender;
     private LocalDateTime userBirthday;
     private String userPhone;
     private String userEmail;

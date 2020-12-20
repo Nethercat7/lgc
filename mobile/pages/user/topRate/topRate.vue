@@ -1,43 +1,71 @@
 <template>
 	<view class="wrap">
-		<u-row gutter="16">
-			<u-col span="12">
-				<view class="border-left">
-					<span class="u-padding-10">积分排行榜</span>
-				</view>
-			</u-col>
-		</u-row>
-		<u-row gutter="16">
-			<u-col span="12">
-				<u-table>
-					<u-tr class="u-tr" v-for="(item,index) in users" :key="item.index">
-						<u-td class="u-td">
-							{{index+1}}
-						</u-td>
-						<u-td class="u-td">
-							{{item.userName}}
-						</u-td>
-						<u-td class="u-td">
-							{{item.userIntegral}}
-						</u-td>
-					</u-tr>
+		<!-- 积分排行前十 -->
+		<view>
+			<u-row>
+				<u-col span="12">
 					<view class="border-left">
-						<span class="u-padding-10">宁的排名</span>
+						<span class="u-padding-10">积分排行榜前10</span>
 					</view>
-					<u-tr class="u-tr">
-						<u-td class="u-td">
-							{{user.rate}}
-						</u-td>
-						<u-td class="u-td">
-							{{user.name}}
-						</u-td>
-						<u-td class="u-td">
-							{{user.integral}}
-						</u-td>
-					</u-tr>
-				</u-table>
-			</u-col>
-		</u-row>
+				</u-col>
+			</u-row>
+			<u-row class="u-border-bottom user" v-for="item,index in users" :key="item.userId">
+				<u-col span="2">
+					<view class="rate index" style="padding-left:15rpx;">
+						{{index+1}}
+					</view>
+				</u-col>
+				<u-col span="3">
+					<view class="avatar">
+						<u-avatar :src="item.userAvatar" size="70"></u-avatar>
+					</view>
+				</u-col>
+				<u-col span="4">
+					<view class="rate">
+						{{item.userName}}
+					</view>
+				</u-col>
+				<u-col span="3">
+					<view class="rate">
+						<u-icon name="integral"></u-icon>
+						<span style="padding-left: 10rpx;">{{item.userIntegral}}</span>
+					</view>
+				</u-col>
+			</u-row>
+			<!-- 用户积分排名 -->
+			<u-row>
+				<u-col span="12">
+					<view class="border-left">
+						<span class="u-padding-10">您的排名</span>
+					</view>
+				</u-col>
+				<u-col span="12">
+					<u-row class="user" >
+						<u-col span="2">
+							<view class="rate index" style="padding-left:15rpx;">
+								{{user.rate}}
+							</view>
+						</u-col>
+						<u-col span="3">
+							<view class="avatar">
+								<u-avatar :src="user.avatar" size="70"></u-avatar>
+							</view>
+						</u-col>
+						<u-col span="4">
+							<view class="rate">
+								{{user.name}}
+							</view>
+						</u-col>
+						<u-col span="3">
+							<view class="rate">
+								<u-icon name="integral"></u-icon>
+								<span style="padding-left: 10rpx;">{{user.integral}}</span>
+							</view>
+						</u-col>
+					</u-row>
+				</u-col>
+			</u-row>
+		</view>
 	</view>
 </template>
 
@@ -57,11 +85,11 @@
 					this.users = resp.data.obj;
 				})
 			},
-			getUserRate(id){
+			getUserRate(id) {
 				this.$u.api.getUserRate({
-					id:id
-				}).then(resp=>{
-					this.user=resp.data.obj;
+					id: id
+				}).then(resp => {
+					this.user = resp.data.obj;
 				})
 			}
 		},
@@ -72,9 +100,27 @@
 	}
 </script>
 
-<style lang="scss">
-	.u-table,
-	.u-td {
-		border: 0 !important
+<style scoped lang="scss">
+	.user {
+		display: block;
+		height: 100rpx;
+	}
+
+	.rate {
+		line-height: 100rpx;
+	}
+
+	.avatar {
+		position: relative;
+		top: 15rpx;
+	}
+
+	.index {
+		font-size: 30rpx;
+		font-weight: 600;
+	}
+	
+	.border-left{
+		margin-bottom: 0;
 	}
 </style>

@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.util.List;
 
 @Slf4j
@@ -30,7 +31,7 @@ public class PostsMgtController {
     }
 
     @GetMapping("getPosts")
-    public ResultBody getPosts(String id) {
+    public ResultBody getPosts(String id) throws ParseException {
         List<Posts> postsList = postsMgtService.getPosts(id);
         log.info("找到:"+postsList.size()+"条文章");
         return new ResultBody(Constant.SUCCESS, postsList, Constant.GET_SUCCESS);

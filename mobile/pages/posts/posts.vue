@@ -1,38 +1,92 @@
 <template>
 	<view class="wrap">
-		<u-row gutter="16">
-			<u-col span="12">
-				<h1>{{posts.title}}</h1>
-				<hr />
-			</u-col>
-		</u-row>
-
-		<u-row gutter="16">
-			<u-col span="12" class='posts'>
-				<view v-html="posts.postsContent"></view>
-			</u-col>
-		</u-row>
+		<view>
+			<view class="posts-title">{{posts.title}}</view>
+			<view class="posts-info">
+				<span>
+					<u-icon name="calendar"></u-icon>{{posts.postsAddTime}}
+				</span>
+				<span>
+					<u-icon name="account-fill"></u-icon>Nethercat7
+				</span>
+			</view>
+		</view>
+		<view class="posts-content">
+			<rich-text :nodes="posts.postsContent"></rich-text>
+		</view>
+		<view class="posts-tags">
+			<u-row>
+				<u-col span="1">
+					<u-icon name="tags"></u-icon>
+				</u-col>
+				<u-col span="11">
+					<span v-for="item in tags">
+						<u-tag :text="item" shape="circleLeft"></u-tag>
+					</span>
+				</u-col>
+			</u-row>
+		</view>
 	</view>
 </template>
 
 <script>
 	export default {
+
 		data() {
 			return {
-				posts: '',
-			};
+				posts: {},
+				tags: ["标签1", "标签2", "标签3"]
+			}
 		},
 		methods: {
-			
+
 		},
 		onLoad(option) {
-			this.posts=JSON.parse(decodeURIComponent(option.obj));
+			this.posts = JSON.parse(decodeURIComponent(option.obj));
+			this.posts.postsContent = this.posts.postsContent.replace(/<img/g, '<img style="max-width:100%" ')
+				.replace(/<h1/g,
+					'<h1 style="border-left: 0.27em solid #4CD964;padding-left: 1em;font-size: 1.7em;background-color: rgba(243, 243, 243, 0.7);font-weight: 400;"'
+				);
+			console.log(this.posts);
 		}
 	}
 </script>
 
-<style scoped>
-	.posts>>>img {
-		width: 100%;
+<style scoped lang="scss">
+	.posts-title {
+		text-align: center;
+		font-size: 50rpx;
+	}
+
+	.posts-info,
+	.posts-tags {
+		color: #777;
+		margin-top: 30rpx;
+		text-align: center;
+	}
+
+	.posts-info>span {
+		padding: 30rpx;
+	}
+
+	.posts-content {
+		margin-top: 70rpx;
+	}
+
+
+
+	.posts-tags u-icon {
+		height: 50rpx;
+		line-height: 50px;
+	}
+
+	.posts-tags span {
+		display: inline-block;
+		margin-right: 15rpx;
+		margin-bottom: 15rpx;
+	}
+
+	.posts-tags /deep/ .u-tag {
+		height: 50rpx;
 	}
 </style>

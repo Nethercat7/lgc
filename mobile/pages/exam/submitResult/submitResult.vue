@@ -1,46 +1,36 @@
 <template>
-	<view class="wrap">
+	<view>
 		<u-toast ref="uToast" />
-		<u-row gutter="16">
-			<u-col span="12">
-				<view class="u-text-center question">
-					<view>
-						宁的分数
-					</view>
-					<view>
-						{{score}}
-					</view>
-					<view>
-						获得{{integral}}点积分
-					</view>
-				</view>
-			</u-col>
-		</u-row>
-		<u-row gutter="16" v-if="answer.length >0">
-			<u-col span="12">
-				<view class="border-left">
-					<span class="u-padding-10">错题</span>
-				</view>
-			</u-col>
-		</u-row>
-		<u-row gutter="16">
-			<u-col span="12">
-				<view class="wrong-answer" v-for="item in answer">
-					<view>
-						{{item.garbageName}}属于：{{item.gcName}}
-					</view>
-					<view>
-						宁的答案为：{{item.errAnswer}}
-					</view>
-				</view>
-			</u-col>
-		</u-row>
-		<u-row gutter="16">
-			<u-col span="12">
-				<u-button :custom-style="style" @click="$jump.redirectTo('/pages/exam/randomExam/randomExam')">再答一次</u-button>
-				<u-button @click="$jump.switchTab('/pages/index/index')">返回首页</u-button>
-			</u-col>
-		</u-row>
+		<!-- 头部 -->
+		<view class="result-header">
+			<view class="result-score">{{score}}分</view>
+			<view class="result-integral">
+				<span v-if="answer.length<5">
+					恭喜你一共答对了{{5-answer.length}}题，获得{{integral}}点积分
+				</span>
+				<span v-if="answer.length==5">
+					一题都没答对哦，不要灰心下次继续努力！
+				</span>
+			</view>
+		</view>
+
+		<!-- 题目及正确答案 -->
+		<view class="result-data">
+			<view class="u-border-bottom result" v-for="item in garbages" :key="garbageId">
+				<span>{{item.garbageName}}</span>
+				<u-tag :text="item.gcName" :type="item.gcType"></u-tag>
+			</view>
+		</view>
+
+		<!-- 按钮 -->
+		<view class="result-btn">
+			<view>
+				<button class="btn" @click="$jump.redirect('/pages/exam/randomExam/randomExam')">再答一次</button>
+			</view>
+			<view>
+				<button class="btn" @click="$jump.switchTab('/pages/index/index')">返回首页</button>
+			</view>
+		</view>
 	</view>
 </template>
 
@@ -50,13 +40,11 @@
 	export default {
 		data() {
 			return {
-				score: 0,
+				score: 90,
 				answer: [],
 				count: 0,
-				integral: 0,
-				style: {
-					'margin-bottom': '0.625em'
-				}
+				integral: 4,
+				garbages: []
 			}
 		},
 		methods: {
@@ -69,10 +57,7 @@
 				this.score = total;
 				this.integral = num - this.answer.length;
 				//更新用户积分，仅限第一次刷新
-				if (storage.get('isLoad').length<=0) {
-					storage.set('isLoad', true);
-					this.updIntegral();
-				}
+				//this.updIntegral();
 			},
 			updIntegral() {
 				this.$u.api.updIntegral({
@@ -87,14 +72,31 @@
 						})
 					}
 				})
+			},
+			getGarbages(data) {
+				/* tag样式转换 */
+				for (let i = 0; i < data.length; i++) {
+					if (data[i].gcType === 'kitchen') {
+						data[i].gcType = 'success'
+					} else if (data[i].gcType === 'hazardous') {
+						data[i].gcType = 'error'
+					} else if (data[i].gcType === 'other') {
+						data[i].gcType = 'info'
+					} else if (data[i].gcType === 'recyclable') {
+						data[i].gcType = 'primary'
+					}
+				}
+				this.garbages = data
 			}
 		},
 		onLoad(option) {
-			let result = JSON.parse(decodeURIComponent(option.answer));
-			this.answer = result;
+			//错题
+			this.answer = JSON.parse(decodeURIComponent(option.answer));
 			this.count = this.answer.length;
 			//一共有多少题，按照题目数量平均分配分数。
 			this.calculateScore(5);
+			//题目
+			this.getGarbages(JSON.parse(decodeURIComponent(option.garbages)));
 		},
 		onBackPress() {
 			this.redirectTo("/pages/exam/exam");
@@ -103,16 +105,58 @@
 </script>
 
 <style lang="scss">
-	.question {
-		width: 100%;
-		height: 10em;
-		background-color: $uni-color-success;
-		line-height: 3.125em;
-		color: #FFFFFF;
-		font-size: 34rpx;
+	.result-header {
+		height: 250rpx;
+		background-color: #19be6b;
 	}
 
-	.wrong-answer {
-		padding: 0.4375em;
+	.result-score {
+		color: #FFFFFF;
+		font-size: 50rpx;
+		text-align: center;
+		height: 130rpx;
+		line-height: 130rpx;
+	}
+
+	.result-integral {
+		width: 70%;
+		margin: auto;
+		height: 50rpx;
+		line-height: 50rpx;
+		color: #FFFFFF;
+		text-align: center;
+		background-color: rgba($color: #000000, $alpha: .3);
+		border-radius: 12rpx;
+	}
+
+	.result-data {
+		width: 90%;
+		margin: auto;
+		border-radius: 30rpx;
+		background-color: #FFFFFF;
+		position: relative;
+		bottom: 30rpx;
+	}
+
+	.result {
+		padding: 30rpx;
+	}
+
+	.result u-tag {
+		float: right;
+	}
+
+	.result-btn {
+		width: 90%;
+		margin: auto;
+	}
+
+	.result-btn view {
+		margin-bottom: 30rpx;
+	}
+
+	.btn {
+		color: #FFFFFF;
+		background-color: $u-type-success;
 	}
 </style>

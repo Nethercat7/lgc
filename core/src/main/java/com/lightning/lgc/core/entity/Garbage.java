@@ -19,5 +19,6 @@ public class Garbage implements Serializable {
     //类别ID
     private String gcId;
     private String gcName;
+    private String gcType;
     private List<GarbageCategory> categories;
 }
