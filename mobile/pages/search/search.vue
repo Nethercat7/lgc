@@ -119,8 +119,9 @@
 
 	.gc-tag {
 		float: right;
-		line-height: 3em;
-		margin-right: 1em;
+		position: relative;
+		bottom: 5rpx;
+		right: 30rpx;
 	}
 
 	.search-icon {
