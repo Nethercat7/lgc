@@ -5,10 +5,10 @@
 		<view class="result-header">
 			<view class="result-score">{{score}}分</view>
 			<view class="result-integral">
-				<span v-if="answer.length<5">
-					恭喜你一共答对了{{5-answer.length}}题，获得{{integral}}点积分
+				<span v-if="error<5">
+					恭喜你一共答对了{{5-error}}题，获得{{integral}}点积分
 				</span>
-				<span v-if="answer.length==5">
+				<span v-if="error==5">
 					一题都没答对哦，不要灰心下次继续努力！
 				</span>
 			</view>
@@ -17,6 +17,7 @@
 		<!-- 题目及正确答案 -->
 		<view class="result-data">
 			<view class="u-border-bottom result" v-for="item in garbages" :key="garbageId">
+				<u-icon :name="item.isWrong?'close-circle':'checkmark-circle'" :custom-style="item.isWrong?wrong:right"></u-icon>
 				<span>{{item.garbageName}}</span>
 				<u-tag :text="item.gcName" :type="item.gcType"></u-tag>
 			</view>
@@ -40,24 +41,32 @@
 	export default {
 		data() {
 			return {
-				score: 90,
-				answer: [],
+				score: 0,
 				count: 0,
-				integral: 4,
-				garbages: []
+				integral: 0,
+				garbages: [],
+				wrong: {
+					"padding-right": "10rpx",
+					"color": "#fa3534"
+				},
+				right: {
+					"padding-right": "10rpx",
+					"color": "#19be6b"
+				},
+				error: 0
 			}
 		},
 		methods: {
 			calculateScore(num) {
 				let total = 100; //总分
 				let single = 100 / num; //总分÷题目数量=平均每题的分数
-				for (let i = 0; i < this.answer.length; i++) {
+				for (let i = 0; i < this.error; i++) {
 					total = total - single
 				}
 				this.score = total;
-				this.integral = num - this.answer.length;
+				this.integral = num - this.error;
 				//更新用户积分，仅限第一次刷新
-				//this.updIntegral();
+				this.updIntegral();
 			},
 			updIntegral() {
 				this.$u.api.updIntegral({
@@ -90,13 +99,10 @@
 			}
 		},
 		onLoad(option) {
-			//错题
-			this.answer = JSON.parse(decodeURIComponent(option.answer));
-			this.count = this.answer.length;
+			this.getGarbages(JSON.parse(decodeURIComponent(option.garbages)));
+			this.error = option.wrong;
 			//一共有多少题，按照题目数量平均分配分数。
 			this.calculateScore(5);
-			//题目
-			this.getGarbages(JSON.parse(decodeURIComponent(option.garbages)));
 		},
 		onBackPress() {
 			this.redirectTo("/pages/exam/exam");

@@ -21,18 +21,6 @@ public class UserMgtController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("add")
-    //@RequiresPermissions("usermgt:addUser:add")
-    public ResultBody add(@RequestBody User user){
-        int status=userService.add(user);
-        if(status== Constant.SUCCESS){
-            log.info("成功添加用户:"+user.getUserName());
-            return new ResultBody(Constant.SUCCESS,Constant.ADD_SUCCESS,Constant.TYPE_SUCCESS);
-        }
-        log.info("添加:"+user.getUserName()+"失败");
-        return new ResultBody(Constant.FAILED,Constant.ADD_FAILED,Constant.TYPE_ERROR);
-    }
-
     @GetMapping("getUserByName")
     //@RequiresPermissions("usermgt:usertable:upd")
     public ResultBody getUserByName(String name){
@@ -51,18 +39,6 @@ public class UserMgtController {
         List<User> users=userService.getUsers(rate);
         if(!ObjectUtils.isEmpty(users)){
             log.info("找到"+users.size()+"个用户");
-/*            for (User user : users) {
-                //将性别转为字符串
-                if (user.getUserGender().equals("1")) {
-                    user.setUserGender(Constant.MALE);
-                } else {
-                    user.setUserGender(Constant.FEMALE);
-                }
-                //将状态转为字符串
-                if (user.getUserStatus().equals("0")) {
-                    user.setUserStatus(Constant.NORMAL);
-                }
-            }*/
             return new ResultBody(Constant.SUCCESS,users,Constant.GET_SUCCESS);
         }
         log.info("未找到用户");

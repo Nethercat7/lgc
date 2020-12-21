@@ -8,7 +8,7 @@ let api={
     return http.get(`${request}/userMgt/getUsers`)
   },
   addUser(params){
-    return http.post(`${request}/userMgt/add`,params)
+    return http.post(`${request}/user/add`,params)
   },
   updUser(params){
     return http.post(`${request}/userMgt/upd`,params)

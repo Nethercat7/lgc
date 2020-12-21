@@ -25,7 +25,7 @@ const install = (Vue, vm) => {
 	let getUserRate = (params = {}) => vm.$u.get('/userMgt/getUserRate', params);
 	
 	//用户注册
-	let userRegister = (params = {}) => vm.$u.post('/userMgt/add', params);
+	let userRegister = (params = {}) => vm.$u.post('/user/add', params);
 
 	vm.$u.api = {
 		getPosts,

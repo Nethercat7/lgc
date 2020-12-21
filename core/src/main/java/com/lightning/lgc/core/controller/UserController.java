@@ -17,6 +17,17 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @PostMapping("add")
+    public ResultBody add(@RequestBody User user){
+        int status=userService.add(user);
+        if(status== Constant.SUCCESS){
+            log.info("成功注册用户:"+user.getUserName());
+            return new ResultBody(Constant.SUCCESS,Constant.REG_SUCCESS,Constant.TYPE_SUCCESS);
+        }
+        log.info("注册:"+user.getUserName()+"失败");
+        return new ResultBody(Constant.FAILED,Constant.REG_FAILED,Constant.TYPE_ERROR);
+    }
+
     @PostMapping("login")
     public ResultBody login(@RequestParam("name") String name, @RequestParam("pwd") String pwd) {
         return userService.login(name, pwd);

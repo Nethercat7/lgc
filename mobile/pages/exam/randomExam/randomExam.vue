@@ -34,10 +34,9 @@
 				}],
 				count: 0,
 				total: 0,
-				wrong: [],
 				categories: [],
 				showModal: false,
-				modalContent: 'Content'
+				wrong: 0
 			};
 		},
 		methods: {
@@ -45,19 +44,22 @@
 				if (this.count < this.data.length) {
 					//答错时的操作
 					if (value != this.data[this.count].gcName) {
-						this.data[this.count].errAnswer = value;
-						this.wrong.push(this.data[this.count]);
+						this.data[this.count].isWrong = true;
+						this.wrong++;
 						this.showModal = true;
-						this.modalContent=this.data[this.count].garbageName+' 属于 '+this.data[this.count].gcName
+						this.modalContent = this.data[this.count].garbageName + ' 属于 ' + this.data[this.count].gcName;
+					} else {
+						this.data[this.count].isWrong = false;
 					}
 					this.count++;
-					
+
 					//题目全部答完时的操作
 					if (this.total < this.data.length - 1) {
 						this.total++;
 					} else {
-						if(!this.showModal){
-							this.$jump.redirect('/pages/exam/submitResult/submitResult?answer=' + encodeURIComponent(JSON.stringify(this.wrong))+'&garbages='+encodeURIComponent(JSON.stringify(this.data)));
+						if (!this.showModal) {
+							this.$jump.redirect('/pages/exam/submitResult/submitResult?garbages=' + encodeURIComponent(JSON.stringify(this.data)) +
+								'&wrong=' + this.wrong);
 						}
 					}
 				}
@@ -74,9 +76,10 @@
 					this.categories = resp.data.obj
 				})
 			},
-			submit(){
-				if(this.count==5){
-					this.$jump.redirect('/pages/exam/submitResult/submitResult?answer=' + encodeURIComponent(JSON.stringify(this.wrong))+'&garbages='+encodeURIComponent(JSON.stringify(this.data)));
+			submit() {
+				if (this.count == 5) {
+					this.$jump.redirect('/pages/exam/submitResult/submitResult?garbages=' + encodeURIComponent(JSON.stringify(this.data)) +
+						'&wrong=' + this.wrong);
 				}
 			}
 		},

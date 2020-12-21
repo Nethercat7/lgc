@@ -25,8 +25,9 @@
 
 		<view style="padding:30rpx;">
 			<view v-if="show">
-				<view v-for="item in garbages" class="card u-font-xl">
+				<view v-for="item,index in garbages" :key="item.garbageId" class="card u-font-xl">
 					<span>{{item.garbageName}}</span>
+					<u-icon class="favorite" :name="inFavorite?'star-fill':'star'" :custom-style="inFavorite?style:''" @click="addFavorite(index)"></u-icon>
 					<u-tag class="gc-tag" :text="item.gcName" :type="item.gcType"></u-tag>
 				</view>
 				<view v-if="emty">
@@ -44,6 +45,7 @@
 			</view>
 		</view>
 		<u-modal v-model="showModal" content="此功能暂未开放"></u-modal>
+		<u-toast ref="uToast" />
 	</view>
 </template>
 
@@ -56,7 +58,11 @@
 				emty: false,
 				show: false,
 				tips: {},
-				showModal: false
+				showModal: false,
+				style: {
+					"color": 'rgba(25,190,107,.5)'
+				},
+				inFavorite: false
 			};
 		},
 		methods: {
@@ -98,6 +104,12 @@
 				}).then(resp => {
 					this.tips = resp.data.obj[0];
 				})
+			},
+			addFavorite(index) {
+				this.$refs.uToast.show({
+					title: '已添加至收藏',
+					type: 'success'
+				})
 			}
 		},
 		onShow() {
@@ -119,9 +131,9 @@
 
 	.gc-tag {
 		float: right;
+		padding-right: 30rpx;
 		position: relative;
 		bottom: 5rpx;
-		right: 30rpx;
 	}
 
 	.search-icon {
@@ -162,5 +174,11 @@
 
 	.search-bar>view {
 		padding: 30rpx;
+	}
+
+	.favorite {
+		float: right;
+		height: 3em;
+		padding-right: 30rpx;
 	}
 </style>

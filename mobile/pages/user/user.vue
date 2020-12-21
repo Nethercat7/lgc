@@ -15,6 +15,11 @@
 
 			<u-row class="card">
 				<u-col span="4">
+					<view class="opt-card" @click="showModeal=true">
+						<u-icon name="star" size="30rpx" style="padding-right: 10rpx;"></u-icon>我的收藏
+					</view>
+				</u-col>
+				<u-col span="4">
 					<view class="opt-card" @click="$jump.navigate('/pages/exam/randomExam/randomExam')">
 						<u-icon name="edit-pen" size="30rpx" style="padding-right: 10rpx;"></u-icon>问答挑战
 					</view>
@@ -30,11 +35,37 @@
 					</view>
 				</u-col>
 				<u-col span="4">
+					<view class="opt-card" @click="showModeal=true">
+						<u-icon name="eye-off" size="30rpx" style="padding-right: 10rpx;"></u-icon>隐私设置
+					</view>
+				</u-col>
+				<u-col span="4">
+					<view class="opt-card" @click="showModeal=true">
+						<u-icon name="setting" size="30rpx" style="padding-right: 10rpx;"></u-icon>系统设置
+					</view>
+				</u-col>
+				<u-col span="4">
+					<view class="opt-card" @click="showModeal=true">
+						<u-icon name="shopping-cart" size="30rpx" style="padding-right: 10rpx;"></u-icon>积分商城
+					</view>
+				</u-col>
+				<u-col span="4">
+					<view class="opt-card" @click="showModeal=true">
+						<u-icon name="arrow-upward" size="30rpx" style="padding-right: 10rpx;"></u-icon>上传分类数据
+					</view>
+				</u-col>
+				<u-col span="4">
+					<view class="opt-card" @click="showModeal=true">
+						<u-icon name="kefu-ermai" size="30rpx" style="padding-right: 10rpx;"></u-icon>意见反馈
+					</view>
+				</u-col>
+				<u-col span="4">
 					<view class="opt-card" @click="exit">
-						<u-icon name="integral-fill" size="30rpx" style="padding-right: 10rpx;"></u-icon>退出登录
+						<u-icon name="close" size="30rpx" style="padding-right: 10rpx;"></u-icon>退出登录
 					</view>
 				</u-col>
 			</u-row>
+			<u-modal v-model="showModeal" content="此选项暂未开放"></u-modal>
 
 		</view>
 		<view v-if="!isLogin" class="login">
@@ -75,7 +106,8 @@
 				pwd: '',
 				white: {
 					"color": "white"
-				}
+				},
+				showModeal: false
 			}
 		},
 		methods: {
@@ -189,7 +221,7 @@
 		border-bottom: 1px solid white;
 	}
 
-	.u-icon text,
+	.form .u-icon text,
 	input {
 		color: white !important;
 	}

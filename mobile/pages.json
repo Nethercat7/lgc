@@ -27,11 +27,10 @@
 				"navigationBarTitleText": "柳州市垃圾分类",
 				"enablePullDownRefresh": false
 			}
-
 		}, {
 			"path": "pages/exam/randomExam/randomExam",
 			"style": {
-				"navigationBarTitleText": "柳州市垃圾分类",
+				"navigationBarTitleText": "问答挑战",
 				"enablePullDownRefresh": false
 			}
 
@@ -52,14 +51,14 @@
 		}, {
 			"path": "pages/user/userInfo/userInfo",
 			"style": {
-				"navigationBarTitleText": "柳州市垃圾分类",
+				"navigationBarTitleText": "个人资料",
 				"enablePullDownRefresh": false
 			}
 
 		}, {
 			"path": "pages/user/topRate/topRate",
 			"style": {
-				"navigationBarTitleText": "柳州市垃圾分类",
+				"navigationBarTitleText": "积分排行榜",
 				"enablePullDownRefresh": false
 			}
 
@@ -71,20 +70,11 @@
 			}
 
 		}
-	    ,{
-            "path" : "pages/user/login/login",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "柳州市垃圾分类",
-                "enablePullDownRefresh": false
-            }
-            
-        }
         ,{
             "path" : "pages/user/register/register",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "柳州市垃圾分类",
+                "navigationBarTitleText": "个人注册",
                 "enablePullDownRefresh": false
             }
             

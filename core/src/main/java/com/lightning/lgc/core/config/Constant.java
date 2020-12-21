@@ -19,6 +19,8 @@ public class Constant {
     public static final String DEL_SUCCESS="删除成功";
     public static final String DEL_FAILED="删除失败";
     public static final String NO_PERMS="无权访问";
+    public static final String REG_SUCCESS="注册成功";
+    public static final String REG_FAILED="注册失败";
 
     //用户模块
     public static final String LOGIN_SUCCESS="登入成功";

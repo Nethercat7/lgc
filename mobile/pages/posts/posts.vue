@@ -12,7 +12,7 @@
 			</view>
 		</view>
 		<view class="posts-content">
-			<rich-text :nodes="posts.postsContent"></rich-text>
+			<u-parse :html="posts.postsContent" :tag-style="style"></u-parse>
 		</view>
 		<view class="posts-tags">
 			<u-row>
@@ -35,7 +35,10 @@
 		data() {
 			return {
 				posts: {},
-				tags: ["标签1", "标签2", "标签3"]
+				tags: ["标签1", "标签2", "标签3"],
+				style: {
+					h1: 'border-left: 0.27em solid #4CD964;padding-left: 1em;font-size: 1.7em;background-color: rgba(251,252,252,.5);;font-weight: 400;'
+				}
 			}
 		},
 		methods: {
@@ -43,11 +46,6 @@
 		},
 		onLoad(option) {
 			this.posts = JSON.parse(decodeURIComponent(option.obj));
-			this.posts.postsContent = this.posts.postsContent.replace(/<img/g, '<img style="max-width:100%" ')
-				.replace(/<h1/g,
-					'<h1 style="border-left: 0.27em solid #4CD964;padding-left: 1em;font-size: 1.7em;background-color: rgba(243, 243, 243, 0.7);font-weight: 400;"'
-				);
-			console.log(this.posts);
 		}
 	}
 </script>
