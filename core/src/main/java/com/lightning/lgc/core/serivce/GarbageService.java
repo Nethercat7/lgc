@@ -29,4 +29,13 @@ public interface GarbageService {
 
     //删除垃圾分类
     int delGarbage(String garbageId);
+
+    //获取分类物品以及是否收藏
+    List<Garbage> getGarbageWithFavorite(String name,String category,Integer num,String userId);
+
+    //添加物品至收藏
+    int addFavorite(String userId,String garbageId);
+
+    //从收藏中删除物品
+    int delFavorite(String userId,String garbageId);
 }

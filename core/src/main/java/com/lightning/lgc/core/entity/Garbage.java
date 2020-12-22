@@ -21,4 +21,7 @@ public class Garbage implements Serializable {
     private String gcName;
     private String gcType;
     private List<GarbageCategory> categories;
+
+    //是否被收藏
+    private boolean inFavorite;
 }

@@ -25,6 +25,10 @@ public class Constant {
     public static final String NO_PERMS="无权访问";
     public static final String REG_SUCCESS="注册成功";
     public static final String REG_FAILED="注册失败";
+    public static final String ADD_FAVORITE_SUCCESS="成功添加至收藏";
+    public static final String ADD_FAVORITE_FAIL="添加收藏时发生错误";
+    public static final String DEL_FAVORITE_SUCCESS="已移除出收藏";
+    public static final String DEL_FAVORITE_FAIL="移除物品时发生错误";
 
     //检验消息
     public static final String USERNAME_EXISTED="用户名已被注册";

@@ -71,4 +71,29 @@
         DELETE FROM garbage_garbage_category_relation
         WHERE gcr_garbage_id=#{garbageId}
     </delete>
+
+    <select id="inFavorite" parameterType="String" resultType="Integer">
+        SELECT COUNT(g.garbage_id) FROM garbage g
+        LEFT JOIN garbage_garbage_category_relation gcr
+        ON g.garbage_id=gcr.gcr_garbage_id
+        LEFT JOIN garbage_category gc
+        ON gc.gc_id=gcr.gcr_gc_id
+        LEFT JOIN user_garbage_relation ugr
+        ON g.garbage_id=ugr.ugr_garbage_id
+        LEFT JOIN user u
+        ON u.user_id=ugr.ugr_user_id
+        WHERE g.garbage_id =#{garbageId}
+        AND u.user_id=#{userId}
+    </select>
+
+    <insert id="addFavorite" parameterType="String">
+        INSERT INTO user_garbage_relation
+        VALUES (#{ugrId},#{userId},#{garbageId})
+    </insert>
+
+    <delete id="delFavorite" parameterType="String">
+        DELETE FROM user_garbage_relation
+        WHERE ugr_user_id=#{userId}
+        AND ugr_garbage_id=#{garbageId}
+    </delete>
 </mapper>

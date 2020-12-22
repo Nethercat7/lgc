@@ -15,7 +15,7 @@
 
 			<u-row class="card">
 				<u-col span="4">
-					<view class="opt-card" @click="showModeal=true">
+					<view class="opt-card" @click="$jump.navigate('/pages/user/myFavorites/myFavorites')">
 						<u-icon name="star" size="30rpx" style="padding-right: 10rpx;"></u-icon>我的收藏
 					</view>
 				</u-col>

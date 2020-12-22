@@ -15,6 +15,11 @@ public class ResultBody {
     private String msg;
     private String type;//前端提示框样式
 
+    public ResultBody(int code, Object obj) {
+        this.code = code;
+        this.obj = obj;
+    }
+
     public ResultBody(int code, String msg) {
         this.code = code;
         this.msg = msg;

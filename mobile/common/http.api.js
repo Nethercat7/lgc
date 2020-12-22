@@ -36,6 +36,15 @@ const install = (Vue, vm) => {
 	//修改密码
 	let updUserPwd = (params = {}) => vm.$u.post('/user/updUserPwd', params);
 
+	//获取垃圾和是否被收藏信息
+	let getGarbageWithFavorite = (params = {}) => vm.$u.get('/garbage/getGarbageWithFavorite', params);
+
+	//添加物品至收藏
+	let addFavorite = (params = {}) => vm.$u.get('/garbage/addFavorite', params);
+
+	//从收藏中删除物品
+	let delFavorite = (params = {}) => vm.$u.get('/garbage/delFavorite', params);
+
 	vm.$u.api = {
 		getPosts,
 		getGarbages,
@@ -48,7 +57,10 @@ const install = (Vue, vm) => {
 		userRegister,
 		updUserPhone,
 		updUserEmail,
-		updUserPwd
+		updUserPwd,
+		getGarbageWithFavorite,
+		addFavorite,
+		delFavorite
 	};
 }
 

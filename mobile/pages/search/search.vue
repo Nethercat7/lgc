@@ -27,7 +27,8 @@
 			<view v-if="show">
 				<view v-for="item,index in garbages" :key="item.garbageId" class="card u-font-xl">
 					<span>{{item.garbageName}}</span>
-					<u-icon class="favorite" :name="inFavorite?'star-fill':'star'" :custom-style="inFavorite?style:''" @click="addFavorite(index)"></u-icon>
+					<u-icon class="favorite" :name="item.inFavorite?'star-fill':'star'" :custom-style="item.inFavorite?style:''"
+					 @click="addFavorite(index)"></u-icon>
 					<u-tag class="gc-tag" :text="item.gcName" :type="item.gcType"></u-tag>
 				</view>
 				<view v-if="emty">
@@ -45,11 +46,12 @@
 			</view>
 		</view>
 		<u-modal v-model="showModal" content="此功能暂未开放"></u-modal>
-		<u-toast ref="uToast" />
+		<u-toast ref="toast" />
 	</view>
 </template>
 
 <script>
+	import storage from '@/common/storage.js';
 	export default {
 		data() {
 			return {
@@ -61,37 +63,65 @@
 				showModal: false,
 				style: {
 					"color": 'rgba(25,190,107,.5)'
-				},
-				inFavorite: false
+				}
 			};
 		},
 		methods: {
 			search() {
 				if (this.keyword != '') {
 					this.show = true;
-					this.$u.api.getGarbages({
-						name: this.keyword
-					}).then(resp => {
-						let data = resp.data.obj;
-						if (data.length > 0) {
-							/* tag样式转换 */
-							for (let i = 0; i < data.length; i++) {
-								if (data[i].gcType === 'kitchen') {
-									data[i].gcType = 'success'
-								} else if (data[i].gcType === 'hazardous') {
-									data[i].gcType = 'error'
-								} else if (data[i].gcType === 'other') {
-									data[i].gcType = 'info'
-								} else if (data[i].gcType === 'recyclable') {
-									data[i].gcType = 'primary'
+					if (storage.getUser() != null) {
+						//登录用户使用这个API
+						this.$u.api.getGarbageWithFavorite({
+							name: this.keyword,
+							userId: storage.getUser().userId
+						}).then(resp => {
+							let data = resp.data.obj;
+							if (data.length > 0) {
+								/* tag样式转换 */
+								for (let i = 0; i < data.length; i++) {
+									if (data[i].gcType === 'kitchen') {
+										data[i].gcType = 'success'
+									} else if (data[i].gcType === 'hazardous') {
+										data[i].gcType = 'error'
+									} else if (data[i].gcType === 'other') {
+										data[i].gcType = 'info'
+									} else if (data[i].gcType === 'recyclable') {
+										data[i].gcType = 'primary'
+									}
 								}
+								this.emty = false;
+							} else {
+								this.emty = true;
 							}
-							this.emty = false;
-						} else {
-							this.emty = true;
-						}
-						this.garbages = data;
-					})
+							this.garbages = data;
+						})
+					} else {
+						//未登录用户使用这个API
+						this.$u.api.getGarbages({
+							name: this.keyword,
+						}).then(resp => {
+							let data = resp.data.obj;
+							if (data.length > 0) {
+								/* tag样式转换 */
+								for (let i = 0; i < data.length; i++) {
+									if (data[i].gcType === 'kitchen') {
+										data[i].gcType = 'success'
+									} else if (data[i].gcType === 'hazardous') {
+										data[i].gcType = 'error'
+									} else if (data[i].gcType === 'other') {
+										data[i].gcType = 'info'
+									} else if (data[i].gcType === 'recyclable') {
+										data[i].gcType = 'primary'
+									}
+								}
+								this.emty = false;
+							} else {
+								this.emty = true;
+							}
+							this.garbages = data;
+						})
+					}
 				} else {
 					this.garbages = [];
 					this.emty = false;
@@ -106,10 +136,31 @@
 				})
 			},
 			addFavorite(index) {
-				this.$refs.uToast.show({
-					title: '已添加至收藏',
-					type: 'success'
-				})
+				if (storage.getUser() == null) {
+					this.$msg.sendError(this, "登录之后才能收藏哦");
+				} else {
+					if(this.garbages[index].inFavorite){
+						this.$u.api.delFavorite({
+							userId:storage.getUser().userId,
+							garbageId:this.garbages[index].garbageId
+						}).then(res=>{
+							if(res.data.code==1){
+								this.garbages[index].inFavorite=false;
+							}
+							this.$msg.send(this,res.data.msg,res.data.type)
+						})
+					}else{
+						this.$u.api.addFavorite({
+							userId:storage.getUser().userId,
+							garbageId:this.garbages[index].garbageId
+						}).then(res=>{
+							if(res.data.code==1){
+								this.garbages[index].inFavorite=true;
+							}
+							this.$msg.send(this,res.data.msg,res.data.type)
+						})
+					}
+				}
 			}
 		},
 		onShow() {

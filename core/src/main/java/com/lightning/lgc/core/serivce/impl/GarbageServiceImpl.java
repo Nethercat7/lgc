@@ -15,7 +15,7 @@ public class GarbageServiceImpl implements GarbageService {
     @Autowired
     private GarbageDao garbageDao;
 
-    SnowflakeIdGeneratorUntil snowflakeIdGeneratorUntil=new SnowflakeIdGeneratorUntil(0,2);
+    SnowflakeIdGeneratorUntil snowflakeIdGeneratorUntil = new SnowflakeIdGeneratorUntil(0, 2);
 
     @Override
     public int addCategory(GarbageCategory garbageCategory) {
@@ -41,33 +41,55 @@ public class GarbageServiceImpl implements GarbageService {
     @Override
     public int addGarbage(Garbage garbage) {
         garbage.setGarbageId(snowflakeIdGeneratorUntil.getId());
-        int status=garbageDao.addGarbage(garbage);
-        if(status==1){//如果成功了就保存垃圾与类别的关系
-            status=garbageDao.addGarbageRelation(snowflakeIdGeneratorUntil.getId(),garbage.getGarbageId(),garbage.getGcId());
+        int status = garbageDao.addGarbage(garbage);
+        if (status == 1) {//如果成功了就保存垃圾与类别的关系
+            status = garbageDao.addGarbageRelation(snowflakeIdGeneratorUntil.getId(), garbage.getGarbageId(), garbage.getGcId());
         }
         return status;
     }
 
     @Override
-    public List<Garbage> getGarbages(String name,String category,Integer num) {
-        return garbageDao.getGarbages(name,category,num);
+    public List<Garbage> getGarbages(String name, String category, Integer num) {
+        return garbageDao.getGarbages(name, category, num);
     }
 
     @Override
     public int updGarbage(Garbage garbage) {
-        int status=garbageDao.updGarbage(garbage);
-        if(status==1){
-            status=garbageDao.updGarbageRelation(garbage);
+        int status = garbageDao.updGarbage(garbage);
+        if (status == 1) {
+            status = garbageDao.updGarbageRelation(garbage);
         }
         return status;
     }
 
     @Override
     public int delGarbage(String garbageId) {
-        int status=garbageDao.delGarbage(garbageId);
-        if(status==1){
-            status=garbageDao.delGarbageRelation(garbageId);
+        int status = garbageDao.delGarbage(garbageId);
+        if (status == 1) {
+            status = garbageDao.delGarbageRelation(garbageId);
         }
         return status;
+    }
+
+    @Override
+    public List<Garbage> getGarbageWithFavorite(String name, String category, Integer num, String userId) {
+        List<Garbage> garbageList=garbageDao.getGarbages(name,category,num);
+        for (Garbage garbage:garbageList){
+            garbage.setInFavorite(false);
+            //查询是否被收藏
+            int inFavorite=garbageDao.inFavorite(userId,garbage.getGarbageId());
+            if(inFavorite>0) garbage.setInFavorite(true);
+        }
+        return garbageList;
+    }
+
+    @Override
+    public int addFavorite(String userId, String garbageId) {
+        return garbageDao.addFavorite(snowflakeIdGeneratorUntil.getId(),userId,garbageId);
+    }
+
+    @Override
+    public int delFavorite(String userId, String garbageId) {
+        return garbageDao.delFavorite(userId,garbageId);
     }
 }

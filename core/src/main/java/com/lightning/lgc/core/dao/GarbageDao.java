@@ -38,4 +38,13 @@ public interface GarbageDao {
 
     //删除垃圾与类别的关系
     int delGarbageRelation(String garbageId);
+
+    //查询是否在收藏夹中
+    int inFavorite(String userId,String garbageId);
+
+    //添加物品至收藏
+    int addFavorite(String ugrId,String userId,String garbageId);
+
+    //从收藏中删除物品
+    int delFavorite(String userId,String garbageId);
 }
