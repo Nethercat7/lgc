@@ -102,4 +102,16 @@ public class UserController {
         }
         return new ResultBody(Constant.FAILED, Constant.UPD_FAILED, Constant.TYPE_ERROR);
     }
+
+    @GetMapping("updUserNickname")
+    public ResultBody updUserNickname(String nickname,String id){
+        int status = userService.updUserNickname(nickname, id);
+        if (status == Constant.SUCCESS) {
+            log.info("成功修改：" + id + " 的昵称为：" + nickname);
+            return new ResultBody(Constant.SUCCESS, Constant.UPD_SUCCESS, Constant.TYPE_SUCCESS);
+        } else if (status == Constant.NICKNAME) {
+            return new ResultBody(Constant.NICKNAME, Constant.NICKNAME_EXISTED, Constant.TYPE_ERROR);
+        }
+        return new ResultBody(Constant.FAILED, Constant.UPD_FAILED, Constant.TYPE_ERROR);
+    }
 }

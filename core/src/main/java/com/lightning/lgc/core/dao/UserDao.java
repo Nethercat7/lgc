@@ -68,4 +68,10 @@ public interface UserDao {
 
     //获取用户密码
     User getUserPwd(String id);
+
+    //检查昵称是否被占用
+    int checkUserNickname(String nickname);
+
+    //更新昵称
+    int updUserNickname(String nickname,String id);
 }

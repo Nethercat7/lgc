@@ -1,6 +1,7 @@
 <template>
 	<view class="setting">
 		<u-cell-item icon="account" title="用户名" :value="user.userName"></u-cell-item>
+		<u-cell-item icon="account" title="昵称" :value="user.userNickname" @click="showNicknameModal=true"></u-cell-item>
 		<u-cell-item icon="lock-open" title="密码" @click="showPwdModal=true"></u-cell-item>
 		<u-cell-item icon="phone" title="手机" :value="user.userPhone" @click="showPhoneModal=true"></u-cell-item>
 		<u-cell-item icon="email" title="电子邮箱" :value="user.userEmail" @click="showEmailModal=true"></u-cell-item>
@@ -63,6 +64,19 @@
 			</view>
 		</u-modal>
 
+		<u-modal v-model="showNicknameModal" title="更换昵称" show-cancel-button="true" @confirm="updUser('nickname')" @cancel="delValue">
+			<view class="wrap">
+				<u-row>
+					<u-col span="12">
+						<view :class="wrong.isWrong?'wrong':''">
+							<input type="text" v-model="data" placeholder="请输入新的昵称" @input="validateNickname" />
+							<span>{{wrong.msg}}</span>
+						</view>
+					</u-col>
+				</u-row>
+			</view>
+		</u-modal>
+
 		<u-toast ref="toast"></u-toast>
 	</view>
 </template>
@@ -77,8 +91,7 @@
 				showPwdModal: false,
 				showPhoneModal: false,
 				showEmailModal: false,
-				position: 'top',
-				content: `<input/>`,
+				showNicknameModal: false,
 				pwd: {
 					oldPwd: '',
 					newPwd: '',
@@ -106,6 +119,8 @@
 					this.showPhoneModal = true;
 				} else if (type == 'email') {
 					this.showEmailModal = true;
+				} else if (type == 'nickname') {
+					this.showNicknameModal = true;
 				} else {
 					this.showPwdModal = true;
 				}
@@ -136,6 +151,21 @@
 								this.getUser();
 								this.showEmailModal = false;
 							} else if (res.data.code == 4) {
+								this.wrong.isWrong = true;
+								this.wrong.msg = res.data.msg;
+							}
+							this.$msg.send(this, res.data.msg, res.data.type);
+						})
+					}else if(type=='nickname'){
+						this.$u.api.updUserNickname({
+							id: this.user.userId,
+							nickname: this.data
+						}).then(res => {
+							if (res.data.code == 1) {
+								this.data = null;
+								this.getUser();
+								this.showNicknameModal = false;
+							} else if (res.data.code == 6) {
 								this.wrong.isWrong = true;
 								this.wrong.msg = res.data.msg;
 							}
@@ -248,6 +278,24 @@
 					this.wrong.msg = "请输入有效的电子邮箱地址";
 				} else {
 					flag = true
+					this.wrong.isWrong = false;
+					this.wrong.msg = "";
+				}
+				this.wrong.pass = flag;
+			},
+			//昵称校验
+			validateNickname() {
+				let flag = false;
+				let nickname = this.data
+				let regx = new RegExp(/^[\u4E00-\u9FA5A-Za-z0-9_]+$/);
+				if (!regx.test(nickname) && nickname != '') {
+					this.wrong.isWrong = true;
+					this.wrong.msg = "昵称只能由中文、英文、数字以及下划线组成";
+				} else if (nickname.length > 18) {
+					this.wrong.isWrong = true;
+					this.wrong.msg = "昵称最大长度为18位字符";
+				} else {
+					flag = true;
 					this.wrong.isWrong = false;
 					this.wrong.msg = "";
 				}

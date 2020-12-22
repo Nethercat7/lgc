@@ -44,6 +44,9 @@ const install = (Vue, vm) => {
 
 	//从收藏中删除物品
 	let delFavorite = (params = {}) => vm.$u.get('/garbage/delFavorite', params);
+	
+	//修改昵称
+	let updUserNickname = (params = {}) => vm.$u.get('/user/updUserNickname', params);
 
 	vm.$u.api = {
 		getPosts,
@@ -60,7 +63,8 @@ const install = (Vue, vm) => {
 		updUserPwd,
 		getGarbageWithFavorite,
 		addFavorite,
-		delFavorite
+		delFavorite,
+		updUserNickname
 	};
 }
 

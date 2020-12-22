@@ -174,8 +174,7 @@ public class UserServiceImpl implements UserService {
     public int updUserPhone(String phone, String id) {
         //检查重复
         int checkPhone = userDao.checkUserPhone(phone);
-        int status = Constant.PHONE;//手机号码已被使用
-        if (checkPhone > 0) return status;
+        if (checkPhone > 0) return Constant.PHONE;//手机号码已被使用
         return userDao.updUserPhone(phone, id);
     }
 
@@ -183,8 +182,7 @@ public class UserServiceImpl implements UserService {
     public int updUserEmail(String email, String id) {
         //检查重复
         int checkEmail = userDao.checkUserEmail(email);
-        int status = Constant.EMAIL;//邮箱已被使用
-        if (checkEmail > 0) return status;
+        if (checkEmail > 0) return Constant.EMAIL;//邮箱已被使用
         return userDao.updUserEmail(email, id);
     }
 
@@ -201,5 +199,13 @@ public class UserServiceImpl implements UserService {
             status=userDao.updUserPwd(newPwd,id);
         }
         return status;
+    }
+
+    @Override
+    public int updUserNickname(String nickname, String id) {
+        //重复检查
+        int data=userDao.checkUserNickname(nickname);
+        if(data>0) return Constant.NICKNAME;//昵称已被占用
+        return userDao.updUserNickname(nickname,id);
     }
 }

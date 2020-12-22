@@ -42,4 +42,7 @@ public interface UserService {
 
     //更新密码
     int updUserPwd(String newPwd,String oldPwd,String id);
+
+    //更新昵称
+    int updUserNickname(String nickname,String id);
 }

@@ -29,6 +29,7 @@ public class User implements Serializable {
     private Long userIntegral;
     private String userAvatar;
     private String userStatus;
+    private String userNickname;
 
     //用户所拥有的角色列表
     private List<Role> roleList;
