@@ -154,4 +154,16 @@
         SET user_email=#{email}
         WHERE user_id=#{id}
     </update>
+
+    <update id="updUserPwd" parameterType="String">
+        UPDATE user
+        SET user_pwd=#{pwd}
+        WHERE user_id=#{id}
+    </update>
+
+    <select id="getUserPwd" parameterType="String" resultType="User">
+        SELECT user_pwd,user_salt
+        FROM user
+        WHERE user_id=#{id}
+    </select>
 </mapper>

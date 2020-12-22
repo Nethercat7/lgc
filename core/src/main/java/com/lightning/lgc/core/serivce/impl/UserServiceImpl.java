@@ -187,4 +187,19 @@ public class UserServiceImpl implements UserService {
         if (checkEmail > 0) return status;
         return userDao.updUserEmail(email, id);
     }
+
+    @Override
+    public int updUserPwd(String newPwd,String oldPwd,String id) {
+        int status;
+        //获取旧密码
+        User op=userDao.getUserPwd(id);
+        if(!PwdUtil.pwd2MD5(oldPwd,op.getUserSalt(),HASH).equals(op.getUserPwd())){
+            status=Constant.PWD;
+        }else{
+            //新密码加密
+            newPwd=PwdUtil.pwd2MD5(newPwd,op.getUserSalt(),HASH);
+            status=userDao.updUserPwd(newPwd,id);
+        }
+        return status;
+    }
 }

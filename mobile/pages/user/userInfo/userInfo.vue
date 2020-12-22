@@ -6,19 +6,32 @@
 		<u-cell-item icon="email" title="电子邮箱" :value="user.userEmail" @click="showEmailModal=true"></u-cell-item>
 
 		<!-- 密码模态框 -->
-		<u-modal v-model="showPwdModal" title="修改密码" show-cancel-button="true" @confirm="getValue(pwd)" @cancel="delValue('pwd')">
+		<u-modal v-model="showPwdModal" title="修改密码" show-cancel-button="true" @confirm="updUser('pwd')" @cancel="delValue('pwd')">
 			<view class="wrap">
-				<u-form>
-					<u-form-item label="旧密码" :label-position="position">
-						<u-input v-model="pwd.old_pwd" type="password" placeholder="请输入旧密码"></u-input>
-					</u-form-item>
-					<u-form-item label="新密码" :label-position="position">
-						<u-input v-model="pwd.new_pwd" type="password" placeholder="请输入新密码"></u-input>
-					</u-form-item>
-					<u-form-item label="重复密码" :label-position="position">
-						<u-input v-model="pwd.repeat" type="password" placeholder="请输重复刚才输入的新密码"></u-input>
-					</u-form-item>
-				</u-form>
+				<u-row>
+					<u-col span="12">
+						<view :class="wrong.oldPwdWrong?'wrong':''">
+							<input type="password" v-model="pwd.oldPwd" placeholder="请输入旧密码" @input="validateOldPwd" />
+							<span>{{wrong.oldPwd}}</span>
+						</view>
+					</u-col>
+				</u-row>
+				<u-row>
+					<u-col span="12">
+						<view :class="wrong.isWrong?'wrong':''">
+							<input type="password" v-model="pwd.newPwd" placeholder="请输入新密码" @input="validatePwd" />
+							<span>{{wrong.msg}}</span>
+						</view>
+					</u-col>
+				</u-row>
+				<u-row>
+					<u-col span="12">
+						<view :class="wrong.repeatWrong?'wrong':''">
+							<input type="password" v-model="pwd.repeat" placeholder="请重复新密码" @input="validateRepeate" />
+							<span>{{wrong.repeat}}</span>
+						</view>
+					</u-col>
+				</u-row>
 			</view>
 		</u-modal>
 
@@ -67,24 +80,19 @@
 				position: 'top',
 				content: `<input/>`,
 				pwd: {
-					old_pwd: '',
-					new_pwd: '',
+					oldPwd: '',
+					newPwd: '',
 					repeat: ''
 				},
 				data: null,
 				wrong: {
-					isWrong: false
+					isWrong: false,
+					repeatWrong: false,
+					oldPwdWrong: false,
 				}
 			};
 		},
 		methods: {
-			submit() {
-				this.updUser();
-			},
-			confirm(obj) {
-				this.gender = obj[0].label
-				this.user.userGender = obj[0].value
-			},
 			getUser() {
 				this.$u.api.getUser({
 					name: storage.getUser('token').username
@@ -93,10 +101,17 @@
 				})
 			},
 			updUser(type) {
+				//保持模态框为打开状态，成功之后再关闭
+				if (type == 'phone') {
+					this.showPhoneModal = true;
+				} else if (type == 'email') {
+					this.showEmailModal = true;
+				} else {
+					this.showPwdModal = true;
+				}
+
 				if (this.wrong.pass) {
 					if (type == 'phone') {
-						//保持模态框为打开状态，成功之后再关闭
-						this.showPhoneModal = true;
 						this.$u.api.updUserPhone({
 							id: this.user.userId,
 							phone: this.data
@@ -105,14 +120,13 @@
 								this.data = null;
 								this.getUser();
 								this.showPhoneModal = false;
-							} else {
+							} else if (res.data.code == 3) {
 								this.wrong.isWrong = true;
 								this.wrong.msg = res.data.msg;
 							}
 							this.$msg.send(this, res.data.msg, res.data.type);
 						})
 					} else if (type == 'email') {
-						this.showEmailModal = true;
 						this.$u.api.updUserEmail({
 							id: this.user.userId,
 							email: this.data
@@ -121,9 +135,29 @@
 								this.data = null;
 								this.getUser();
 								this.showEmailModal = false;
-							} else {
+							} else if (res.data.code == 4) {
 								this.wrong.isWrong = true;
 								this.wrong.msg = res.data.msg;
+							}
+							this.$msg.send(this, res.data.msg, res.data.type);
+						})
+					} else {
+						this.$u.api.updUserPwd({
+							newPwd: this.pwd.newPwd,
+							oldPwd: this.pwd.oldPwd,
+							id: this.user.userId
+						}).then(res => {
+							if (res.data.code == 1) {
+								this.pwd = {}
+								this.getUser();
+								this.showPwdModal = false;
+								setTimeout(() => {
+									storage.remove('token');
+									this.$jump.switchTab('/pages/user/user');
+								}, 1000)
+							} else if (res.data.code == 5) {
+								this.wrong.oldPwdWrong = true;
+								this.wrong.oldPwd = res.data.msg;
 							}
 							this.$msg.send(this, res.data.msg, res.data.type);
 						})
@@ -133,11 +167,61 @@
 			delValue(type) {
 				if (type == 'pwd') {
 					this.pwd = {}
+					this.wrong.isWrong = false;
+					this.wrong.repeatWrong = false;
+					this.wrong.msg = "";
+					this.wrong.repeat = "";
 				} else {
 					this.data = null
 					this.wrong.isWrong = false;
 					this.wrong.msg = "";
 				}
+			},
+			//密码校验
+			validatePwd() {
+				let flag = false;
+				let pwd = this.pwd.newPwd;
+				let regx = new RegExp(/^[a-zA-Z]\w{5,17}$/);
+				if (pwd == '') {
+					this.wrong.isWrong = true;
+					this.wrong.msg = "请输入密码";
+				} else if (!regx.test(pwd)) {
+					this.wrong.isWrong = true;
+					this.wrong.msg = "密码以字母开头，长度在6~18之间，只能包含字母、数字和下划线";
+				} else {
+					flag = true
+					this.wrong.isWrong = false;
+					this.wrong.msg = "";
+				}
+
+				if (pwd != this.pwd.repeat) {
+					flag = false;
+					this.wrong.repeatWrong = true;
+					this.wrong.repeat = "输入的密码与新密码不一致";
+				} else {
+					flag = true;
+					this.wrong.repeatWrong = false;
+					this.wrong.repeat = "";
+				}
+
+				this.wrong.pass = flag;
+			},
+			//重复密码校验
+			validateRepeate() {
+				let flag = false;
+				if (this.pwd.newPwd != this.pwd.repeat) {
+					this.wrong.repeatWrong = true;
+					this.wrong.repeat = "输入的密码与新密码不一致";
+				} else {
+					flag = true;
+					this.wrong.repeatWrong = false;
+					this.wrong.repeat = "";
+				}
+				this.wrong.pass = flag;
+			},
+			validateOldPwd() {
+				this.wrong.oldPwdWrong = false;
+				this.wrong.oldPwd = "";
 			},
 			//手机号码校验
 			validatePhone() {

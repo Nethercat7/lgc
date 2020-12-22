@@ -7,6 +7,7 @@ public class Constant {
     public static final int USERNAME=2;
     public static final int PHONE=3;
     public static final int EMAIL=4;
+    public static final int PWD=5;
 
     //前端Alter Type
     public static final String TYPE_SUCCESS="success";
@@ -29,6 +30,7 @@ public class Constant {
     public static final String USERNAME_EXISTED="用户名已被注册";
     public static final String USERPHONE_EXISTED="手机号码已被使用";
     public static final String USEREMAIL_EXISTED="电子邮箱已被使用";
+    public static final String PWD_NO_MATCH="密码不匹配";
 
     //用户模块
     public static final String LOGIN_SUCCESS="登入成功";

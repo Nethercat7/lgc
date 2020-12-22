@@ -10,6 +10,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @CrossOrigin
@@ -70,10 +71,10 @@ public class UserController {
     public ResultBody updUserPhone(String phone, String id) {
         int status = userService.updUserPhone(phone, id);
         if (status == Constant.SUCCESS) {
-            log.info("成功修改：+" + id + "的手机号码为：" + phone);
+            log.info("成功修改：" + id + "的手机号码为：" + phone);
             return new ResultBody(Constant.SUCCESS, Constant.UPD_SUCCESS, Constant.TYPE_SUCCESS);
         } else if (status == Constant.PHONE) {
-            return new ResultBody(Constant.FAILED, Constant.USERPHONE_EXISTED, Constant.TYPE_ERROR);
+            return new ResultBody(Constant.PHONE, Constant.USERPHONE_EXISTED, Constant.TYPE_ERROR);
         }
         return new ResultBody(Constant.FAILED, Constant.UPD_FAILED, Constant.TYPE_ERROR);
     }
@@ -82,10 +83,22 @@ public class UserController {
     public ResultBody updUserEmail(String email, String id) {
         int status = userService.updUserEmail(email, id);
         if (status == Constant.SUCCESS) {
-            log.info("成功修改：+" + id + "的电子邮箱为：" + email);
+            log.info("成功修改：" + id + " 的电子邮箱为：" + email);
             return new ResultBody(Constant.SUCCESS, Constant.UPD_SUCCESS, Constant.TYPE_SUCCESS);
         } else if (status == Constant.EMAIL) {
-            return new ResultBody(Constant.FAILED, Constant.USEREMAIL_EXISTED, Constant.TYPE_ERROR);
+            return new ResultBody(Constant.EMAIL, Constant.USEREMAIL_EXISTED, Constant.TYPE_ERROR);
+        }
+        return new ResultBody(Constant.FAILED, Constant.UPD_FAILED, Constant.TYPE_ERROR);
+    }
+
+    @PostMapping("updUserPwd")
+    public ResultBody updUserPwd(@RequestBody Map<String, String> pwd) {
+        int status = userService.updUserPwd(pwd.get("newPwd"), pwd.get("oldPwd"), pwd.get("id"));
+        if (status == Constant.SUCCESS) {
+            log.info("成功修改：" + pwd.get("id") + " 的密码");
+            return new ResultBody(Constant.SUCCESS, Constant.UPD_SUCCESS, Constant.TYPE_SUCCESS);
+        } else if (status == Constant.PWD) {
+            return new ResultBody(Constant.PWD, Constant.PWD_NO_MATCH, Constant.TYPE_ERROR);
         }
         return new ResultBody(Constant.FAILED, Constant.UPD_FAILED, Constant.TYPE_ERROR);
     }

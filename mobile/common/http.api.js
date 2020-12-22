@@ -29,9 +29,12 @@ const install = (Vue, vm) => {
 
 	//修改手机号码
 	let updUserPhone = (params = {}) => vm.$u.get('/user/updUserPhone', params);
-	
+
 	//修改邮箱地址
 	let updUserEmail = (params = {}) => vm.$u.get('/user/updUserEmail', params);
+
+	//修改密码
+	let updUserPwd = (params = {}) => vm.$u.post('/user/updUserPwd', params);
 
 	vm.$u.api = {
 		getPosts,
@@ -44,7 +47,8 @@ const install = (Vue, vm) => {
 		getUserRate,
 		userRegister,
 		updUserPhone,
-		updUserEmail
+		updUserEmail,
+		updUserPwd
 	};
 }
 

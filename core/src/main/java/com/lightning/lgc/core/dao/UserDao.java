@@ -62,4 +62,10 @@ public interface UserDao {
 
     //更新电子邮箱
     int updUserEmail(String email,String id);
+
+    //更新密码
+    int updUserPwd(String pwd,String id);
+
+    //获取用户密码
+    User getUserPwd(String id);
 }
