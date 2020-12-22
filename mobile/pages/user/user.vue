@@ -3,8 +3,8 @@
 		<view v-if="isLogin">
 			<view class="u-text-center profile">
 				<u-avatar :src="user.userAvatar" size="150"></u-avatar>
-				<view class="u-font-xl">
-					{{user.userName}}
+				<view class="u-font-xl u-line-1">
+					{{user.userNickname}}
 				</view>
 			</view>
 
@@ -25,7 +25,7 @@
 					</view>
 				</u-col>
 				<u-col span="4">
-					<view class="opt-card" @click="$jump.navigate('/pages/user/topRate/topRate?id='+user.userId)">
+					<view class="opt-card" @click="$jump.navigate('/pages/user/topRate/topRate')">
 						<u-icon name="pushpin" size="30rpx" style="padding-right: 10rpx;"></u-icon>积分排行榜
 					</view>
 				</u-col>
@@ -120,6 +120,7 @@
 					name: storage.getUser('token').username
 				}).then(resp => {
 					this.user = resp.data.obj;
+					console.log(this.user);
 				})
 			},
 			login() {

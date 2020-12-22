@@ -1,7 +1,7 @@
 <template>
 	<view class="setting">
 		<u-cell-item icon="account" title="用户名" :value="user.userName"></u-cell-item>
-		<u-cell-item icon="account" title="昵称" :value="user.userNickname" @click="showNicknameModal=true"></u-cell-item>
+		<u-cell-item class="u-line-1" icon="account" title="昵称" :value="user.userNickname" @click="showNicknameModal=true"></u-cell-item>
 		<u-cell-item icon="lock-open" title="密码" @click="showPwdModal=true"></u-cell-item>
 		<u-cell-item icon="phone" title="手机" :value="user.userPhone" @click="showPhoneModal=true"></u-cell-item>
 		<u-cell-item icon="email" title="电子邮箱" :value="user.userEmail" @click="showEmailModal=true"></u-cell-item>

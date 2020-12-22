@@ -22,7 +22,7 @@
 				</u-col>
 				<u-col span="4">
 					<view class="rate">
-						{{item.userName}}
+						{{item.userNickname}}
 					</view>
 				</u-col>
 				<u-col span="3">
@@ -40,7 +40,7 @@
 					</view>
 				</u-col>
 				<u-col span="12">
-					<u-row class="user" >
+					<u-row class="user">
 						<u-col span="2">
 							<view class="rate index" style="padding-left:15rpx;">
 								{{user.rate}}
@@ -52,8 +52,8 @@
 							</view>
 						</u-col>
 						<u-col span="4">
-							<view class="rate">
-								{{user.name}}
+							<view class="rate u-line-1">
+								{{user.nickname}}
 							</view>
 						</u-col>
 						<u-col span="3">
@@ -70,6 +70,8 @@
 </template>
 
 <script>
+	import storage from '@/common/storage.js';
+	
 	export default {
 		data() {
 			return {
@@ -85,17 +87,18 @@
 					this.users = resp.data.obj;
 				})
 			},
-			getUserRate(id) {
+			getUserRate() {
 				this.$u.api.getUserRate({
-					id: id
+					id: storage.getUser().userId
 				}).then(resp => {
 					this.user = resp.data.obj;
+					console.log(this.user);
 				})
 			}
 		},
 		onLoad(option) {
 			this.getTop10Users();
-			this.getUserRate(option.id);
+			this.getUserRate();
 		}
 	}
 </script>
@@ -119,8 +122,8 @@
 		font-size: 30rpx;
 		font-weight: 600;
 	}
-	
-	.border-left{
+
+	.border-left {
 		margin-bottom: 0;
 	}
 </style>

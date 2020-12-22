@@ -13,10 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -53,6 +50,7 @@ public class UserServiceImpl implements UserService {
             String salt = PwdUtil.getSalt(SALT);
             user.setUserPwd(PwdUtil.pwd2MD5(user.getUserPwd(), salt, HASH));
             user.setUserSalt(salt);
+            user.setUserNickname("用户_"+String.valueOf(UUID.randomUUID()).replace("-",""));
             int status = userDao.add(user);
             if (status == 1) {
                 //添加用户的角色

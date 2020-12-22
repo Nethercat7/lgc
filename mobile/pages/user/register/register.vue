@@ -93,6 +93,12 @@
 					this.wrong.pwd.msg = "请输入密码";
 					this.user.pass = false;
 				}
+				if (this.user.userPhone == '') {
+					this.user.userPhone=null;
+				}
+				if (this.user.userEmail == '') {
+					this.user.userEmail=null;
+				}
 				//输入校验全部通过后进行请求
 				if (this.user.pass) {
 					this.$u.api.userRegister(this.user).then(resp => {
