@@ -169,4 +169,22 @@ public class UserServiceImpl implements UserService {
     public Map<String, Object> getUserRate(String id) {
         return userDao.getUserRate(id);
     }
+
+    @Override
+    public int updUserPhone(String phone, String id) {
+        //检查重复
+        int checkPhone = userDao.checkUserPhone(phone);
+        int status = Constant.PHONE;//手机号码已被使用
+        if (checkPhone > 0) return status;
+        return userDao.updUserPhone(phone, id);
+    }
+
+    @Override
+    public int updUserEmail(String email, String id) {
+        //检查重复
+        int checkEmail = userDao.checkUserEmail(email);
+        int status = Constant.EMAIL;//邮箱已被使用
+        if (checkEmail > 0) return status;
+        return userDao.updUserEmail(email, id);
+    }
 }

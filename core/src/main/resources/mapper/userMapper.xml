@@ -142,4 +142,16 @@
         FROM user
         WHERE user_email=#{email}
     </select>
+
+    <update id="updUserPhone" parameterType="String">
+        UPDATE user
+        SET user_phone=#{phone}
+        WHERE user_id=#{id}
+    </update>
+
+    <update id="updUserEmail" parameterType="String">
+        UPDATE user
+        SET user_email=#{email}
+        WHERE user_id=#{id}
+    </update>
 </mapper>

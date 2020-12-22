@@ -152,7 +152,7 @@
 <style lang="scss">
 	.profile {
 		color: #FFFFFF;
-		background-color: #19be6b;
+		background-color: $u-type-primary;
 		padding-top: 2em;
 		height: 400rpx;
 	}

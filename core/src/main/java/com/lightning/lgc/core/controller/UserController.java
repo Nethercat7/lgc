@@ -20,14 +20,14 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("add")
-    public ResultBody add(@RequestBody User user){
-        List<String> list=userService.add(user);
-        if(list.get(0).equals(Constant.REG_SUCCESS)){
-            log.info("成功注册用户:"+user.getUserName());
-            return new ResultBody(Constant.SUCCESS,Constant.REG_SUCCESS,Constant.TYPE_SUCCESS);
+    public ResultBody add(@RequestBody User user) {
+        List<String> list = userService.add(user);
+        if (list.get(0).equals(Constant.REG_SUCCESS)) {
+            log.info("成功注册用户:" + user.getUserName());
+            return new ResultBody(Constant.SUCCESS, Constant.REG_SUCCESS, Constant.TYPE_SUCCESS);
         }
-        log.info("注册:"+user.getUserName()+"失败");
-        return new ResultBody(Constant.FAILED,list,Constant.REG_FAILED,Constant.TYPE_ERROR);
+        log.info("注册:" + user.getUserName() + "失败");
+        return new ResultBody(Constant.FAILED, list, Constant.REG_FAILED, Constant.TYPE_ERROR);
     }
 
     @PostMapping("login")
@@ -64,5 +64,29 @@ public class UserController {
             return new ResultBody(Constant.SUCCESS, Constant.UPD_SUCCESS, Constant.TYPE_SUCCESS);
         }
         return new ResultBody(Constant.FAILED, Constant.UPD_INTEGRAL_FAILED, Constant.TYPE_ERROR);
+    }
+
+    @GetMapping("updUserPhone")
+    public ResultBody updUserPhone(String phone, String id) {
+        int status = userService.updUserPhone(phone, id);
+        if (status == Constant.SUCCESS) {
+            log.info("成功修改：+" + id + "的手机号码为：" + phone);
+            return new ResultBody(Constant.SUCCESS, Constant.UPD_SUCCESS, Constant.TYPE_SUCCESS);
+        } else if (status == Constant.PHONE) {
+            return new ResultBody(Constant.FAILED, Constant.USERPHONE_EXISTED, Constant.TYPE_ERROR);
+        }
+        return new ResultBody(Constant.FAILED, Constant.UPD_FAILED, Constant.TYPE_ERROR);
+    }
+
+    @GetMapping("updUserEmail")
+    public ResultBody updUserEmail(String email, String id) {
+        int status = userService.updUserEmail(email, id);
+        if (status == Constant.SUCCESS) {
+            log.info("成功修改：+" + id + "的电子邮箱为：" + email);
+            return new ResultBody(Constant.SUCCESS, Constant.UPD_SUCCESS, Constant.TYPE_SUCCESS);
+        } else if (status == Constant.EMAIL) {
+            return new ResultBody(Constant.FAILED, Constant.USEREMAIL_EXISTED, Constant.TYPE_ERROR);
+        }
+        return new ResultBody(Constant.FAILED, Constant.UPD_FAILED, Constant.TYPE_ERROR);
     }
 }

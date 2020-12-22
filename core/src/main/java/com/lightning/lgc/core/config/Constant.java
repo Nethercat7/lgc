@@ -3,7 +3,10 @@ package com.lightning.lgc.core.config;
 public class Constant {
     //返回编码
     public static final int SUCCESS=1;
-    public static final int FAILED=2;
+    public static final int FAILED=0;
+    public static final int USERNAME=2;
+    public static final int PHONE=3;
+    public static final int EMAIL=4;
 
     //前端Alter Type
     public static final String TYPE_SUCCESS="success";

@@ -17,15 +17,21 @@ const install = (Vue, vm) => {
 
 	//更新用户信息
 	let updUser = (params = {}) => vm.$u.post('/user/upd', params);
-	
+
 	//获取所有用户
 	let getUsers = (params = {}) => vm.$u.get('/userMgt/getUsers', params);
-	
+
 	//获取指定用户排名
 	let getUserRate = (params = {}) => vm.$u.get('/userMgt/getUserRate', params);
-	
+
 	//用户注册
 	let userRegister = (params = {}) => vm.$u.post('/user/add', params);
+
+	//修改手机号码
+	let updUserPhone = (params = {}) => vm.$u.get('/user/updUserPhone', params);
+	
+	//修改邮箱地址
+	let updUserEmail = (params = {}) => vm.$u.get('/user/updUserEmail', params);
 
 	vm.$u.api = {
 		getPosts,
@@ -36,7 +42,9 @@ const install = (Vue, vm) => {
 		updUser,
 		getUsers,
 		getUserRate,
-		userRegister
+		userRegister,
+		updUserPhone,
+		updUserEmail
 	};
 }
 

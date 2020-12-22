@@ -23,26 +23,34 @@
 		</u-modal>
 
 		<!-- 手机模态框 -->
-		<u-modal v-model="showPhoneModal" title="更换手机号码" show-cancel-button="true" @confirm="getValue(user)" @cancel="delValue">
+		<u-modal v-model="showPhoneModal" title="更换手机号码" show-cancel-button="true" @confirm="updUser('phone')" @cancel="delValue">
 			<view class="wrap">
-				<u-form>
-					<u-form-item label="新手机号" :label-position="position">
-						<u-input v-model="user2.userPhone" placeholder="请输入新手机号码"></u-input>
-					</u-form-item>
-				</u-form>
+				<u-row>
+					<u-col span="12">
+						<view :class="wrong.isWrong?'wrong':''">
+							<input type="text" v-model="data" placeholder="请输入新手机号" @input="validatePhone" />
+							<span>{{wrong.msg}}</span>
+						</view>
+					</u-col>
+				</u-row>
 			</view>
 		</u-modal>
 
 		<!-- 邮箱模态框 -->
-		<u-modal v-model="showEmailModal" title="更换电子邮箱" show-cancel-button="true" @confirm="getValue(user)" @cancel="delValue">
+		<u-modal v-model="showEmailModal" title="更换电子邮箱" show-cancel-button="true" @confirm="updUser('email')" @cancel="delValue">
 			<view class="wrap">
-				<u-form>
-					<u-form-item label="新邮箱地址" :label-position="position">
-						<u-input v-model="user2.userEmail" placeholder="请输入新邮箱地址"></u-input>
-					</u-form-item>
-				</u-form>
+				<u-row>
+					<u-col span="12">
+						<view :class="wrong.isWrong?'wrong':''">
+							<input type="text" v-model="data" placeholder="请输入新邮箱地址" @input="validateEmail" />
+							<span>{{wrong.msg}}</span>
+						</view>
+					</u-col>
+				</u-row>
 			</view>
 		</u-modal>
+
+		<u-toast ref="toast"></u-toast>
 	</view>
 </template>
 
@@ -53,7 +61,6 @@
 		data() {
 			return {
 				user: {},
-				user2: {}, //用于存储用户输入的数据
 				showPwdModal: false,
 				showPhoneModal: false,
 				showEmailModal: false,
@@ -63,6 +70,10 @@
 					old_pwd: '',
 					new_pwd: '',
 					repeat: ''
+				},
+				data: null,
+				wrong: {
+					isWrong: false
 				}
 			};
 		},
@@ -81,24 +92,82 @@
 					this.user = resp.data.obj;
 				})
 			},
-			updUser() {
-				this.$u.api.updUser(this.user).then(resp => {
-					this.$refs.toast.show({
-						title: resp.data.msg,
-						type: resp.data.type,
-						position: 'top'
-					})
-				})
-			},
-			getValue(value) {
-				console.log(value);
+			updUser(type) {
+				if (this.wrong.pass) {
+					if (type == 'phone') {
+						//保持模态框为打开状态，成功之后再关闭
+						this.showPhoneModal = true;
+						this.$u.api.updUserPhone({
+							id: this.user.userId,
+							phone: this.data
+						}).then(res => {
+							if (res.data.code == 1) {
+								this.data = null;
+								this.getUser();
+								this.showPhoneModal = false;
+							} else {
+								this.wrong.isWrong = true;
+								this.wrong.msg = res.data.msg;
+							}
+							this.$msg.send(this, res.data.msg, res.data.type);
+						})
+					} else if (type == 'email') {
+						this.showEmailModal = true;
+						this.$u.api.updUserEmail({
+							id: this.user.userId,
+							email: this.data
+						}).then(res => {
+							if (res.data.code == 1) {
+								this.data = null;
+								this.getUser();
+								this.showEmailModal = false;
+							} else {
+								this.wrong.isWrong = true;
+								this.wrong.msg = res.data.msg;
+							}
+							this.$msg.send(this, res.data.msg, res.data.type);
+						})
+					}
+				}
 			},
 			delValue(type) {
 				if (type == 'pwd') {
 					this.pwd = {}
 				} else {
-					this.user2 = {}
+					this.data = null
+					this.wrong.isWrong = false;
+					this.wrong.msg = "";
 				}
+			},
+			//手机号码校验
+			validatePhone() {
+				let flag = false;
+				let phone = this.data;
+				let regx = new RegExp(/^(13[0-9]|14[5|7]|15[0|1|2|3|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\d{8}$/);
+				if (!regx.test(phone) && phone != '') {
+					this.wrong.isWrong = true;
+					this.wrong.msg = "请输入有效的电话号码";
+				} else {
+					flag = true
+					this.wrong.isWrong = false;
+					this.wrong.msg = '';
+				}
+				this.wrong.pass = flag;
+			},
+			//邮箱校验
+			validateEmail() {
+				let flag = false;
+				let email = this.data;
+				let regx = new RegExp(/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/)
+				if (!regx.test(email) && email != '') {
+					this.wrong.isWrong = true;
+					this.wrong.msg = "请输入有效的电子邮箱地址";
+				} else {
+					flag = true
+					this.wrong.isWrong = false;
+					this.wrong.msg = "";
+				}
+				this.wrong.pass = flag;
 			}
 		},
 		onLoad() {
@@ -111,5 +180,23 @@
 	.setting u-cell-item {
 		display: block;
 		background-color: #FFFFFF;
+	}
+
+	input {
+		min-height: 38px;
+		font-size: 28rpx;
+		color: #303133;
+		flex: 1;
+		border-radius: 6rpx;
+		border: 1px solid #dcdfe6;
+		padding: 0 11px;
+	}
+
+	.wrong {
+		color: $u-type-error;
+	}
+
+	.wrong input {
+		border: 1px solid $u-type-error;
 	}
 </style>

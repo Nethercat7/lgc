@@ -57,4 +57,9 @@ public interface UserDao {
     //检查电子邮箱是否重复
     int checkUserEmail(String email);
 
+    //更新手机号码
+    int updUserPhone(String phone,String id);
+
+    //更新电子邮箱
+    int updUserEmail(String email,String id);
 }

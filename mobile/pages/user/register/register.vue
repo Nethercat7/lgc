@@ -193,7 +193,7 @@
 					this.wrong.email.msg = "";
 				}
 				this.user.pass = flag;
-			},
+			}
 		}
 	}
 </script>

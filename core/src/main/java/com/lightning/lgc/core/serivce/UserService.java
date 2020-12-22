@@ -33,4 +33,10 @@ public interface UserService {
 
     //获取指定用户的排名
     Map<String,Object> getUserRate(String id);
+
+    //更新手机号码
+    int updUserPhone(String phone,String id);
+
+    //更新电子邮箱
+    int updUserEmail(String email,String id);
 }

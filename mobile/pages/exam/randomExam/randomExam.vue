@@ -36,7 +36,8 @@
 				total: 0,
 				categories: [],
 				showModal: false,
-				wrong: 0
+				wrong: 0,
+				modalContent: ''
 			};
 		},
 		methods: {
