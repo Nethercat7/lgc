@@ -127,70 +127,108 @@
 
 				if (this.wrong.pass) {
 					if (type == 'phone') {
-						this.$u.api.updUserPhone({
-							id: this.user.userId,
-							phone: this.data
-						}).then(res => {
-							if (res.data.code == 1) {
-								this.data = null;
-								this.getUser();
-								this.showPhoneModal = false;
-							} else if (res.data.code == 3) {
-								this.wrong.isWrong = true;
-								this.wrong.msg = res.data.msg;
-							}
-							this.$msg.send(this, res.data.msg, res.data.type);
-						})
+						if (this.data == '' || this.data == null) {
+							this.wrong.isWrong = true;
+							this.wrong.msg = "请输入手机号码";
+							this.wrong.pass = false;
+						}
+						if (this.wrong.pass) {
+							this.$u.api.updUserPhone({
+								id: this.user.userId,
+								phone: this.data
+							}).then(res => {
+								if (res.data.code == 1) {
+									this.data = null;
+									this.getUser();
+									this.showPhoneModal = false;
+								} else if (res.data.code == 3) {
+									this.wrong.isWrong = true;
+									this.wrong.msg = res.data.msg;
+								}
+								this.$msg.send(this, res.data.msg, res.data.type);
+							})
+						}
 					} else if (type == 'email') {
-						this.$u.api.updUserEmail({
-							id: this.user.userId,
-							email: this.data
-						}).then(res => {
-							if (res.data.code == 1) {
-								this.data = null;
-								this.getUser();
-								this.showEmailModal = false;
-							} else if (res.data.code == 4) {
-								this.wrong.isWrong = true;
-								this.wrong.msg = res.data.msg;
-							}
-							this.$msg.send(this, res.data.msg, res.data.type);
-						})
-					}else if(type=='nickname'){
-						this.$u.api.updUserNickname({
-							id: this.user.userId,
-							nickname: this.data
-						}).then(res => {
-							if (res.data.code == 1) {
-								this.data = null;
-								this.getUser();
-								this.showNicknameModal = false;
-							} else if (res.data.code == 6) {
-								this.wrong.isWrong = true;
-								this.wrong.msg = res.data.msg;
-							}
-							this.$msg.send(this, res.data.msg, res.data.type);
-						})
+						if (this.data == '' || this.data == null) {
+							this.wrong.isWrong = true;
+							this.wrong.msg = "请输入邮箱地址";
+							this.wrong.pass = false;
+						}
+						if (this.wrong.pass) {
+							this.$u.api.updUserEmail({
+								id: this.user.userId,
+								email: this.data
+							}).then(res => {
+								if (res.data.code == 1) {
+									this.data = null;
+									this.getUser();
+									this.showEmailModal = false;
+								} else if (res.data.code == 4) {
+									this.wrong.isWrong = true;
+									this.wrong.msg = res.data.msg;
+								}
+								this.$msg.send(this, res.data.msg, res.data.type);
+							})
+						}
+					} else if (type == 'nickname') {
+						if (this.data == '' || this.data == null) {
+							this.wrong.isWrong = true;
+							this.wrong.msg = "请输入昵称";
+							this.wrong.pass = false;
+						}
+						if (this.wrong.pass) {
+							this.$u.api.updUserNickname({
+								id: this.user.userId,
+								nickname: this.data
+							}).then(res => {
+								if (res.data.code == 1) {
+									this.data = null;
+									this.getUser();
+									this.showNicknameModal = false;
+								} else if (res.data.code == 6) {
+									this.wrong.isWrong = true;
+									this.wrong.msg = res.data.msg;
+								}
+								this.$msg.send(this, res.data.msg, res.data.type);
+							})
+						}
 					} else {
-						this.$u.api.updUserPwd({
-							newPwd: this.pwd.newPwd,
-							oldPwd: this.pwd.oldPwd,
-							id: this.user.userId
-						}).then(res => {
-							if (res.data.code == 1) {
-								this.pwd = {}
-								this.getUser();
-								this.showPwdModal = false;
-								setTimeout(() => {
-									storage.remove('token');
-									this.$jump.switchTab('/pages/user/user');
-								}, 1000)
-							} else if (res.data.code == 5) {
-								this.wrong.oldPwdWrong = true;
-								this.wrong.oldPwd = res.data.msg;
-							}
-							this.$msg.send(this, res.data.msg, res.data.type);
-						})
+						if (this.pwd.newPwd == '') {
+							this.wrong.isWrong = true;
+							this.wrong.msg = "请输入密码";
+							this.wrong.pass = false;
+						}
+						if (this.pwd.oldPwd == '') {
+							this.wrong.oldPwdWrong = true;
+							this.wrong.oldPwd = "请输入密码";
+							this.wrong.pass = false;
+						}
+						if (this.pwd.repeat == '') {
+							this.wrong.repeatWrong = true;
+							this.wrong.repeat = "输入的密码与新密码不一致";
+							this.wrong.pass = false;
+						}
+						if (this.wrong.pass) {
+							this.$u.api.updUserPwd({
+								newPwd: this.pwd.newPwd,
+								oldPwd: this.pwd.oldPwd,
+								id: this.user.userId
+							}).then(res => {
+								if (res.data.code == 1) {
+									this.pwd = {}
+									this.getUser();
+									this.showPwdModal = false;
+									setTimeout(() => {
+										storage.remove('token');
+										this.$jump.switchTab('/pages/user/user');
+									}, 1000)
+								} else if (res.data.code == 5) {
+									this.wrong.oldPwdWrong = true;
+									this.wrong.oldPwd = res.data.msg;
+								}
+								this.$msg.send(this, res.data.msg, res.data.type);
+							})
+						}
 					}
 				}
 			},
@@ -212,10 +250,7 @@
 				let flag = false;
 				let pwd = this.pwd.newPwd;
 				let regx = new RegExp(/^[a-zA-Z]\w{5,17}$/);
-				if (pwd == '') {
-					this.wrong.isWrong = true;
-					this.wrong.msg = "请输入密码";
-				} else if (!regx.test(pwd)) {
+				if (!regx.test(pwd) && pwd != '') {
 					this.wrong.isWrong = true;
 					this.wrong.msg = "密码以字母开头，长度在6~18之间，只能包含字母、数字和下划线";
 				} else {
