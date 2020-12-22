@@ -150,12 +150,13 @@
 			validatePwd() {
 				let flag = false;
 				let pwd = this.user.userPwd;
+				let regx = new RegExp(/^[a-zA-Z]\w{5,17}$/);
 				if (pwd == '') {
 					this.wrong.pwd.isWrong = true;
 					this.wrong.pwd.msg = "请输入密码";
-				} else if (pwd.length < 6 || pwd.length > 30) {
+				} else if (!regx.test(pwd)) {
 					this.wrong.pwd.isWrong = true;
-					this.wrong.pwd.msg = "密码的长度为6至30位数之间";
+					this.wrong.pwd.msg = "密码以字母开头，长度在6~18之间，只能包含字母、数字和下划线";
 				} else {
 					flag = true
 					this.wrong.pwd.isWrong = false;
