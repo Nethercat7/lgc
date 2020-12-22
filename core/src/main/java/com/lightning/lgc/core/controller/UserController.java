@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Slf4j
 @CrossOrigin
 @RestController
@@ -19,13 +21,13 @@ public class UserController {
 
     @PostMapping("add")
     public ResultBody add(@RequestBody User user){
-        int status=userService.add(user);
-        if(status== Constant.SUCCESS){
+        List<String> list=userService.add(user);
+        if(list.get(0).equals(Constant.REG_SUCCESS)){
             log.info("成功注册用户:"+user.getUserName());
             return new ResultBody(Constant.SUCCESS,Constant.REG_SUCCESS,Constant.TYPE_SUCCESS);
         }
         log.info("注册:"+user.getUserName()+"失败");
-        return new ResultBody(Constant.FAILED,Constant.REG_FAILED,Constant.TYPE_ERROR);
+        return new ResultBody(Constant.FAILED,list,Constant.REG_FAILED,Constant.TYPE_ERROR);
     }
 
     @PostMapping("login")

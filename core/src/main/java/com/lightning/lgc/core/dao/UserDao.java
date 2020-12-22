@@ -47,4 +47,14 @@ public interface UserDao {
 
     //获取指定用户的排名
     Map<String,Object> getUserRate(String id);
+
+    //检查用户名是否重复
+    int checkUserName(String name);
+
+    //检查手机号码是否重复
+    int checkUserPhone(String phone);
+
+    //检查电子邮箱是否重复
+    int checkUserEmail(String email);
+
 }

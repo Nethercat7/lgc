@@ -8,7 +8,7 @@ import java.util.Map;
 
 public interface UserService {
     //添加用户
-    int add(User user);
+    List<String> add(User user);
 
     //根据用户名获取用户
     User getUserByName(String name);

@@ -22,6 +22,11 @@ public class Constant {
     public static final String REG_SUCCESS="注册成功";
     public static final String REG_FAILED="注册失败";
 
+    //检验消息
+    public static final String USERNAME_EXISTED="用户名已被注册";
+    public static final String USERPHONE_EXISTED="手机号码已被使用";
+    public static final String USEREMAIL_EXISTED="电子邮箱已被使用";
+
     //用户模块
     public static final String LOGIN_SUCCESS="登入成功";
 

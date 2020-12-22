@@ -1,9 +1,5 @@
 package com.lightning.lgc.core.serivce.impl;
 
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
 import com.lightning.lgc.core.config.Constant;
 import com.lightning.lgc.core.dao.UserDao;
 import com.lightning.lgc.core.entity.ResultBody;
@@ -12,7 +8,12 @@ import com.lightning.lgc.core.serivce.UserService;
 import com.lightning.lgc.core.util.JWTUtil;
 import com.lightning.lgc.core.util.PwdUtil;
 import com.lightning.lgc.core.util.SnowflakeIdGeneratorUntil;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,27 +32,51 @@ public class UserServiceImpl implements UserService {
     SnowflakeIdGeneratorUntil snowflakeIdGeneratorUntil = new SnowflakeIdGeneratorUntil(0, 0);
 
     @Override
-    public int add(User user) {
-        user.setUserId(snowflakeIdGeneratorUntil.getId());
-        String salt = PwdUtil.getSalt(SALT);
-        user.setUserPwd(PwdUtil.pwd2MD5(user.getUserPwd(), salt, HASH));
-        user.setUserSalt(salt);
-        int status = userDao.add(user);
-        if (status == 1) {
-            //添加用户的角色
-            if (user.getRoleIds()!=null&&user.getRoleIds().size() > 0) {
-                for (String id : user.getRoleIds()) {
-                    status = addUserRoleRelation(user.getUserId(), id);
+    public List<String> add(User user) {
+        List<String> list = new ArrayList<>();
+        int checkName = userDao.checkUserName(user.getUserName());
+
+        if (checkName > 0) list.add(Constant.USERNAME_EXISTED);
+
+        if (user.getUserPhone() != null) {
+            int checkPhone = userDao.checkUserPhone(user.getUserPhone());
+            if (checkPhone > 0) list.add(Constant.USERPHONE_EXISTED);
+        }
+
+        if (user.getUserPhone() != null) {
+            int checkEmail = userDao.checkUserEmail(user.getUserEmail());
+            if (checkEmail > 0) list.add(Constant.USEREMAIL_EXISTED);
+        }
+
+        if (list.size() == 0) {
+            user.setUserId(snowflakeIdGeneratorUntil.getId());
+            String salt = PwdUtil.getSalt(SALT);
+            user.setUserPwd(PwdUtil.pwd2MD5(user.getUserPwd(), salt, HASH));
+            user.setUserSalt(salt);
+            int status = userDao.add(user);
+            if (status == 1) {
+                //添加用户的角色
+                if (user.getRoleIds() != null && user.getRoleIds().size() > 0) {
+                    for (String id : user.getRoleIds()) {
+                        status = addUserRoleRelation(user.getUserId(), id);
+                        if (status == 0) {
+                            list.add(Constant.REG_FAILED);
+                            return list;
+                        }
+                    }
+                } else {
+                    //如果添加用户时没有选择角色，默认为普通用户
+                    status = addUserRoleRelation(user.getUserId(), "444519257385074688");
                     if (status == 0) {
-                        break;
+                        list.add(Constant.REG_FAILED);
+                        return list;
                     }
                 }
-            } else {
-                //如果添加用户时没有选择角色，默认为普通用户
-                status = addUserRoleRelation(user.getUserId(), "444519257385074688");
             }
+            list.add(Constant.REG_SUCCESS);
         }
-        return status;
+
+        return list;
     }
 
     @Override
@@ -64,12 +89,12 @@ public class UserServiceImpl implements UserService {
         User user = userDao.getUserLoginInfo(name);
         if (ObjectUtils.isEmpty(user)) {
             //用户名是否注册
-            return new ResultBody(Constant.FAILED, Constant.USER_NOT_REGISTER,Constant.TYPE_ERROR);
+            return new ResultBody(Constant.FAILED, Constant.USER_NOT_REGISTER, Constant.TYPE_ERROR);
         } else if (!user.getUserPwd().equals(PwdUtil.pwd2MD5(pwd, user.getUserSalt(), HASH))) {
             //密码是否正确
-            return new ResultBody(Constant.FAILED,Constant.WRONG_PWD,Constant.TYPE_ERROR);
+            return new ResultBody(Constant.FAILED, Constant.WRONG_PWD, Constant.TYPE_ERROR);
         }
-        return new ResultBody(Constant.SUCCESS, JWTUtil.createToken(user.getUserId(), user.getUserName()), Constant.LOGIN_SUCCESS,Constant.TYPE_SUCCESS);
+        return new ResultBody(Constant.SUCCESS, JWTUtil.createToken(user.getUserId(), user.getUserName()), Constant.LOGIN_SUCCESS, Constant.TYPE_SUCCESS);
     }
 
     @Override
@@ -93,11 +118,11 @@ public class UserServiceImpl implements UserService {
                     }
                 }
             } else {
-                for(String id:user.getRoleIds()){
-                    if(!ids.contains(id)){
-                        status=addUserRoleRelation(user.getUserId(),id);
+                for (String id : user.getRoleIds()) {
+                    if (!ids.contains(id)) {
+                        status = addUserRoleRelation(user.getUserId(), id);
                     }
-                    if(status==0){
+                    if (status == 0) {
                         break;
                     }
                 }
@@ -108,8 +133,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int del(String id) {
-        int status=userDao.del(id);
-        if(status==1) {
+        int status = userDao.del(id);
+        if (status == 1) {
             //删除和用户相关联的角色
             if (userDao.delUserRoleRelations(id) < 1) {
                 status = 0;
@@ -134,14 +159,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public int updIntegral(Long integral, String id) {
         //先获取用户积分
-        Long userIntegral=userDao.getIntegral(id);
+        Long userIntegral = userDao.getIntegral(id);
         //把获取到的积分+上本次的积分
-        userIntegral+=integral;
-        return userDao.updIntegral(userIntegral,id);
+        userIntegral += integral;
+        return userDao.updIntegral(userIntegral, id);
     }
 
     @Override
-    public Map<String,Object> getUserRate(String id) {
+    public Map<String, Object> getUserRate(String id) {
         return userDao.getUserRate(id);
     }
 }

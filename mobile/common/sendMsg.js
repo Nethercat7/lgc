@@ -5,6 +5,12 @@ const msg = {
 			type: type
 		})
 	},
+	sendSuccess(obj,val){
+		obj.$refs.toast.show({
+			title: val,
+			type: 'success'
+		})
+	},
 	sendError(obj, val) {
 		obj.$refs.toast.show({
 			title: val,

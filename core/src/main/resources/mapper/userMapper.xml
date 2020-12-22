@@ -124,4 +124,22 @@
         (SELECT * FROM user ORDER BY user_integral DESC) AS t) AS b
         WHERE b.user_id =#{id};
     </select>
+
+    <select id="checkUserName" resultType="Integer" parameterType="String">
+        SELECT COUNT(user_id)
+        FROM user
+        WHERE user_name=#{name}
+    </select>
+
+    <select id="checkUserPhone" resultType="Integer" parameterType="String">
+        SELECT COUNT(user_id)
+        FROM user
+        WHERE user_phone=#{phone}
+    </select>
+
+    <select id="checkUserEmail" resultType="Integer" parameterType="String">
+        SELECT COUNT(user_id)
+        FROM user
+        WHERE user_email=#{email}
+    </select>
 </mapper>

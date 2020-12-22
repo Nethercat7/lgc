@@ -59,9 +59,7 @@
 			return {
 				user: {
 					userName: '',
-					userPwd: '',
-					userEmail: '',
-					userPhone: ''
+					userPwd: ''
 				},
 				wrong: {
 					name: {
@@ -95,17 +93,35 @@
 					this.wrong.pwd.msg = "请输入密码";
 					this.user.pass = false;
 				}
+				//输入校验全部通过后进行请求
 				if (this.user.pass) {
 					this.$u.api.userRegister(this.user).then(resp => {
+						let data = resp.data.obj;
 						if (resp.data.code == 1) {
+							this.$msg.sendSuccess(this, resp.data.msg);
 							setTimeout(() => {
 								this.$jump.switchTab("/pages/user/user")
 							}, 1000)
+						} else {
+							//后台返回的重复性校验
+							for (let i = 0; i < data.length; i++) {
+								if (data[i] == '用户名已被注册') {
+									this.wrong.name.isWrong = true;
+									this.wrong.name.msg = data[i];
+									this.user.pass = false;
+								}
+								if (data[i] == '手机号码已被使用') {
+									this.wrong.phone.isWrong = true;
+									this.wrong.phone.msg = data[i];
+									this.user.pass = false;
+								}
+								if (data[i] == '电子邮箱已被使用') {
+									this.wrong.email.isWrong = true;
+									this.wrong.email.msg = data[i];
+									this.user.pass = false;
+								}
+							}
 						}
-						this.$refs.toast.show({
-							title: resp.data.msg,
-							type: resp.data.type
-						})
 					})
 				}
 			},
@@ -152,7 +168,7 @@
 				let flag = false;
 				let phone = this.user.userPhone;
 				let regx = new RegExp(/^(13[0-9]|14[5|7]|15[0|1|2|3|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\d{8}$/);
-				if (!regx.test(phone)) {
+				if (!regx.test(phone) && phone != '') {
 					this.wrong.phone.isWrong = true;
 					this.wrong.phone.msg = "请输入有效的电话号码";
 				} else {
@@ -167,7 +183,7 @@
 				let flag = false;
 				let email = this.user.userEmail;
 				let regx = new RegExp(/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/)
-				if (!regx.test(email)) {
+				if (!regx.test(email) && email != '') {
 					this.wrong.email.isWrong = true;
 					this.wrong.email.msg = "请输入有效的电子邮箱地址";
 				} else {
@@ -185,6 +201,8 @@
 	.login-btn button {
 		margin-bottom: 1em;
 		border-radius: 15rpx;
+		background-color: $u-type-primary;
+		color: #FFFFFF;
 	}
 
 	.login {
