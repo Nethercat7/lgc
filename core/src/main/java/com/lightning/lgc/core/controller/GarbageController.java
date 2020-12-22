@@ -67,8 +67,8 @@ public class GarbageController {
     }
 
     @GetMapping("getGarbages")
-    public ResultBody getGarbages(String name, String category, Integer num) {
-        List<Garbage> garbages = garbageService.getGarbages(name, category, num);
+    public ResultBody getGarbages(String name, String category, Integer num,String userId) {
+        List<Garbage> garbages = garbageService.getGarbages(name, category, num,userId);
         log.info("成功获取：" + garbages.size() + "条数据");
         return new ResultBody(Constant.SUCCESS, garbages, Constant.GET_SUCCESS, Constant.TYPE_SUCCESS);
     }

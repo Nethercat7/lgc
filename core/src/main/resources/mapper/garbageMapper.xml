@@ -37,6 +37,10 @@
         ON g.garbage_id=gcr.gcr_garbage_id
         LEFT JOIN garbage_category gc
         ON gc.gc_id=gcr.gcr_gc_id
+        LEFT JOIN user_garbage_relation ugr
+        ON g.garbage_id=ugr.ugr_garbage_id
+        LEFT JOIN user u
+        ON u.user_id=ugr.ugr_user_id
         <choose>
             <when test="name!=null">
                 WHERE g.garbage_name LIKE concat('%',#{name},'%')
@@ -46,6 +50,9 @@
             </when>
             <when test="num!=null">
                 ORDER BY RAND() LIMIT #{num}
+            </when>
+            <when test="userId!=null">
+                WHERE u.user_id=#{userId}
             </when>
         </choose>
     </select>

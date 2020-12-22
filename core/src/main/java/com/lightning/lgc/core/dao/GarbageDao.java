@@ -25,7 +25,7 @@ public interface GarbageDao {
     int addGarbageRelation(String gcrId,String garbageId,String gcId);
 
     //获取所有的垃圾分类
-    List<Garbage> getGarbages(String name,String category,Integer num);
+    List<Garbage> getGarbages(String name,String category,Integer num,String userId);
 
     //更新垃圾分类
     int updGarbage(Garbage garbage);

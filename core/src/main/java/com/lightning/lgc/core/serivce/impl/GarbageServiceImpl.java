@@ -49,8 +49,8 @@ public class GarbageServiceImpl implements GarbageService {
     }
 
     @Override
-    public List<Garbage> getGarbages(String name, String category, Integer num) {
-        return garbageDao.getGarbages(name, category, num);
+    public List<Garbage> getGarbages(String name, String category, Integer num,String userId) {
+        return garbageDao.getGarbages(name, category, num,userId);
     }
 
     @Override
@@ -73,7 +73,7 @@ public class GarbageServiceImpl implements GarbageService {
 
     @Override
     public List<Garbage> getGarbageWithFavorite(String name, String category, Integer num, String userId) {
-        List<Garbage> garbageList=garbageDao.getGarbages(name,category,num);
+        List<Garbage> garbageList=garbageDao.getGarbages(name,category,num,userId);
         for (Garbage garbage:garbageList){
             garbage.setInFavorite(false);
             //查询是否被收藏
