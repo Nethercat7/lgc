@@ -30,6 +30,8 @@ public class Constant {
     public static final String ADD_FAVORITE_FAIL="添加收藏时发生错误";
     public static final String DEL_FAVORITE_SUCCESS="已移除出收藏";
     public static final String DEL_FAVORITE_FAIL="移除物品时发生错误";
+    public static final String UPLOAD_FAILED="上传失败，请稍后重试";
+    public static final String FILE_EMTY="文件为空，请重新上传";
 
     //检验消息
     public static final String USERNAME_EXISTED="用户名已被注册";
@@ -65,4 +67,7 @@ public class Constant {
 
     //积分
     public static final String UPD_INTEGRAL_FAILED="更新积分失败，请与管理员联系";
+
+    //类型
+    public static final String AVATAR="avatar";
 }

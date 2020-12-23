@@ -2,7 +2,7 @@
 	<view>
 		<view v-if="isLogin">
 			<view class="u-text-center profile">
-				<u-avatar :src="user.userAvatar" size="150"></u-avatar>
+				<u-avatar :src="user.userAvatar" size="150" @click="uploadAvatar"></u-avatar>
 				<view class="u-font-xl u-line-1">
 					{{user.userNickname}}
 				</view>
@@ -107,7 +107,8 @@
 				white: {
 					"color": "white"
 				},
-				showModeal: false
+				showModeal: false,
+				showAvatarModal: false
 			}
 		},
 		methods: {
@@ -120,7 +121,6 @@
 					name: storage.getUser('token').username
 				}).then(resp => {
 					this.user = resp.data.obj;
-					console.log(this.user);
 				})
 			},
 			login() {
@@ -135,6 +135,24 @@
 						type: resp.data.type,
 						position: 'top'
 					})
+				})
+			},
+			uploadAvatar() {
+				uni.chooseImage({
+					success: (chooseImageRes) => {
+						const tempFilePaths = chooseImageRes.tempFilePaths;
+						uni.uploadFile({
+							url: 'http://127.0.0.1:8080/file/uploadPic?type=avatar&userId='+this.user.userId,
+							filePath: tempFilePaths[0],
+							name: 'file',
+							formData: {
+								'user': 'test'
+							},
+							success: (uploadFileRes) => {
+								console.log(uploadFileRes.data);
+							}
+						});
+					}
 				})
 			}
 		},
@@ -153,9 +171,11 @@
 <style lang="scss">
 	.profile {
 		color: #FFFFFF;
-		background-color: $u-type-primary;
+		background-color: $u-type-success;
 		padding-top: 2em;
 		height: 400rpx;
+		background-image: url('https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2111004717,3746085889&fm=26&gp=0.jpg');
+		background-position: center center;
 	}
 
 	.profile view {
@@ -172,8 +192,9 @@
 		background-color: rgba(0, 0, 0, 0.3);
 		color: white;
 		line-height: 150rpx;
-		//background-image: url('https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3491640376,2236282874&fm=26&gp=0.jpg');
+		background-image: url('https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2684637981,2978588876&fm=26&gp=0.jpg');
 		background-position: center center;
+		//opacity:0.7;
 	}
 
 	.card {
