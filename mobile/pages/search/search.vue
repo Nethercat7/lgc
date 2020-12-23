@@ -210,7 +210,7 @@
 
 	.search-btn button {
 		color: #FFFFFF;
-		background-color: rgba($color: #ffffff, $alpha: .1);
+		background-color: rgba($color: #585858, $alpha: .5);
 	}
 
 	.search-btn button:active {
@@ -221,6 +221,8 @@
 	.search-bar {
 		height: 250rpx;
 		background-color: $u-type-success;
+		background-image: url('https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2111004717,3746085889&fm=26&gp=0.jpg');
+		background-position: center center;
 	}
 
 	.search-bar>view {

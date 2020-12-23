@@ -92,7 +92,6 @@
 					id: storage.getUser().userId
 				}).then(resp => {
 					this.user = resp.data.obj;
-					console.log(this.user);
 				})
 			}
 		},

@@ -50,7 +50,7 @@
 					</view>
 				</u-col>
 				<u-col span="4">
-					<view class="opt-card" @click="showModeal=true">
+					<view class="opt-card" @click="uploadModal=true">
 						<u-icon name="arrow-upward" size="30rpx" style="padding-right: 10rpx;"></u-icon>上传分类数据
 					</view>
 				</u-col>
@@ -66,6 +66,17 @@
 				</u-col>
 			</u-row>
 			<u-modal v-model="showModeal" content="此选项暂未开放"></u-modal>
+			<u-modal v-model="uploadModal" title="上传分类数据">
+				<view class="wrap">
+					<u-row>
+						<u-col span="12">
+							<view class="input">
+								<input type="text" v-model="data.val" placeholder="请输入物品名称" />
+							</view>
+						</u-col>
+					</u-row>
+				</view>
+			</u-modal>
 
 		</view>
 		<view v-if="!isLogin" class="login">
@@ -108,7 +119,8 @@
 					"color": "white"
 				},
 				showModeal: false,
-				showAvatarModal: false
+				uploadModal: false,
+				data: {}
 			}
 		},
 		methods: {
@@ -142,7 +154,7 @@
 					success: (chooseImageRes) => {
 						const tempFilePaths = chooseImageRes.tempFilePaths;
 						uni.uploadFile({
-							url: 'http://127.0.0.1:8080/file/uploadPic?type=avatar&id='+this.user.userId,
+							url: 'http://127.0.0.1:8080/file/uploadPic?type=avatar&id=' + this.user.userId,
 							filePath: tempFilePaths[0],
 							name: 'file',
 							success: (uploadFileRes) => {
@@ -191,7 +203,7 @@
 		line-height: 150rpx;
 		background-image: url('https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2684637981,2978588876&fm=26&gp=0.jpg');
 		background-position: center center;
-		opacity:0.9;
+		opacity: 0.9;
 	}
 
 	.card {
@@ -243,5 +255,15 @@
 	.form .u-icon text,
 	input {
 		color: white !important;
+	}
+
+	.input input {
+		min-height: 38px;
+		font-size: 28rpx;
+		color: #303133 !important;
+		flex: 1;
+		border-radius: 6rpx;
+		border: 1px solid #dcdfe6;
+		padding: 0 11px;
 	}
 </style>
