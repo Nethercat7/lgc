@@ -7,7 +7,7 @@ const service=axios.create({
   //设置公共API
   baseURI:process.env.BASE_API,
   //设置超时时间 3S
-  timeout:3*1000
+  timeout:30*1000
 })
 
 //配置请求拦截器
