@@ -22,9 +22,6 @@ import PostsList from "../components/postsMgt/PostsList";
 import AddPosts from "../components/postsMgt/AddPosts";
 import PostsCategories from "../components/postsMgt/PostsCategories";
 
-//系统设置
-import TitleMgt from "../components/sys/TitleMgt";
-
 Vue.use(Router);
 
 
@@ -98,11 +95,6 @@ export default new Router({
           path: '/postsMgt/categories',
           name: 'PostsCategories',
           component: PostsCategories
-        },
-        {
-          path:'/sys/titleMgt',
-          name:'TitleMgt',
-          component:TitleMgt
         }
       ]
     },
