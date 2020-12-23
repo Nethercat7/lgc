@@ -2,7 +2,7 @@
   <el-row class="row">
     <!--标题-->
     <el-col :span="24">
-      <h3>添加文章</h3>
+      <h3 v-text="title"></h3>
     </el-col>
     <!--编辑器-->
     <el-col :span="19">
@@ -86,7 +86,8 @@
         categories: [],
         action: 'http://127.0.0.1:8080/file/upload?type=posts&id=' + storage.getUser().userId,
         hasPic: false,
-        picNoChange: true
+        picNoChange: true,
+        title:''
       }
     },
     methods: {
@@ -193,6 +194,9 @@
     created() {
       if (this.$route.query.id) {
         this.getPostsById(this.$route.query.id);
+        this.title='修改文章'
+      }else{
+        this.title='发布文章'
       }
       this.getCategories();
     }

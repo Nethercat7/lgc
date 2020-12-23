@@ -30,4 +30,5 @@ public class Posts implements Serializable {
     //文章菜单关联
     private String pcId;
     private String pcName;
+    private String userNickname;
 }

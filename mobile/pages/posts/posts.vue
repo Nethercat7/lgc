@@ -7,7 +7,7 @@
 					<u-icon name="calendar"></u-icon>{{posts.postsAddTime}}
 				</span>
 				<span>
-					<u-icon name="account-fill"></u-icon>Nethercat7
+					<u-icon name="account-fill"></u-icon>{{posts.userNickname}}
 				</span>
 			</view>
 		</view>
