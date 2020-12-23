@@ -1,6 +1,6 @@
 import http from '../utils/http'
 
-let request='http://127.0.0.1:8080'
+let request='http://127.0.0.1:8080';
 
 let api={
   //用户管理模块
@@ -81,6 +81,10 @@ let api={
   },
   delPostsCategory(params){
     return http.get(`${request}/postsMgt/delCategory?id=`+params)
+  },
+  //文件管理
+  delFile(params){
+    return http.post(`${request}/file/delete?key=`+params)
   }
 };
 
