@@ -74,4 +74,7 @@ public interface UserDao {
 
     //更新昵称
     int updUserNickname(String nickname,String id);
+
+    //更新用户头像
+    int updUserAvatar(String path,String id);
 }

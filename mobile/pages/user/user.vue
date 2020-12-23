@@ -142,14 +142,11 @@
 					success: (chooseImageRes) => {
 						const tempFilePaths = chooseImageRes.tempFilePaths;
 						uni.uploadFile({
-							url: 'http://127.0.0.1:8080/file/uploadPic?type=avatar&userId='+this.user.userId,
+							url: 'http://127.0.0.1:8080/file/uploadPic?type=avatar&id='+this.user.userId,
 							filePath: tempFilePaths[0],
 							name: 'file',
-							formData: {
-								'user': 'test'
-							},
 							success: (uploadFileRes) => {
-								console.log(uploadFileRes.data);
+								this.getUser();
 							}
 						});
 					}
@@ -194,7 +191,7 @@
 		line-height: 150rpx;
 		background-image: url('https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2684637981,2978588876&fm=26&gp=0.jpg');
 		background-position: center center;
-		//opacity:0.7;
+		opacity:0.9;
 	}
 
 	.card {

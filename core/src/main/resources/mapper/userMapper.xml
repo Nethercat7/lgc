@@ -179,4 +179,10 @@
         SET user_nickname=#{nickname}
         WHERE user_id=#{id}
     </update>
+
+    <update id="updUserAvatar" parameterType="String">
+        UPDATE user
+        SET user_avatar=#{path}
+        WHERE user_id=#{id}
+    </update>
 </mapper>

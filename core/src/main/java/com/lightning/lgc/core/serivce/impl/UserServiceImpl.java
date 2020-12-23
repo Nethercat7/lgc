@@ -206,4 +206,9 @@ public class UserServiceImpl implements UserService {
         if(data>0) return Constant.NICKNAME;//昵称已被占用
         return userDao.updUserNickname(nickname,id);
     }
+
+    @Override
+    public int updUserAvatar(String path, String id) {
+        return userDao.updUserAvatar(path,id);
+    }
 }
