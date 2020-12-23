@@ -14,6 +14,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Objects;
+import java.util.UUID;
 
 @Slf4j
 @CrossOrigin
@@ -23,15 +25,16 @@ public class FileController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("uploadPic")
+    @PostMapping("upload")
     public ResultBody upload(MultipartFile file, String type, String id) throws IOException {
         if (!file.isEmpty() && type != null) {
-            String fileName = id + "/" + file.getOriginalFilename();
+            String suffix = Objects.requireNonNull(file.getOriginalFilename()).substring(file.getOriginalFilename().lastIndexOf("."));
+            String fileName = type + "/" + id + "/" + UUID.randomUUID() + suffix;
             FileInputStream fileInputStream = (FileInputStream) file.getInputStream();
             //上传图片
-            String result = QiniuUtil.uploadPic(fileInputStream, fileName);
-            if (result.equals(Constant.UPLOAD_FAILED)) {
-                return new ResultBody(Constant.FAILED, Constant.UPLOAD_FAILED, Constant.TYPE_ERROR);
+            String result = QiniuUtil.upload(fileInputStream, fileName);
+            if (result.equals(Constant.PIC_UPLOAD_FAILED)) {
+                return new ResultBody(Constant.FAILED, Constant.PIC_UPLOAD_FAILED, Constant.TYPE_ERROR);
             } else {
                 if (type.equals(Constant.AVATAR)) {
                     //更新用户头像
@@ -40,11 +43,22 @@ public class FileController {
                         log.info("成功修改用户:" + id + "的头像");
                         return new ResultBody(Constant.SUCCESS, Constant.UPD_SUCCESS);
                     }
+                } else if (type.equals(Constant.POSTS)) {
+                    return new ResultBody(Constant.SUCCESS, (Object) result, Constant.UPD_SUCCESS);
                 }
             }
-            return new ResultBody(Constant.FAILED, Constant.UPLOAD_FAILED, Constant.TYPE_ERROR);
+            return new ResultBody(Constant.FAILED, Constant.PIC_UPLOAD_FAILED, Constant.TYPE_ERROR);
         } else {
             return new ResultBody(Constant.FAILED, Constant.FILE_EMTY, Constant.TYPE_ERROR);
         }
+    }
+
+    @PostMapping("delete")
+    public ResultBody delete(String key) {
+        int status = QiniuUtil.delete(key);
+        if (status == 1) {
+            return new ResultBody(Constant.SUCCESS, Constant.DEL_SUCCESS, Constant.TYPE_SUCCESS);
+        }
+        return new ResultBody(Constant.FAILED, Constant.DEL_FAILED, Constant.TYPE_ERROR);
     }
 }

@@ -24,13 +24,16 @@
         </el-col>
         <el-col :span="24">
           <el-upload
-            action="http://127.0.0.1:8080/file/uploadTitlePic"
+            ref="upload"
+            :action="action"
             :limit="1"
             :file-list="fileList"
             :before-remove="beforeRemove"
             :on-remove="handelRemove"
             :on-success="handleSuccess"
-            :on-exceed="handleExceed">
+            :on-exceed="handleExceed"
+            :auto-upload="false"
+            :on-change="handelChange">
             <el-button size="small" type="primary" plain>点击上传</el-button>
             <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
           </el-upload>
@@ -45,11 +48,11 @@
           <div style="padding-bottom: 10px;">选择文章类别：</div>
           <el-select v-model="posts.pcId" placeholder="请选择文章类别">
             <el-option
-            v-for="item in categories"
-            :key="item.pcId"
-            :label="item.pcName"
-            :value="item.pcId"
-            v-if="item.pcStatus==0"></el-option>
+              v-for="item in categories"
+              :key="item.pcId"
+              :label="item.pcName"
+              :value="item.pcId"
+              v-if="item.pcStatus==0"></el-option>
           </el-select>
         </el-col>
         <el-col :span="24">
@@ -66,6 +69,7 @@
   import 'quill/dist/quill.snow.css'
   import 'quill/dist/quill.bubble.css'
   import api from "../../api/api";
+  import storage from "@/assets/storage";
 
   export default {
     name: "AddPosts",
@@ -79,13 +83,15 @@
           postsContent: ''
         },
         fileList: [],
-        categories:[]
+        categories: [],
+        action: 'http://127.0.0.1:8080/file/upload?type=posts&id=' + storage.getUser().userId,
+        hasPic: false
       }
     },
     methods: {
       submit() {
         //如果参数中存在文章ID则为更新，否则为添加
-        if(this.$route.query.id){
+        if (this.$route.query.id) {
           api.updPosts(this.posts).then(resp => {
             this.$message({
               type: resp.data.type,
@@ -93,50 +99,75 @@
               duration: 1000
             })
           })
-        }else{
-          api.addPosts(this.posts).then(resp => {
-            if (resp.data.code === 1) {
-              this.posts={};
-            }
-            this.$message({
-              type: resp.data.type,
-              message: resp.data.msg,
-              duration: 1000
-            })
-          })
+        } else {
+          //校验
+          if(this.posts.title===''){
+            this.$message.error('请输入文章标题')
+          }else if(this.posts.postsContent===''){
+            this.$message.error('请输入文章内容')
+          }else if(!this.hasPic){
+            this.$message.error('请添加标题图片')
+          }else if(this.posts.pcId==null){
+            this.$message.error('请选择文章类别')
+          }else{
+            this.$refs.upload.submit();
+          }
         }
       },
-      getPostsById(id){
-        api.getPostsById(id).then(resp=>{
-          this.posts=resp.data.obj;
+      getPostsById(id) {
+        api.getPostsById(id).then(resp => {
+          this.posts = resp.data.obj;
           //将封面图片添加至fileList中
-          let start=this.posts.image.lastIndexOf('/')+1;
-          let end=this.posts.image.length;
-          this.fileList.push({name:this.posts.image.substr(start, end),url:this.posts.image})
+          let start = this.posts.image.lastIndexOf('/') + 1;
+          let end = this.posts.image.length;
+          this.fileList.push({name: this.posts.image.substr(start, end), url: this.posts.image})
         })
       },
       beforeRemove(file) {
-        return this.$confirm(`确定移除 ${ file.name }？`);
+        return this.$confirm(`确定移除 ${file.name}？`);
       },
-      handleSuccess(response){
-        if(response.code===1){
-          this.posts.image='http://127.0.0.1:8080/pic/title/'+response.obj;
+      handleSuccess(res) {
+        //封面图片上传成功后，上传文章内容。
+        if (res.code === 1) {
+          this.posts.image = res.obj;
+          this.addPosts();
+        } else {
+          this.$message({
+            type: res.type,
+            message: res.msg
+          })
         }
       },
       handleExceed() {
         this.$message.warning(`最多只能上传一张封面图片`);
       },
-      handelRemove(){
-        this.posts.image=null;
+      handelRemove() {
+        this.posts.image = null;
       },
-      getCategories(){
-        api.getPostsCategories().then(resp=>{
-          this.categories=resp.data.obj;
+      getCategories() {
+        api.getPostsCategories().then(resp => {
+          this.categories = resp.data.obj;
         })
+      },
+      addPosts() {
+        api.addPosts(this.posts).then(resp => {
+          if (resp.data.code === 1) {
+            this.posts = {};
+            this.fileList = [];
+          }
+          this.$message({
+            type: resp.data.type,
+            message: resp.data.msg,
+            duration: 1000
+          })
+        })
+      },
+      handelChange() {
+        this.hasPic = true;
       }
     },
     created() {
-      if(this.$route.query.id){
+      if (this.$route.query.id) {
         this.getPostsById(this.$route.query.id);
       }
       this.getCategories();
@@ -162,6 +193,10 @@
 
   .operate-bar > .el-col {
     margin: 10px;
+  }
+
+  >>> .ql-editor {
+    min-height: 300px;
   }
 </style>
 
