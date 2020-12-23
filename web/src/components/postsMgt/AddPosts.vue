@@ -52,7 +52,7 @@
               :key="item.pcId"
               :label="item.pcName"
               :value="item.pcId"
-              v-if="item.pcStatus==0"></el-option>
+              v-if="item.pcStatus===0"></el-option>
           </el-select>
         </el-col>
         <el-col :span="24">
@@ -116,9 +116,8 @@
           this.posts = resp.data.obj;
           //将封面图片添加至fileList中
           if (this.posts.postsHasPic === 1) {
-            let start = this.posts.image.lastIndexOf('/') + 1;
-            let end = this.posts.image.length;
-            this.fileList.push({name: this.posts.image.substr(start, end), url: this.posts.image});
+            let name = this.posts.image.lastIndexOf('/') + 1;
+            this.fileList.push({name: this.posts.image.substr(name), url: this.posts.image});
           }
         })
       },

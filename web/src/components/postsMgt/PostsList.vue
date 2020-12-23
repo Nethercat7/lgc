@@ -17,7 +17,7 @@
               title="确定删除吗？"
               icon="el-icon-info"
               icon-color="red"
-              @confirm="delPosts(scope.row.postsId)">
+              @confirm="delPosts(scope.row.postsId,scope.row.image,scope.row.postsHasPic)">
               <el-button type="danger" slot="reference">删除</el-button>
             </el-popconfirm>
           </template>
@@ -46,16 +46,21 @@
       updPosts(id) {
         this.$router.push({path: "/postsMgt/add", query: {id: id}})
       },
-      delPosts(id) {
+      delPosts(id, key, hasPic) {
         api.delPosts(id).then(resp => {
           if (resp.data.code === 1) {
             this.getPosts();
-            this.$message({
-              type: resp.data.type,
-              message: resp.data.msg,
-              duration: 1000
-            })
+            if (hasPic === 1) {
+              key = key.substr(key.lastIndexOf('posts'));
+              api.delFile(key);
+              console.log('del');
+            }
           }
+          this.$message({
+            type: resp.data.type,
+            message: resp.data.msg,
+            duration: 1000
+          })
         })
       }
     },
