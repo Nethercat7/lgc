@@ -28,4 +28,9 @@
     padding: 15px;
   }
 
+  .width-50-center{
+    width: 50%;
+    margin: auto;
+  }
+
 </style>

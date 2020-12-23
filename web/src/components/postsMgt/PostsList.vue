@@ -1,9 +1,9 @@
 <template>
   <el-row class="row">
-    <el-col :span="24">
-      <h3>文章</h3>
+    <el-col>
+      <h3>所有文章</h3>
     </el-col>
-    <el-col :span="24">
+    <el-col>
       <el-table :data="postsList" stripe>
         <el-table-column prop="title" label="标题"></el-table-column>
         <el-table-column prop="postsAuthor" label="作者"></el-table-column>

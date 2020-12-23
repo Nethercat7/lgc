@@ -1,22 +1,26 @@
 <template>
-  <div>
+  <el-row class="row">
+    <el-col>
+      <h3>垃圾分类</h3>
+    </el-col>
     <!--添加垃圾分类-->
-    <div>
-      <span>添加分类：</span>
-      <el-input v-model="garbage.garbageName" style="width:200px" placeholder="请输入物品名称"/>
-      <el-select v-model="garbage.gcId" placeholder="请选择类别">
-        <el-option
-          v-for="item in categories"
-          :key="item.gcId"
-          :label="item.gcName"
-          :value="item.gcId">
-        </el-option>
-      </el-select>
-      <el-button type="primary" @click="addGarbage">添加</el-button>
-    </div>
+    <el-col>
+      <div>
+        <span>添加分类：</span>
+        <el-input v-model="garbage.garbageName" style="width:200px" placeholder="请输入物品名称"/>
+        <el-select v-model="garbage.gcId" placeholder="请选择类别">
+          <el-option
+            v-for="item in categories"
+            :key="item.gcId"
+            :label="item.gcName"
+            :value="item.gcId">
+          </el-option>
+        </el-select>
+        <el-button type="primary" @click="addGarbage">添加</el-button>
+      </div>
+    </el-col>
 
-    <!--垃圾分类列表-->
-    <div>
+    <el-col>
       <el-table :data="garbages" stripe>
         <el-table-column prop="garbageName" label="名称"></el-table-column>
         <el-table-column prop="gcName" label="类别"></el-table-column>
@@ -34,10 +38,10 @@
           </template>
         </el-table-column>
       </el-table>
-    </div>
+    </el-col>
 
     <!--dialog 修改弹出框-->
-    <div>
+    <el-col>
       <el-dialog title="修改名称" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
         <span>
           <el-input v-model="garbage2.garbageName" style="width:49%" placeholder="请输入物品名称"/>
@@ -55,8 +59,9 @@
           <el-button type="primary" @click="updGarbage">确 定</el-button>
         </span>
       </el-dialog>
-    </div>
-  </div>
+    </el-col>
+
+  </el-row>
 </template>
 
 <script>

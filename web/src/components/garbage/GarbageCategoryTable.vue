@@ -1,12 +1,17 @@
 <template>
-  <div>
-    <div>
+  <el-row class="row">
+    <el-col>
+      <h3>分类类别</h3>
+    </el-col>
+
+    <el-col>
       <span>添加类别：</span>
       <el-input style="width:200px" v-model="garbageCategory.gcName"/>
       <el-button type="primary" @click="addCategory">添加</el-button>
-    </div>
+    </el-col>
+
     <!--数据表格-->
-    <div>
+    <el-col>
       <el-table :data="categories" stripe>
         <el-table-column prop="gcName" label="名称"></el-table-column>
         <el-table-column label="操作">
@@ -25,10 +30,10 @@
           </template>
         </el-table-column>
       </el-table>
-    </div>
+    </el-col>
 
     <!--dialog 修改弹出框-->
-    <div>
+    <el-col>
       <el-dialog title="修改名称" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
         <span>
           <el-input v-model="temp.gcName"></el-input>
@@ -38,8 +43,8 @@
           <el-button type="primary" @click="updCategory">确 定</el-button>
         </span>
       </el-dialog>
-    </div>
-  </div>
+    </el-col>
+  </el-row>
 </template>
 
 <script>

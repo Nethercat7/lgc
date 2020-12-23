@@ -1,28 +1,33 @@
 <template>
-  <div>
-    <el-form :model="role" :rules="rules" ref="roleUpdForm" label-width="100px" style="width: 500px;margin:auto">
-      <el-form-item label="角色代号" prop="roleCode">
-        <el-input v-model="role.roleCode" autocomplete="off"></el-input>
-      </el-form-item>
-      <el-form-item label="角色名称" prop="roleName">
-        <el-input v-model="role.roleName" autocomplete="off"></el-input>
-      </el-form-item>
-      <el-form-item label="权限分配">
-        <el-tree
-          :data="permsData"
-          :props="defaultProps"
-          node-key="id2String"
-          ref="tree"
-          show-checkbox
-          default-expand-all
-        ></el-tree>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="submitForm('roleUpdForm')">修改</el-button>
-        <el-button type="danger" @click="resetForm('roleUpdForm')">重置</el-button>
-      </el-form-item>
-    </el-form>
-  </div>
+  <el-row class="row">
+    <el-col :span="24">
+      <h3>更新角色</h3>
+    </el-col>
+    <el-col>
+      <el-form class="width-50-center" :model="role" :rules="rules" ref="roleUpdForm" label-width="100px">
+        <el-form-item label="角色代号" prop="roleCode">
+          <el-input v-model="role.roleCode" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="角色名称" prop="roleName">
+          <el-input v-model="role.roleName" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="权限分配">
+          <el-tree
+            :data="permsData"
+            :props="defaultProps"
+            node-key="id2String"
+            ref="tree"
+            show-checkbox
+            default-expand-all
+          ></el-tree>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="submitForm('roleUpdForm')">修改</el-button>
+          <el-button type="danger" @click="resetForm('roleUpdForm')">重置</el-button>
+        </el-form-item>
+      </el-form>
+    </el-col>
+  </el-row>
 </template>
 
 <script>

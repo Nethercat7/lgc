@@ -1,7 +1,9 @@
 <template>
 	<view>
 		<!-- 封面图片 -->
-		<view class="exam-header"></view>
+		<view class="exam-header">
+			<view class="u-text-center" style="color:#FFFFFF;line-height: 300rpx;font-size: 50rpx;">问答挑战</view>
+		</view>
 		<!-- 内容 -->
 		<view style="padding:50rpx" class="exam-content">
 			<view class="exam-question">
@@ -96,6 +98,8 @@
 		width: 100%;
 		height: 300rpx;
 		background-color: #19be6b;
+		background-image: url('https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2111004717,3746085889&fm=26&gp=0.jpg');
+		background-position: center center;
 	}
 
 	.exam-answer {

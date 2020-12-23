@@ -1,33 +1,40 @@
 <template>
-  <div>
-    <el-form :model="user" :rules="rules" ref="userAddForm" label-width="100px" style="width: 700px;margin:auto">
-      <el-form-item label="用户名" prop="userName">
-        <el-input v-model="user.userName" autocomplete="off"></el-input>
-      </el-form-item>
-      <el-form-item label="密码" prop="userPwd">
-        <el-input type="password" v-model="user.userPwd" show-password autocomplete="off"></el-input>
-      </el-form-item>
-      <el-form-item label="性别" prop="userGender">
-        <el-radio-group v-model="user.userGender">
-          <el-radio label="1">男</el-radio>
-          <el-radio label="0">女</el-radio>
-        </el-radio-group>
-      </el-form-item>
-      <el-form-item label="电话号码" prop="userPhone">
-        <el-input v-model="user.userPhone" autocomplete="off"></el-input>
-      </el-form-item>
-      <el-form-item label="电子邮箱" prop="userEmail">
-        <el-input v-model="user.userEmail" autocomplete="off"></el-input>
-      </el-form-item>
-      <el-form-item label="角色" prop="userRole">
-        <el-transfer v-model="user.roleIds" :data="data" :titles="title"></el-transfer>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="submitForm('userAddForm')">添加</el-button>
-        <el-button type="danger" @click="resetForm('userAddForm')">重置</el-button>
-      </el-form-item>
-    </el-form>
-  </div>
+  <el-row class="row">
+    <!--标题-->
+    <el-col :span="24">
+      <h3>注册用户</h3>
+    </el-col>
+
+    <el-col :span="24">
+      <el-form :model="user" :rules="rules" ref="userAddForm" label-width="100px" style="width: 700px;margin:auto">
+        <el-form-item label="用户名" prop="userName">
+          <el-input v-model="user.userName" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="密码" prop="userPwd">
+          <el-input type="password" v-model="user.userPwd" show-password autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="性别" prop="userGender">
+          <el-radio-group v-model="user.userGender">
+            <el-radio label="1">男</el-radio>
+            <el-radio label="0">女</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="电话号码" prop="userPhone">
+          <el-input v-model="user.userPhone" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="电子邮箱" prop="userEmail">
+          <el-input v-model="user.userEmail" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="角色" prop="userRole">
+          <el-transfer v-model="user.roleIds" :data="data" :titles="title"></el-transfer>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="submitForm('userAddForm')">添加</el-button>
+          <el-button type="danger" @click="resetForm('userAddForm')">重置</el-button>
+        </el-form-item>
+      </el-form>
+    </el-col>
+  </el-row>
 </template>
 
 <script>
@@ -86,11 +93,11 @@
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            api.addUser(this.user).then(resp=>{
+            api.addUser(this.user).then(resp => {
               if (resp.data.code === 1) {
                 this.resetForm(formName);
               }
-              if(resp.data!==''){
+              if (resp.data !== '') {
                 this.$message({
                   showClose: true,
                   message: resp.data.msg,
@@ -98,7 +105,7 @@
                   duration: "1000"
                 });
               }
-            }).catch(err=>{
+            }).catch(err => {
               console.log(err);
             })
           } else {
@@ -120,7 +127,7 @@
             });
           }
           this.data = arr
-        }).catch(err=>{
+        }).catch(err => {
           console.log(err);
         })
       }
