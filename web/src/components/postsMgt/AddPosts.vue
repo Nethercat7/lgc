@@ -32,9 +32,9 @@
             :on-remove="handelRemove"
             :on-success="handleSuccess"
             :on-exceed="handleExceed"
-            :auto-upload="false"
-            :on-change="handelChange">
-            <el-button size="small" type="primary" plain>点击上传</el-button>
+            :on-change="handelChange"
+            :auto-upload="false">
+            <el-button size="small" type="primary" plain>添加图片</el-button>
             <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
           </el-upload>
         </el-col>
@@ -86,8 +86,8 @@
         categories: [],
         action: 'http://127.0.0.1:8080/file/upload?type=posts&id=' + storage.getUser().userId,
         hasPic: false,
-        picNoChange: true,
-        title:''
+        title: '',
+        key: ''
       }
     },
     methods: {
@@ -97,20 +97,17 @@
           this.$message.error('请输入文章标题')
         } else if (this.posts.postsContent === '') {
           this.$message.error('请输入文章内容')
-        } else if (!this.hasPic) {
-          this.$message.error('请添加标题图片')
         } else if (this.posts.pcId == null) {
           this.$message.error('请选择文章类别')
         } else {
-          //3种情况
-          //1.只修改文章内容，封面图片不改=不走上传通道
-          //2.封面图片更换=走上传通道
-          //3.新添加文章=走上传通道
-          if (this.$route.query.id && this.picNoChange) {
-          } else if (this.$route.query.id && !this.picNoChange) {
+          if (this.hasPic) {
             this.$refs.upload.submit();
           } else {
-            this.$refs.upload.submit();
+            if (this.$route.query.id) {
+              this.updPosts();
+            } else {
+              this.addPosts();
+            }
           }
         }
       },
@@ -118,10 +115,11 @@
         api.getPostsById(id).then(resp => {
           this.posts = resp.data.obj;
           //将封面图片添加至fileList中
-          let start = this.posts.image.lastIndexOf('/') + 1;
-          let end = this.posts.image.length;
-          this.fileList.push({name: this.posts.image.substr(start, end), url: this.posts.image})
-          this.hasPic = true;
+          if (this.posts.postsHasPic === 1) {
+            let start = this.posts.image.lastIndexOf('/') + 1;
+            let end = this.posts.image.length;
+            this.fileList.push({name: this.posts.image.substr(start, end), url: this.posts.image});
+          }
         })
       },
       beforeRemove(file) {
@@ -147,18 +145,11 @@
         this.$message.warning(`最多只能上传一张封面图片`);
       },
       handelRemove() {
-        let key = this.posts.image.substr(this.posts.image.lastIndexOf('posts'));
-        api.delFile(key).then(res => {
-          if (res.data.code === 1) {
-            this.posts.image = null;
-            this.hasPic = false;
-            this.picNoChange = false;
-          }
-          this.$message({
-            type: res.data.type,
-            message: res.data.msg
-          })
-        })
+        this.hasPic = false;
+        if (this.$route.query.id) {
+          this.key = this.posts.image.substr(this.posts.image.lastIndexOf('posts'));
+        }
+        this.posts.image = null;
       },
       getCategories() {
         api.getPostsCategories().then(resp => {
@@ -182,10 +173,16 @@
         this.hasPic = true;
       },
       updPosts() {
-        api.updPosts(this.posts).then(resp => {
+        api.updPosts(this.posts).then(res => {
+          if (res.data.code === 1) {
+            //删除图片服务器上的标题图片
+            if (!this.hasPic) {
+              api.delFile(this.key);
+            }
+          }
           this.$message({
-            type: resp.data.type,
-            message: resp.data.msg,
+            type: res.data.type,
+            message: res.data.msg,
             duration: 1000
           })
         })
@@ -194,9 +191,9 @@
     created() {
       if (this.$route.query.id) {
         this.getPostsById(this.$route.query.id);
-        this.title='修改文章'
-      }else{
-        this.title='发布文章'
+        this.title = '修改文章'
+      } else {
+        this.title = '发布文章'
       }
       this.getCategories();
     }

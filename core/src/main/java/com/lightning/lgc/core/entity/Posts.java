@@ -26,6 +26,7 @@ public class Posts implements Serializable {
     private LocalDateTime postsAddTime;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private LocalDateTime postsUpdTime;
+    private int postsHasPic;
 
     //文章菜单关联
     private String pcId;

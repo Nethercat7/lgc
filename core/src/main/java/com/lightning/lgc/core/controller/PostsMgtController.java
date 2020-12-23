@@ -33,7 +33,7 @@ public class PostsMgtController {
     @GetMapping("getPosts")
     public ResultBody getPosts(String id) throws ParseException {
         List<Posts> postsList = postsMgtService.getPosts(id);
-        log.info("找到:"+postsList.size()+"条文章");
+        log.info("找到:" + postsList.size() + "条文章");
         return new ResultBody(Constant.SUCCESS, postsList, Constant.GET_SUCCESS);
     }
 
@@ -103,6 +103,16 @@ public class PostsMgtController {
         int status = postsMgtService.delCategory(id);
         if (status == 1) {
             log.info("成功删除分类目录：" + id);
+            return new ResultBody(Constant.SUCCESS, Constant.DEL_SUCCESS, Constant.TYPE_SUCCESS);
+        }
+        return new ResultBody(Constant.FAILED, Constant.DEL_FAILED, Constant.TYPE_ERROR);
+    }
+
+    @GetMapping("delPostsTitlePic")
+    public ResultBody delPostsTitlePic(String id) {
+        int status = postsMgtService.delPostsTitlePic(id);
+        if (status == 1) {
+            log.info("删除文章:+" + id + "封面图片");
             return new ResultBody(Constant.SUCCESS, Constant.DEL_SUCCESS, Constant.TYPE_SUCCESS);
         }
         return new ResultBody(Constant.FAILED, Constant.DEL_FAILED, Constant.TYPE_ERROR);

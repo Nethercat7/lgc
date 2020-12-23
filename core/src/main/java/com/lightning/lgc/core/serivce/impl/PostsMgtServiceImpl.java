@@ -9,7 +9,6 @@ import com.lightning.lgc.core.util.SnowflakeIdGeneratorUntil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -18,7 +17,6 @@ public class PostsMgtServiceImpl implements PostsMgtService {
     private PostsMgtDao postsMgtDao;
 
     SnowflakeIdGeneratorUntil snowflakeIdGeneratorUntil = new SnowflakeIdGeneratorUntil(0, 3);
-    DateTimeFormatter dtf=DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     @Override
     public int addPosts(Posts posts) {
@@ -26,16 +24,19 @@ public class PostsMgtServiceImpl implements PostsMgtService {
         posts.setPostsAuthor("444465749134671872");
         if (posts.getPostsTitleImg() == null) {
             posts.setPostsTitleImg("https://cdn.uviewui.com/uview/swiper/1.jpg");
+            posts.setPostsHasPic(0);
+        }else{
+            posts.setPostsHasPic(1);
         }
-        int status=postsMgtDao.addPosts(posts);
-        if(status==1){
-            status=postsMgtDao.addPostsCategoryRelation(snowflakeIdGeneratorUntil.getId(),posts.getPostsId(),posts.getPcId());
+        int status = postsMgtDao.addPosts(posts);
+        if (status == 1) {
+            status = postsMgtDao.addPostsCategoryRelation(snowflakeIdGeneratorUntil.getId(), posts.getPostsId(), posts.getPcId());
         }
         return status;
     }
 
     @Override
-    public List<Posts> getPosts(String id){
+    public List<Posts> getPosts(String id) {
         return postsMgtDao.getPosts(id);
     }
 
@@ -43,10 +44,13 @@ public class PostsMgtServiceImpl implements PostsMgtService {
     public int updPosts(Posts posts) {
         if (posts.getPostsTitleImg() == null) {
             posts.setPostsTitleImg("https://cdn.uviewui.com/uview/swiper/1.jpg");
+            posts.setPostsHasPic(0);
+        }else{
+            posts.setPostsHasPic(1);
         }
-        int status=postsMgtDao.updPosts(posts);
-        if(status==1){
-            status=postsMgtDao.updPostsCategoryRelation(posts.getPcId(),posts.getPostsId());
+        int status = postsMgtDao.updPosts(posts);
+        if (status == 1) {
+            status = postsMgtDao.updPostsCategoryRelation(posts.getPcId(), posts.getPostsId());
         }
         return status;
     }
@@ -58,9 +62,9 @@ public class PostsMgtServiceImpl implements PostsMgtService {
 
     @Override
     public int delPosts(String id) {
-        int status=postsMgtDao.delPosts(id);
-        if(status==1){
-            status=postsMgtDao.delPostsCategoryRelation(id);
+        int status = postsMgtDao.delPosts(id);
+        if (status == 1) {
+            status = postsMgtDao.delPostsCategoryRelation(id);
         }
         return status;
     }
@@ -97,5 +101,10 @@ public class PostsMgtServiceImpl implements PostsMgtService {
     @Override
     public int delCategory(String id) {
         return postsMgtDao.delCategory(id);
+    }
+
+    @Override
+    public int delPostsTitlePic(String id) {
+        return postsMgtDao.delPostsTitlePic(id);
     }
 }

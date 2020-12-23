@@ -5,12 +5,13 @@
 
 <mapper namespace="com.lightning.lgc.core.dao.PostsMgtDao">
     <insert id="addPosts" parameterType="Posts">
-        INSERT INTO posts(posts_id,posts_title,posts_title_img,posts_content,posts_author)
-        VALUES (#{postsId},#{postsTitle},#{postsTitleImg},#{postsContent},#{postsAuthor})
+        INSERT INTO posts(posts_id,posts_title,posts_title_img,posts_content,posts_author,posts_has_pic)
+        VALUES (#{postsId},#{postsTitle},#{postsTitleImg},#{postsContent},#{postsAuthor},#{postsHasPic})
     </insert>
 
     <select id="getPosts" resultType="Posts" parameterType="String">
-        SELECT p.posts_id,p.posts_title,p.posts_title_img,p.posts_content,p.posts_author,p.posts_add_time,p.posts_upd_time,pc.pc_id,pc.pc_name,u.user_nickname
+        SELECT
+        p.posts_id,p.posts_title,p.posts_title_img,p.posts_content,p.posts_author,p.posts_add_time,p.posts_upd_time,pc.pc_id,pc.pc_name,u.user_nickname,p.posts_has_pic
         FROM posts p
         LEFT JOIN posts_category_relation pcr
         ON p.posts_id=pcr.pcr_posts_id
@@ -28,17 +29,19 @@
 
     <update id="updPosts" parameterType="Posts">
         UPDATE posts
-        SET posts_title=#{postsTitle},posts_title_img=#{postsTitleImg},posts_content=#{postsContent}
+        SET posts_title=#{postsTitle},posts_title_img=#{postsTitleImg},posts_content=#{postsContent},posts_has_pic=#{postsHasPic}
         WHERE posts_id=#{postsId}
     </update>
 
     <select id="getPostsById" parameterType="String" resultType="Posts">
-        SELECT p.posts_id,p.posts_title,p.posts_title_img,p.posts_content,p.posts_author,p.posts_add_time,p.posts_upd_time,pc.pc_id,pc.pc_name
+        SELECT p.posts_id,p.posts_title,p.posts_title_img,p.posts_content,p.posts_author,p.posts_add_time,p.posts_upd_time,pc.pc_id,pc.pc_name,u.user_nickname,p.posts_has_pic
         FROM posts p
         LEFT JOIN posts_category_relation pcr
         ON p.posts_id=pcr.pcr_posts_id
         LEFT JOIN posts_category pc
         ON pc.pc_id=pcr.pcr_pc_id
+        LEFT JOIN user u
+        ON u.user_id=p.posts_author
         WHERE p.posts_id=#{id}
     </select>
 
@@ -87,4 +90,10 @@
         DELETE FROM posts_category_relation
         WHERE pcr_posts_id=#{id}
     </delete>
+
+    <update id="delPostsTitlePic" parameterType="String">
+        UPDATE posts
+        SET posts_title_img=null
+        WHERE posts_id=#{id}
+    </update>
 </mapper>

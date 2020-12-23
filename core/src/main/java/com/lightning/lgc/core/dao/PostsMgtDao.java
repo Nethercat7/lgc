@@ -44,4 +44,7 @@ public interface PostsMgtDao {
 
     //删除文章和类别之间的关系
     int delPostsCategoryRelation(String id);
+
+    //删除文章封面图片
+    int delPostsTitlePic(String id);
 }

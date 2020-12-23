@@ -36,4 +36,7 @@ public interface PostsMgtService {
 
     //根据ID删除分类目录
     int delCategory(String id);
+
+    //删除文章封面图片
+    int delPostsTitlePic(String id);
 }
