@@ -10,7 +10,7 @@ public interface RoleMgtService {
     int add(Role role);
 
     //通过角色名称获取角色
-    Role getRoleByName(String name);
+    Role getRoleById(String id);
 
     //获取所有角色
     List<Role> getRoles();

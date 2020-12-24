@@ -30,7 +30,7 @@
         ></el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button type="info" @click="updRole(scope.row.roleName)">修改</el-button>
+            <el-button type="info" @click="updRole(scope.row.roleId)">修改</el-button>
             <el-popconfirm
               title="确定删除吗？"
               icon="el-icon-info"
@@ -61,12 +61,18 @@
     },
     methods:{
       getRoles(){
-        api.getRoles().then(resp=>{
-          this.roles=resp.data.obj;
+        api.getRoles().then(res=>{
+          let data=res.data.obj;
+          for(let i=0;i<data.length;i++){
+            if(data[i].roleStatus===0){
+              data[i].roleStatus='正常'
+            }
+          }
+          this.roles=data;
         })
       },
-      updRole(name){
-        this.$router.push({path:"/roleMgt/upd",query:{name:name}})
+      updRole(id){
+        this.$router.push({path:"/roleMgt/upd",query:{id:id}})
       },
       delRole(id){
         if(confirm("确认删除?")){

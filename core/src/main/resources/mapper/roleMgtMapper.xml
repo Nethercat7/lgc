@@ -9,9 +9,9 @@
         VALUES(#{roleId},#{roleCode},#{roleName})
     </insert>
 
-    <select id="getRoleByName" parameterType="String" resultType="Role">
+    <select id="getRoleById" parameterType="String" resultType="Role">
         SELECT * FROM role
-        WHERE role_name=#{name}
+        WHERE role_id=#{id}
     </select>
 
     <select id="getRoles" resultType="Role">

@@ -26,6 +26,9 @@ let api = {
   updRole(params) {
     return http.post(`${request}/roleMgt/upd`, params)
   },
+  getRoleById(params){
+    return http.get(`${request}/roleMgt/getRoleById?id=`+params)
+  },
   //分类管理模块
   addCategory(params) {
     return http.post(`${request}/garbage/addCategory`, params)

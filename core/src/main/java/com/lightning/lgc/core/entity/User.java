@@ -28,7 +28,7 @@ public class User implements Serializable {
     private String userSalt;
     private Long userIntegral;
     private String userAvatar;
-    private String userStatus;
+    private int userStatus;
     private String userNickname;
 
     //用户所拥有的角色列表

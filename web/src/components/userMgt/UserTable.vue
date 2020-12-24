@@ -61,9 +61,18 @@
     methods: {
       getUsers() {
         api.getUsers().then(resp => {
-          this.users = resp.data.obj;
-        }).catch(err => {
-          console.log(err);
+          let data = resp.data.obj;
+          for (let i = 0; i < data.length; i++) {
+            if(data[i].userGender===1){
+              data[i].userGender='男'
+            }else{
+              data[i].userGender='女'
+            }
+            if(data[i].userStatus===0){
+              data[i].userStatus='正常'
+            }
+          }
+          this.users = data;
         })
       },
       updUser(name) {

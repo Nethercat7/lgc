@@ -38,8 +38,8 @@ public class RoleMgtServiceImpl implements RoleMgtService {
     }
 
     @Override
-    public Role getRoleByName(String name) {
-        Role role = roleMgtDao.getRoleByName(name);
+    public Role getRoleById(String id) {
+        Role role = roleMgtDao.getRoleById(id);
         List<Perms> perms = roleMgtDao.getRolePerms(role.getRoleId());
         role.setPerms(perms);
         return role;
@@ -47,13 +47,7 @@ public class RoleMgtServiceImpl implements RoleMgtService {
 
     @Override
     public List<Role> getRoles() {
-        List<Role> roles = roleMgtDao.getRoles();
-        for (Role role : roles) {
-            if (role.getRoleStatus().equals("0")) {
-                role.setRoleStatus("正常");
-            }
-        }
-        return roles;
+        return roleMgtDao.getRoles();
     }
 
     @Override

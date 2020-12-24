@@ -31,10 +31,10 @@ public class RoleMgtController {
         return new ResultBody(Constant.FAILED, Constant.TYPE_ERROR, Constant.ADD_FAILED);
     }
 
-    @GetMapping("getRoleByName")
+    @GetMapping("getRoleById")
    // @RequiresPermissions("rolemgt:roletable:upd")
-    public ResultBody getRoleByName(String name) {
-        Role role = roleMgtService.getRoleByName(name);
+    public ResultBody getRoleById(String id) {
+        Role role = roleMgtService.getRoleById(id);
         if (!ObjectUtils.isEmpty(role)) {
             log.info("找到角色:" + role.getRoleName());
             return new ResultBody(Constant.SUCCESS, role, Constant.GET_ROLE_SUCCESS);

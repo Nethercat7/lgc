@@ -31,7 +31,6 @@
 </template>
 
 <script>
-  import storage from "../../assets/storage";
   import node from "../../assets/node";
   import api from "../../api/api";
 
@@ -84,14 +83,9 @@
           })
         })
       },
-      getRole(name) {
-        this.$http.get('/roleMgt/getRoleByName?name=' + name, {
-          headers: {
-            token: storage.get('token')
-          }
-        }).then(resp => {
-          let obj = resp.data.obj;
-          this.role = obj;
+      getRole(id) {
+        api.getRoleById(id).then(res=>{
+          this.role = res.data.obj;
           //设置已经拥有的权限
           let perms = this.role.perms;
           let permsData = [];
@@ -108,7 +102,7 @@
       }
     },
     created() {
-      this.getRole(this.$route.query.name);
+      this.getRole(this.$route.query.id);
       this.getPerms()
     }
   }
