@@ -86,6 +86,9 @@ let api = {
     return http.get(`${request}/postsMgt/delPostsTitlePic?id=` + params)
   },
   //文件管理
+  uploadFile(params){
+    return http.post(`${request}/file/upload`,params)
+  },
   delFile(params) {
     return http.post(`${request}/file/delete?key=` + params)
   }

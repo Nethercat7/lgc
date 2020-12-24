@@ -48,9 +48,8 @@ public class FileController {
                 }
             }
             return new ResultBody(Constant.FAILED, Constant.PIC_UPLOAD_FAILED, Constant.TYPE_ERROR);
-        } else {
-            return new ResultBody(Constant.FAILED, Constant.FILE_EMTY, Constant.TYPE_ERROR);
         }
+        return new ResultBody(Constant.FAILED, Constant.FILE_EMTY, Constant.TYPE_ERROR);
     }
 
     @PostMapping("delete")

@@ -11,7 +11,21 @@
           <el-input v-model="posts.title" placeholder="请输入标题"/>
         </el-col>
         <el-col :span="24">
-          <quill-editor v-model="posts.postsContent"/>
+          <quill-editor
+            ref="myQuillEditor"
+            v-model="posts.postsContent"
+            :options="editorOption"/>
+        </el-col>
+        <!-- 编辑器图片上传 -->
+        <el-col>
+          <el-upload
+            style="display: none"
+            class="quill-uploader"
+            ref="quillUploader"
+            :action="action"
+            :show-file-list="false"
+            :on-success="handlePostsPicUpload">
+          </el-upload>
         </el-col>
       </el-row>
     </el-col>
@@ -87,7 +101,39 @@
         action: 'http://127.0.0.1:8080/file/upload?type=posts&id=' + storage.getUser().userId,
         hasPic: false,
         title: '',
-        key: ''
+        key: '',
+        editorOption: {
+          placeholder: "在此输入内容",
+          modules: {
+            toolbar: {
+              //配置工具栏
+              container: [
+                ["bold", "italic", "underline", "strike"],
+                ["blockquote", "code-block"],
+                [{header: 1}, {header: 2}],
+                [{list: "ordered"}, {list: "bullet"}],
+                [{script: "sub"}, {script: "super"}],
+                [{indent: "-1"}, {indent: "+1"}],
+                [{direction: "rtl"}],
+                [{size: ["small", false, "large", "huge"]}],
+                [{header: [1, 2, 3, 4, 5, 6, false]}],
+                [{font: []}],
+                [{color: []}, {background: []}],
+                [{align: []}],
+                ["link", "image", "video"],
+              ],
+              handlers: {
+                image: function (val) {
+                  if (val) {
+                    document.querySelector('.quill-uploader input').click()
+                  } else {
+                    this.quill.format('image', false);
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     methods: {
@@ -185,6 +231,21 @@
             duration: 1000
           })
         })
+      },
+      /*编辑器设置*/
+      handlePostsPicUpload(res) {
+        if (res.code === 1) {
+          // 获取富文本组件实例
+          let quill = this.$refs["myQuillEditor"].quill;
+          // 获取光标所在位置
+          let length = quill.getSelection().index;
+          // 插入图片insertEmbed()三个参数，前两个固定即可
+          quill.insertEmbed(length, "image", res.obj);
+          // 调整光标到最后
+          quill.setSelection(length + 1);
+        } else {
+          this.$message.error(res.msg);
+        }
       }
     },
     created() {
@@ -217,10 +278,6 @@
 
   .operate-bar > .el-col {
     margin: 10px;
-  }
-
-  >>> .ql-editor {
-    min-height: 300px;
   }
 </style>
 

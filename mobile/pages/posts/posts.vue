@@ -12,7 +12,7 @@
 			</view>
 		</view>
 		<view class="posts-content">
-			<u-parse :html="posts.postsContent" :tag-style="style"></u-parse>
+			<u-parse :html="posts.postsContent"></u-parse>
 		</view>
 		<view class="posts-tags">
 			<u-row>
@@ -36,9 +36,6 @@
 			return {
 				posts: {},
 				tags: ["标签1", "标签2", "标签3"],
-				style: {
-					h1: 'border-left: 0.27em solid #4CD964;padding-left: 1em;font-size: 1.7em;background-color: rgba(251,252,252,.5);;font-weight: 400;'
-				}
 			}
 		},
 		methods: {
