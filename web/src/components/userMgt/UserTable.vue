@@ -81,6 +81,10 @@
             }
             if(data[i].userStatus===0){
               data[i].userStatus='正常'
+            }else if(data[i].userStatus===1){
+              data[i].userStatus='冻结'
+            }else if(data[i].userStatus===2){
+              data[i].userStatus='封锁'
             }
           }
           this.users = data;
@@ -90,11 +94,7 @@
         this.$router.push({path: '/userMgt/upd', query: {name}})
       },
       delUser(id) {
-        this.$http.get("/userMgt/del?id=" + id, {
-          headers: {
-            token: storage.get('token')
-          }
-        }).then(resp => {
+        api.delUser(id).then(resp => {
           if (resp.data.code === 1) {
             this.getUsers();
           }

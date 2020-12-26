@@ -31,6 +31,13 @@
         <el-form-item label="角色" prop="userRole">
           <el-transfer v-model="user.roleIds" :data="data" :titles="title"></el-transfer>
         </el-form-item>
+        <el-form-item label="状态" prop="userStatus">
+          <el-radio-group v-model="user.userStatus">
+            <el-radio label="0">正常</el-radio>
+            <el-radio label="1">冻结</el-radio>
+            <el-radio label="2">封锁</el-radio>
+          </el-radio-group>
+        </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="submitForm('userAddForm')">添加</el-button>
           <el-button type="danger" @click="resetForm('userAddForm')">重置</el-button>
@@ -60,14 +67,7 @@
         callback()
       };
       return {
-        user: {
-          userName: '',
-          userPwd: '',
-          userGender: '',
-          userPhone: '',
-          userEmail: '',
-          roleIds: []
-        },
+        user: {},
         rules: {
           userName: [
             {required: true, validator: validateName, trigger: 'blur'}

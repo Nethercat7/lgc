@@ -20,7 +20,6 @@
             <template slot="title"><i class="el-icon-user-solid"></i>用户管理</template>
             <el-menu-item @click="goto('/userMgt/users')">所有用户</el-menu-item>
             <el-menu-item @click="goto('/userMgt/add')">注册用户</el-menu-item>
-            <el-menu-item>修改用户状态</el-menu-item>
           </el-submenu>
           <el-submenu index="2">
             <template slot="title"><i class="el-icon-s-custom"></i>角色管理</template>

@@ -43,8 +43,8 @@
     </select>
 
     <insert id="add" parameterType="User">
-        INSERT INTO user(user_id,user_name,user_pwd,user_gender,user_phone,user_email,user_salt,user_nickname)
-        VALUES(#{userId},#{userName},#{userPwd},#{userGender},#{userPhone},#{userEmail},#{userSalt},#{userNickname})
+        INSERT INTO user(user_id,user_name,user_pwd,user_gender,user_phone,user_email,user_salt,user_nickname,user_status)
+        VALUES(#{userId},#{userName},#{userPwd},#{userGender},#{userPhone},#{userEmail},#{userSalt},#{userNickname},#{userStatus})
     </insert>
 
     <select id="getUsers" resultMap="userMap" parameterType="Boolean">
@@ -63,8 +63,8 @@
     </select>
 
     <update id="upd" parameterType="User">
-        UPDATE user SET user_gender=#{userGender},user_phone=#{userPhone},user_email=#{userEmail},user_avatar=#{userAvatar}
-        WHERE user_name=#{userName}
+        UPDATE user SET user_gender=#{userGender},user_phone=#{userPhone},user_email=#{userEmail},user_avatar=#{userAvatar},user_nickname=#{userNickname}
+        WHERE user_id=#{userId}
     </update>
 
     <delete id="del" parameterType="String">

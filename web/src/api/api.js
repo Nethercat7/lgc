@@ -16,6 +16,9 @@ let api = {
   getUserByName(params){
     return http.get(`${request}/user/getUserByName?name=`+params)
   },
+  delUser(params){
+    return http.get(`${request}/userMgt/del?id=`+params)
+  },
   //角色管理模块
   getRoles() {
     return http.get(`${request}/roleMgt/getRoles`)

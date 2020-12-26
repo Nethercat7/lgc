@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
             String salt = PwdUtil.getSalt(SALT);
             user.setUserPwd(PwdUtil.pwd2MD5(user.getUserPwd(), salt, HASH));
             user.setUserSalt(salt);
-            user.setUserNickname("用户_"+String.valueOf(UUID.randomUUID()).replace("-",""));
+            if(user.getUserNickname()==null) user.setUserNickname("用户_"+String.valueOf(UUID.randomUUID()).replace("-",""));
             int status = userDao.add(user);
             if (status == 1) {
                 //添加用户的角色
