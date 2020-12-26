@@ -40,7 +40,11 @@
           prop="userStatus"
           label="状态">
         </el-table-column>
-        <el-table-column label="操作">
+        <el-table-column>
+          <template slot="header" slot-scope="scope">
+            <el-input
+              placeholder="输入用户名、电话号码或者邮箱地址进行检索"/>
+          </template>
           <template slot-scope="scope">
             <el-button type="info" @click="updUser(scope.row.userName)">修改</el-button>
             <el-popconfirm

@@ -32,7 +32,11 @@
           prop="roleStatus"
           label="状态"
         ></el-table-column>
-        <el-table-column label="操作">
+        <el-table-column>
+          <template slot="header" slot-scope="scope">
+            <el-input
+              placeholder="输入角色代号或者角色名称进行检索"/>
+          </template>
           <template slot-scope="scope">
             <el-button type="info" @click="updRole(scope.row.roleId)">修改</el-button>
             <el-popconfirm
