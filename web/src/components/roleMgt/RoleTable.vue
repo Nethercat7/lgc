@@ -70,6 +70,8 @@
           for (let i = 0; i < data.length; i++) {
             if (data[i].roleStatus === 0) {
               data[i].roleStatus = '正常'
+            } else if (data[i].roleStatus === 1) {
+              data[i].roleStatus = '禁用'
             }
           }
           this.roles = data;

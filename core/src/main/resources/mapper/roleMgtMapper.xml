@@ -5,8 +5,8 @@
 
 <mapper namespace="com.lightning.lgc.core.dao.RoleMgtDao">
     <insert id="add" parameterType="Role">
-        INSERT INTO role(role_id,role_code,role_name)
-        VALUES(#{roleId},#{roleCode},#{roleName})
+        INSERT INTO role(role_id,role_code,role_name,role_status)
+        VALUES(#{roleId},#{roleCode},#{roleName},#{roleStatus})
     </insert>
 
     <select id="getRoleById" parameterType="String" resultType="Role">
@@ -19,7 +19,7 @@
     </select>
 
     <update id="updRole" parameterType="Role">
-        UPDATE role SET role_code=#{roleCode},role_name=#{roleName}
+        UPDATE role SET role_code=#{roleCode},role_name=#{roleName},role_status=#{roleStatus}
         WHERE role_id=#{roleId}
     </update>
 

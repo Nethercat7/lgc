@@ -22,6 +22,12 @@
             default-expand-all
           ></el-tree>
         </el-form-item>
+        <el-form-item label="状态" prop="roleStatus">
+          <el-radio-group v-model="role.roleStatus">
+            <el-radio :label="0">正常</el-radio>
+            <el-radio :label="1">禁用</el-radio>
+          </el-radio-group>
+        </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="submitForm('roleAddForm')">添加</el-button>
           <el-button type="danger" @click="resetForm('roleAddForm')">重置</el-button>
@@ -40,10 +46,7 @@
     name: "RoleAdd",
     data() {
       return {
-        role: {
-          roleCode: '',
-          roleName: '',
-        },
+        role: {},
         rules: {
           roleCode: [
             {required: true, message: '请输入角色代号', trigger: 'blur'}
