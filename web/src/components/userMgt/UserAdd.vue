@@ -10,6 +10,9 @@
         <el-form-item label="用户名" prop="userName">
           <el-input v-model="user.userName" autocomplete="off"></el-input>
         </el-form-item>
+        <el-form-item label="昵称" prop="userNickname">
+          <el-input v-model="user.userNickname" autocomplete="off"></el-input>
+        </el-form-item>
         <el-form-item label="密码" prop="userPwd">
           <el-input type="password" v-model="user.userPwd" show-password autocomplete="off"></el-input>
         </el-form-item>
@@ -76,7 +79,7 @@
             {required: true, message: '请选择性别', trigger: 'change'}
           ],
           userPhone: [
-            {required: true, message: '请输入电话号码', trigger: 'blur'}
+            {required: false, message: '请输入电话号码', trigger: 'blur'}
           ],
           userEmail: [
             {required: false, message: '请输入电子邮箱', trigger: 'blur'}

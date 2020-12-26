@@ -44,11 +44,11 @@
 						<u-icon name="setting" size="30rpx" style="padding-right: 10rpx;"></u-icon>系统设置
 					</view>
 				</u-col>
-				<u-col span="4">
+				<!-- <u-col span="4">
 					<view class="opt-card" @click="showModeal=true">
 						<u-icon name="shopping-cart" size="30rpx" style="padding-right: 10rpx;"></u-icon>积分商城
 					</view>
-				</u-col>
+				</u-col> -->
 				<u-col span="4">
 					<view class="opt-card" @click="uploadModal=true">
 						<u-icon name="arrow-upward" size="30rpx" style="padding-right: 10rpx;"></u-icon>上传分类数据

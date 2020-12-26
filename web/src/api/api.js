@@ -13,6 +13,9 @@ let api = {
   updUser(params) {
     return http.post(`${request}/userMgt/upd`, params)
   },
+  getUserByName(params){
+    return http.get(`${request}/user/getUserByName?name=`+params)
+  },
   //角色管理模块
   getRoles() {
     return http.get(`${request}/roleMgt/getRoles`)

@@ -92,7 +92,7 @@ public class UserServiceImpl implements UserService {
             //密码是否正确
             return new ResultBody(Constant.FAILED, Constant.WRONG_PWD, Constant.TYPE_ERROR);
         }
-        return new ResultBody(Constant.SUCCESS, JWTUtil.createToken(user.getUserId(), user.getUserName()), Constant.LOGIN_SUCCESS, Constant.TYPE_SUCCESS);
+        return new ResultBody(Constant.SUCCESS, JWTUtil.createToken(user.getUserId(), user.getUserName(),user.getUserNickname()), Constant.LOGIN_SUCCESS, Constant.TYPE_SUCCESS);
     }
 
     @Override

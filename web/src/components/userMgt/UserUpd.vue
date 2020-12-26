@@ -8,10 +8,13 @@
         <el-form-item label="用户名" prop="userName">
           <el-input v-model="user.userName" autocomplete="off"></el-input>
         </el-form-item>
+        <el-form-item label="昵称" prop="userNickname">
+          <el-input v-model="user.userNickname" autocomplete="off"></el-input>
+        </el-form-item>
         <el-form-item label="性别" prop="userGender">
           <el-radio-group v-model="user.userGender">
-            <el-radio label="1">男</el-radio>
-            <el-radio label="0">女</el-radio>
+            <el-radio :label="1">男</el-radio>
+            <el-radio :label="0">女</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="电话号码" prop="userPhone">
@@ -58,7 +61,7 @@
             {required: true, validator: validateName, trigger: 'blur'}
           ],
           userPhone: [
-            {required: true, message: '请输入电话号码', trigger: 'blur'}
+            {required: false, message: '请输入电话号码', trigger: 'blur'}
           ],
           userEmail: [
             {required: false, message: '请输入电子邮箱', trigger: 'blur'}
@@ -94,12 +97,9 @@
         this.$refs[formName].resetFields();
       },
       getUser(name) {
-        this.$http.get("/userMgt/getUserByName?name=" + name, {
-          headers: {
-            token: storage.get('token')
-          }
-        }).then(resp => {
+        api.getUserByName(name).then(resp => {
           this.user = resp.data.obj;
+          console.log(this.user);
         })
       },
       getRoles() {

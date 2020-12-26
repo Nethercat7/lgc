@@ -11,7 +11,8 @@
         style="width: 100%">
         <el-table-column
           prop="userName"
-          label="用户名">
+          label="用户名"
+          sortable>
         </el-table-column>
         <el-table-column
           prop="userGender"
@@ -24,6 +25,16 @@
         <el-table-column
           prop="userEmail"
           label="电子邮箱">
+        </el-table-column>
+        <el-table-column
+        prop="userAddTime"
+        label="添加时间"
+        sortable>
+        </el-table-column>
+        <el-table-column
+        prop="userUpdTime"
+        label="更新时间"
+        sortable>
         </el-table-column>
         <el-table-column
           prop="userStatus"

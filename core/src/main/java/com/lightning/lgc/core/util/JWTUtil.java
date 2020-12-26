@@ -26,6 +26,19 @@ public class JWTUtil {
                 .sign(ALGORITHM);
     }
 
+    public static String createToken(String userId, String username,String userNickname) {
+        //设置Token过期时间
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE, EXPIRE_TIME);
+
+        return JWT.create()
+                .withClaim("userId", userId)
+                .withClaim("username", username)
+                .withClaim("userNickname",userNickname)
+                .withExpiresAt(calendar.getTime())
+                .sign(ALGORITHM);
+    }
+
     public static String getUserId(String token) {
         return JWT.require(ALGORITHM).build().verify(token).getClaim("userId").toString();
     }

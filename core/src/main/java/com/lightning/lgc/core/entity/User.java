@@ -1,5 +1,6 @@
 package com.lightning.lgc.core.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,7 +24,9 @@ public class User implements Serializable {
     private LocalDateTime userBirthday;
     private String userPhone;
     private String userEmail;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private LocalDateTime userAddTime;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private LocalDateTime userUpdTime;
     private String userSalt;
     private Long userIntegral;
