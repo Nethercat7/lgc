@@ -39,6 +39,16 @@ public class UserController {
     @GetMapping("getUserByName")
     public ResultBody getUserByName(String name) {
         User user = userService.getUserByName(name);
+        return getResultBody(user);
+    }
+
+    @GetMapping("getUserById")
+    public ResultBody getUserById(String id) {
+        User user = userService.getUserById(id);
+        return getResultBody(user);
+    }
+
+    private ResultBody getResultBody(User user) {
         if (!ObjectUtils.isEmpty(user)) {
             log.info("找到用户:" + user.getUserName());
             return new ResultBody(Constant.SUCCESS, user, Constant.GET_SUCCESS);

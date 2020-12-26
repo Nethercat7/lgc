@@ -5,12 +5,17 @@
     </el-col>
     <el-col>
       <el-table :data="postsList" stripe>
-        <el-table-column prop="title" label="标题"></el-table-column>
-        <el-table-column prop="postsAuthor" label="作者"></el-table-column>
-        <el-table-column prop="pcName" label="类型"></el-table-column>
-        <el-table-column prop="postsAddTime" label="发布日期"></el-table-column>
-        <el-table-column prop="postsUpdTime" label="修改日期"></el-table-column>
-        <el-table-column label="操作">
+        <el-table-column prop="title" label="标题" sortable></el-table-column>
+        <el-table-column prop="username" label="发布者" sortable></el-table-column>
+        <el-table-column prop="pcName" label="类型" sortable></el-table-column>
+        <el-table-column prop="postsAddTime" label="发布日期" sortable></el-table-column>
+        <el-table-column prop="postsUpdTime" label="修改日期" sortable></el-table-column>
+        <el-table-column prop="postsStatus" label="状态"></el-table-column>
+        <el-table-column>
+          <template slot="header" slot-scope="scope">
+            <el-input
+              placeholder="输入文章标题或者发布者用户名进行检索"/>
+          </template>
           <template slot-scope="scope">
             <el-button type="info" @click="updPosts(scope.row.postsId)">修改</el-button>
             <el-popconfirm
@@ -39,8 +44,16 @@
     },
     methods: {
       getPosts() {
-        api.getPosts().then(resp => {
-          this.postsList = resp.data.obj;
+        api.getPosts().then(res => {
+          let data=res.data.obj;
+          for(let i=0;i<data.length;i++){
+            if(data[i].postsStatus===0){
+              data[i].postsStatus='正常'
+            }else{
+              data[i].postsStatus='草稿'
+            }
+          }
+          this.postsList=data;
         })
       },
       updPosts(id) {

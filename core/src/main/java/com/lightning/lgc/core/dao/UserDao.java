@@ -77,4 +77,7 @@ public interface UserDao {
 
     //更新用户头像
     int updUserAvatar(String path,String id);
+
+    //通过ID获取用户信息
+    User getUserById(String id);
 }

@@ -50,7 +50,8 @@ public class UserServiceImpl implements UserService {
             String salt = PwdUtil.getSalt(SALT);
             user.setUserPwd(PwdUtil.pwd2MD5(user.getUserPwd(), salt, HASH));
             user.setUserSalt(salt);
-            if(user.getUserNickname()==null) user.setUserNickname("用户_"+String.valueOf(UUID.randomUUID()).replace("-",""));
+            if (user.getUserNickname() == null)
+                user.setUserNickname("用户_" + String.valueOf(UUID.randomUUID()).replace("-", ""));
             int status = userDao.add(user);
             if (status == 1) {
                 //添加用户的角色
@@ -92,7 +93,7 @@ public class UserServiceImpl implements UserService {
             //密码是否正确
             return new ResultBody(Constant.FAILED, Constant.WRONG_PWD, Constant.TYPE_ERROR);
         }
-        return new ResultBody(Constant.SUCCESS, JWTUtil.createToken(user.getUserId(), user.getUserName(),user.getUserNickname()), Constant.LOGIN_SUCCESS, Constant.TYPE_SUCCESS);
+        return new ResultBody(Constant.SUCCESS, JWTUtil.createToken(user.getUserId(), user.getUserName(), user.getUserNickname()), Constant.LOGIN_SUCCESS, Constant.TYPE_SUCCESS);
     }
 
     @Override
@@ -185,16 +186,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int updUserPwd(String newPwd,String oldPwd,String id) {
+    public int updUserPwd(String newPwd, String oldPwd, String id) {
         int status;
         //获取旧密码
-        User op=userDao.getUserPwd(id);
-        if(!PwdUtil.pwd2MD5(oldPwd,op.getUserSalt(),HASH).equals(op.getUserPwd())){
-            status=Constant.PWD;
-        }else{
+        User op = userDao.getUserPwd(id);
+        if (!PwdUtil.pwd2MD5(oldPwd, op.getUserSalt(), HASH).equals(op.getUserPwd())) {
+            status = Constant.PWD;
+        } else {
             //新密码加密
-            newPwd=PwdUtil.pwd2MD5(newPwd,op.getUserSalt(),HASH);
-            status=userDao.updUserPwd(newPwd,id);
+            newPwd = PwdUtil.pwd2MD5(newPwd, op.getUserSalt(), HASH);
+            status = userDao.updUserPwd(newPwd, id);
         }
         return status;
     }
@@ -202,13 +203,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public int updUserNickname(String nickname, String id) {
         //重复检查
-        int data=userDao.checkUserNickname(nickname);
-        if(data>0) return Constant.NICKNAME;//昵称已被占用
-        return userDao.updUserNickname(nickname,id);
+        int data = userDao.checkUserNickname(nickname);
+        if (data > 0) return Constant.NICKNAME;//昵称已被占用
+        return userDao.updUserNickname(nickname, id);
     }
 
     @Override
     public int updUserAvatar(String path, String id) {
-        return userDao.updUserAvatar(path,id);
+        return userDao.updUserAvatar(path, id);
+    }
+
+    @Override
+    public User getUserById(String id) {
+        return userDao.getUserById(id);
     }
 }

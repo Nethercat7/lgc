@@ -185,4 +185,10 @@
         SET user_avatar=#{path}
         WHERE user_id=#{id}
     </update>
+
+    <select id="getUserById" parameterType="String" resultType="User">
+        SELECT u.user_id,u.user_name,u.user_gender,u.user_birthday,u.user_phone,u.user_email,u.user_add_time,u.user_upd_time,u.user_integral,u.user_avatar,u.user_status,u.user_nickname
+        FROM user u
+        WHERE user_id=#{id}
+    </select>
 </mapper>

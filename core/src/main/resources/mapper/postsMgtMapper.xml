@@ -5,13 +5,13 @@
 
 <mapper namespace="com.lightning.lgc.core.dao.PostsMgtDao">
     <insert id="addPosts" parameterType="Posts">
-        INSERT INTO posts(posts_id,posts_title,posts_title_img,posts_content,posts_author,posts_has_pic)
-        VALUES (#{postsId},#{postsTitle},#{postsTitleImg},#{postsContent},#{postsAuthor},#{postsHasPic})
+        INSERT INTO posts(posts_id,posts_title,posts_title_img,posts_content,posts_author,posts_has_pic,posts_status)
+        VALUES (#{postsId},#{postsTitle},#{postsTitleImg},#{postsContent},#{postsAuthor},#{postsHasPic},#{postsStatus})
     </insert>
 
     <select id="getPosts" resultType="Posts" parameterType="String">
         SELECT
-        p.posts_id,p.posts_title,p.posts_title_img,p.posts_content,p.posts_author,p.posts_add_time,p.posts_upd_time,pc.pc_id,pc.pc_name,u.user_nickname,p.posts_has_pic
+        p.posts_id,p.posts_title,p.posts_title_img,p.posts_content,p.posts_author,p.posts_add_time,p.posts_upd_time,pc.pc_id,pc.pc_name,u.user_nickname,p.posts_has_pic,p.posts_status
         FROM posts p
         LEFT JOIN posts_category_relation pcr
         ON p.posts_id=pcr.pcr_posts_id
@@ -29,12 +29,12 @@
 
     <update id="updPosts" parameterType="Posts">
         UPDATE posts
-        SET posts_title=#{postsTitle},posts_title_img=#{postsTitleImg},posts_content=#{postsContent},posts_has_pic=#{postsHasPic}
+        SET posts_title=#{postsTitle},posts_title_img=#{postsTitleImg},posts_content=#{postsContent},posts_has_pic=#{postsHasPic},posts_status=#{postsStatus}
         WHERE posts_id=#{postsId}
     </update>
 
     <select id="getPostsById" parameterType="String" resultType="Posts">
-        SELECT p.posts_id,p.posts_title,p.posts_title_img,p.posts_content,p.posts_author,p.posts_add_time,p.posts_upd_time,pc.pc_id,pc.pc_name,u.user_nickname,p.posts_has_pic
+        SELECT p.posts_id,p.posts_title,p.posts_title_img,p.posts_content,p.posts_author,p.posts_add_time,p.posts_upd_time,pc.pc_id,pc.pc_name,u.user_nickname,p.posts_has_pic,p.posts_status
         FROM posts p
         LEFT JOIN posts_category_relation pcr
         ON p.posts_id=pcr.pcr_posts_id

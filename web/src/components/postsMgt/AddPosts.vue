@@ -69,8 +69,19 @@
               v-if="item.pcStatus===0"></el-option>
           </el-select>
         </el-col>
+        <el-col>
+          <div style="padding-bottom: 10px;">文章状态：</div>
+          <el-select v-model="posts.postsStatus" placeholder="文章状态">
+            <el-option
+              label="已发布"
+              :value="0"></el-option>
+            <el-option
+              label="草稿"
+              :value="1"></el-option>
+          </el-select>
+        </el-col>
         <el-col :span="24">
-          <el-button type="primary" plain @click="submit">发布</el-button>
+          <el-button type="primary" plain @click="submit">{{title==='修改文章'?'修改':'发布'}}</el-button>
         </el-col>
       </el-row>
     </el-col>
@@ -92,10 +103,7 @@
     },
     data() {
       return {
-        posts: {
-          title: '',
-          postsContent: ''
-        },
+        posts: {},
         fileList: [],
         categories: [],
         action: 'http://127.0.0.1:8080/file/upload?type=posts&id=' + storage.getUser().userId,
@@ -110,16 +118,16 @@
               container: [
                 ["bold", "italic", "underline", "strike"], // 加粗 斜体 下划线 删除线
                 ["blockquote", "code-block"], // 引用  代码块
-                [{ header: 1 }, { header: 2 }], // 1、2 级标题
-                [{ list: "ordered" }, { list: "bullet" }], // 有序、无序列表
-                [{ script: "sub" }, { script: "super" }], // 上标/下标
-                [{ indent: "-1" }, { indent: "+1" }], // 缩进
+                [{header: 1}, {header: 2}], // 1、2 级标题
+                [{list: "ordered"}, {list: "bullet"}], // 有序、无序列表
+                [{script: "sub"}, {script: "super"}], // 上标/下标
+                [{indent: "-1"}, {indent: "+1"}], // 缩进
                 // [{'direction': 'rtl'}],                         // 文本方向
-                [{ size: ["small", false, "large", "huge"] }], // 字体大小
-                [{ header: [1, 2, 3, 4, 5, 6, false] }], // 标题
-                [{ color: [] }, { background: [] }], // 字体颜色、字体背景颜色
-                [{ font: [] }], // 字体种类
-                [{ align: [] }], // 对齐方式
+                [{size: ["small", false, "large", "huge"]}], // 字体大小
+                [{header: [1, 2, 3, 4, 5, 6, false]}], // 标题
+                [{color: []}, {background: []}], // 字体颜色、字体背景颜色
+                [{font: []}], // 字体种类
+                [{align: []}], // 对齐方式
                 ["clean"], // 清除文本格式
                 ["link", "image", "video"] // 链接、图片、视频
               ],
@@ -134,7 +142,8 @@
               }
             }
           }
-        }
+        },
+        status: ''
       }
     },
     methods: {

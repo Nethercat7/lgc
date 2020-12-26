@@ -14,7 +14,7 @@
         <el-form-item label="描述">
           <el-input v-model="postsCategory.pcDescription" type="textarea"></el-input>
         </el-form-item>
-        <el-form-item v-if="!add" label="状态">
+        <el-form-item label="状态">
           <el-radio-group v-model="postsCategory.pcStatus">
             <el-radio :label="0">启用</el-radio>
             <el-radio :label="1">禁用</el-radio>
@@ -31,7 +31,7 @@
     <el-col :span="17">
       <h5>类别列表</h5>
       <el-table :data="categories" stripe>
-        <el-table-column prop="pcName" label="名称"></el-table-column>
+        <el-table-column prop="pcName" label="名称" sortable></el-table-column>
         <el-table-column prop="pcDescription" label="描述"></el-table-column>
         <el-table-column prop="pcStatus2String" label="状态"></el-table-column>
         <el-table-column label="操作">

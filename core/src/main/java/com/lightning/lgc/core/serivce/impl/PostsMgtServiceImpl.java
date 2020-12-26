@@ -2,6 +2,7 @@ package com.lightning.lgc.core.serivce.impl;
 
 import com.lightning.lgc.core.config.Constant;
 import com.lightning.lgc.core.dao.PostsMgtDao;
+import com.lightning.lgc.core.dao.UserDao;
 import com.lightning.lgc.core.entity.Posts;
 import com.lightning.lgc.core.entity.PostsCategory;
 import com.lightning.lgc.core.serivce.PostsMgtService;
@@ -16,6 +17,9 @@ public class PostsMgtServiceImpl implements PostsMgtService {
     @Autowired
     private PostsMgtDao postsMgtDao;
 
+    @Autowired
+    private UserDao userDao;
+
     SnowflakeIdGeneratorUntil snowflakeIdGeneratorUntil = new SnowflakeIdGeneratorUntil(0, 3);
 
     @Override
@@ -25,7 +29,7 @@ public class PostsMgtServiceImpl implements PostsMgtService {
         if (posts.getPostsTitleImg() == null) {
             posts.setPostsTitleImg("https://cdn.uviewui.com/uview/swiper/1.jpg");
             posts.setPostsHasPic(0);
-        }else{
+        } else {
             posts.setPostsHasPic(1);
         }
         int status = postsMgtDao.addPosts(posts);
@@ -37,7 +41,12 @@ public class PostsMgtServiceImpl implements PostsMgtService {
 
     @Override
     public List<Posts> getPosts(String id) {
-        return postsMgtDao.getPosts(id);
+        List<Posts> postsList = postsMgtDao.getPosts(id);
+        for (Posts p : postsList) {
+            String username=userDao.getUserById(p.getPostsAuthor()).getUserName();
+            p.setUsername(username);
+        }
+        return postsList;
     }
 
     @Override
@@ -45,7 +54,7 @@ public class PostsMgtServiceImpl implements PostsMgtService {
         if (posts.getPostsTitleImg() == null) {
             posts.setPostsTitleImg("https://cdn.uviewui.com/uview/swiper/1.jpg");
             posts.setPostsHasPic(0);
-        }else{
+        } else {
             posts.setPostsHasPic(1);
         }
         int status = postsMgtDao.updPosts(posts);
