@@ -15,6 +15,7 @@ import java.util.List;
 public class Garbage implements Serializable {
     private String garbageId;
     private String garbageName;
+    private String garbageAddUser;
 
     //类别ID
     private String gcId;
@@ -24,4 +25,7 @@ public class Garbage implements Serializable {
 
     //是否被收藏
     private boolean inFavorite;
+
+    //与用户的关系
+    private String userName;
 }

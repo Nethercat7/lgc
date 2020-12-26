@@ -1,6 +1,7 @@
 package com.lightning.lgc.core.serivce.impl;
 
 import com.lightning.lgc.core.dao.GarbageDao;
+import com.lightning.lgc.core.dao.UserDao;
 import com.lightning.lgc.core.entity.Garbage;
 import com.lightning.lgc.core.entity.GarbageCategory;
 import com.lightning.lgc.core.serivce.GarbageService;
@@ -14,6 +15,9 @@ import java.util.List;
 public class GarbageServiceImpl implements GarbageService {
     @Autowired
     private GarbageDao garbageDao;
+
+    @Autowired
+    private UserDao userDao;
 
     SnowflakeIdGeneratorUntil snowflakeIdGeneratorUntil = new SnowflakeIdGeneratorUntil(0, 2);
 
@@ -49,8 +53,13 @@ public class GarbageServiceImpl implements GarbageService {
     }
 
     @Override
-    public List<Garbage> getGarbages(String name, String category, Integer num,String userId) {
-        return garbageDao.getGarbages(name, category, num,userId);
+    public List<Garbage> getGarbages(String name, String category, Integer num, String userId) {
+        List<Garbage> garbageList = garbageDao.getGarbages(name, category, num, userId);
+        for (Garbage g : garbageList) {
+            String username =userDao.getUserById(g.getGarbageAddUser()).getUserName();
+            g.setUserName(username);
+        }
+        return garbageList;
     }
 
     @Override
@@ -73,23 +82,23 @@ public class GarbageServiceImpl implements GarbageService {
 
     @Override
     public List<Garbage> getGarbageWithFavorite(String name, String category, Integer num, String userId) {
-        List<Garbage> garbageList=garbageDao.getGarbages(name,category,num,userId);
-        for (Garbage garbage:garbageList){
+        List<Garbage> garbageList = garbageDao.getGarbages(name, category, num, userId);
+        for (Garbage garbage : garbageList) {
             garbage.setInFavorite(false);
             //查询是否被收藏
-            int inFavorite=garbageDao.inFavorite(userId,garbage.getGarbageId());
-            if(inFavorite>0) garbage.setInFavorite(true);
+            int inFavorite = garbageDao.inFavorite(userId, garbage.getGarbageId());
+            if (inFavorite > 0) garbage.setInFavorite(true);
         }
         return garbageList;
     }
 
     @Override
     public int addFavorite(String userId, String garbageId) {
-        return garbageDao.addFavorite(snowflakeIdGeneratorUntil.getId(),userId,garbageId);
+        return garbageDao.addFavorite(snowflakeIdGeneratorUntil.getId(), userId, garbageId);
     }
 
     @Override
     public int delFavorite(String userId, String garbageId) {
-        return garbageDao.delFavorite(userId,garbageId);
+        return garbageDao.delFavorite(userId, garbageId);
     }
 }

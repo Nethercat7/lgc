@@ -29,7 +29,7 @@
           <el-submenu index="3">
             <template slot="title"><i class="el-icon-notebook-1"></i>分类管理</template>
             <el-menu-item @click="goto('/garbage/category')">分类类别</el-menu-item>
-            <el-menu-item @click="goto('/garbage/table')">垃圾分类</el-menu-item>
+            <el-menu-item @click="goto('/garbage/table')">分类物品</el-menu-item>
           </el-submenu>
 
           <el-submenu index="4">

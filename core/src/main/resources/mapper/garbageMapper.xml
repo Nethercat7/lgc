@@ -5,7 +5,7 @@
 
 <mapper namespace="com.lightning.lgc.core.dao.GarbageDao">
     <insert id="addCategory" parameterType="GarbageCategory">
-        INSERT INTO garbage_category VALUES (#{gcId},#{gcName},#{gcType})
+        INSERT INTO garbage_category VALUES (#{gcId},#{gcName},#{gcType},#{gcStatus})
     </insert>
 
     <select id="getCategories" resultType="GarbageCategory">
@@ -19,12 +19,13 @@
 
     <update id="updCategory" parameterType="GarbageCategory">
         UPDATE garbage_category
-        SET gc_name=#{gcName}
+        SET gc_name=#{gcName},gc_type=#{gcType},gc_status=#{gcStatus}
         WHERE gc_id=#{gcId}
     </update>
 
     <insert id="addGarbage" parameterType="Garbage">
-        INSERT INTO garbage VALUES (#{garbageId},#{garbageName})
+        INSERT INTO garbage(garbage_id,garbage_name,garbage_add_user)
+        VALUES (#{garbageId},#{garbageName},#{garbageAddUser})
     </insert>
 
     <insert id="addGarbageRelation" parameterType="String">
@@ -32,7 +33,7 @@
     </insert>
 
     <select id="getGarbages" resultType="Garbage" parameterType="Object">
-        SELECT g.garbage_id,g.garbage_name,gc.gc_id,gc.gc_name,gc.gc_type FROM garbage g
+        SELECT g.garbage_id,g.garbage_name,g.garbage_add_user,gc.gc_id,gc.gc_name,gc.gc_type FROM garbage g
         LEFT JOIN garbage_garbage_category_relation gcr
         ON g.garbage_id=gcr.gcr_garbage_id
         LEFT JOIN garbage_category gc

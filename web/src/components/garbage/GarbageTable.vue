@@ -4,29 +4,40 @@
       <h3>垃圾分类</h3>
     </el-col>
     <!--添加垃圾分类-->
-    <el-col>
-      <div>
-        <span>添加分类：</span>
-        <el-input v-model="garbage.garbageName" style="width:200px" placeholder="请输入物品名称"/>
-        <el-select v-model="garbage.gcId" placeholder="请选择类别">
-          <el-option
-            v-for="item in categories"
-            :key="item.gcId"
-            :label="item.gcName"
-            :value="item.gcId">
-          </el-option>
-        </el-select>
-        <el-button type="primary" @click="addGarbage">添加</el-button>
-      </div>
+    <el-col :span="7">
+      <h5 v-text="type==='add'?'添加物品：':'修改物品：'"></h5>
+      <el-form>
+        <el-form-item label="物品名称">
+          <el-input v-model="garbage.garbageName" style="width:200px" placeholder="请输入物品名称"/>
+        </el-form-item>
+        <el-form-item label="物品类别">
+          <el-select v-model="garbage.gcId" placeholder="请选择类别">
+            <el-option
+              v-for="item in categories"
+              :key="item.gcId"
+              :label="item.gcName"
+              :value="item.gcId">
+            </el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <el-button type="primary" v-text="type==='add'?'添加':'修改'" @click="submit">添加</el-button>
+      <el-button type="danger" v-text="type==='add'?'重置':'取消'" @click="cancel"></el-button>
     </el-col>
 
-    <el-col>
+    <el-col :span="17">
       <el-table :data="garbages" stripe>
-        <el-table-column prop="garbageName" label="名称"></el-table-column>
+        <el-table-column prop="garbageName" label="名称" sortable></el-table-column>
         <el-table-column prop="gcName" label="类别"></el-table-column>
-        <el-table-column label="操作">
+        <el-table-column prop="userName" label="添加用户"></el-table-column>
+        <el-table-column>
+          <template slot="header">
+            <el-input
+              placeholder="输入物品名称进行查询"/>
+          </template>
           <template slot-scope="scope">
-            <el-button type="info" @click="openDialog(scope.row.garbageId,scope.row.garbageName,scope.row.gcId)">修改</el-button>
+            <el-button type="info" @click="getGarbage(scope.row.garbageId,scope.row.garbageName,scope.row.gcId)">修改
+            </el-button>
             <el-popconfirm
               title="确定删除吗？"
               icon="el-icon-info"
@@ -39,60 +50,50 @@
         </el-table-column>
       </el-table>
     </el-col>
-
-    <!--dialog 修改弹出框-->
-    <el-col>
-      <el-dialog title="修改名称" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
-        <span>
-          <el-input v-model="garbage2.garbageName" style="width:49%" placeholder="请输入物品名称"/>
-          <el-select v-model="garbage2.gcId" style="width:49%" placeholder="请选择类别">
-            <el-option
-              v-for="item in categories"
-              :key="item.gcId"
-              :label="item.gcName"
-              :value="item.gcId">
-            </el-option>
-          </el-select>
-        </span>
-        <span slot="footer" class="dialog-footer">
-          <el-button @click="dialogVisible = false">取 消</el-button>
-          <el-button type="primary" @click="updGarbage">确 定</el-button>
-        </span>
-      </el-dialog>
-    </el-col>
-
   </el-row>
 </template>
 
 <script>
   import api from "../../api/api";
+  import storage from "../../assets/storage";
 
   export default {
     name: "GarbageTable",
     data() {
       return {
-        categories:[],
-        garbage:{
-          garbageName:''
+        categories: [],
+        garbage: {
+          garbageName: '',
+          gcId: ''
         },
-        garbages:[],
-        garbage2:{
-          garbageName:'',
-          gcId:''
-        },
-        dialogVisible:false
+        garbages: [],
+        type: 'add'
       }
     },
-    methods:{
+    methods: {
+      submit() {
+        if (this.type === 'add') {
+          this.addGarbage();
+        } else {
+          this.updGarbage();
+        }
+      },
+      cancel() {
+        this.garbage = {};
+        if (this.type === 'upd') {
+          this.type = 'add'
+        }
+      },
       getCategories() {
         api.getCategories().then(resp => {
           this.categories = resp.data.obj;
         })
       },
-      addGarbage(){
-        api.addGarbage(this.garbage).then(resp=>{
-          if(resp.data.code===1){
-            this.garbage={};
+      addGarbage() {
+        this.garbage.garbageAddUser = storage.getUser().userId;
+        api.addGarbage(this.garbage).then(resp => {
+          if (resp.data.code === 1) {
+            this.garbage = {};
             this.getGarbages();
           }
           this.$message({
@@ -103,30 +104,15 @@
           });
         })
       },
-      getGarbages(){
-        api.getGarbages().then(resp=>{
-          this.garbages=resp.data.obj;
+      getGarbages() {
+        api.getGarbages().then(resp => {
+          this.garbages = resp.data.obj;
         })
       },
-      handleClose(done) {
-        this.$confirm('确认关闭？')
-          .then(_ => {
-            done();
-          })
-          .catch(_ => {
-          });
-      },
-      openDialog(garbageId,garbageName,gcId){
-        this.garbage2.garbageId=garbageId;
-        this.garbage2.garbageName=garbageName;
-        this.garbage2.gcId=gcId;
-        this.dialogVisible=true;
-      },
-      updGarbage(){
-        api.updGarbage(this.garbage2).then(resp=>{
-          if(resp.data.code===1){
+      updGarbage() {
+        api.updGarbage(this.garbage).then(resp => {
+          if (resp.data.code === 1) {
             this.getGarbages();
-            this.dialogVisible=false;
           }
           this.$message({
             showClose: true,
@@ -136,18 +122,23 @@
           });
         })
       },
-      delGarbage(id){
-        api.delGarbage(id).then(resp=>{
-          if(resp.data.code===1) {
+      delGarbage(id) {
+        api.delGarbage(id).then(resp => {
+          if (resp.data.code === 1) {
             this.getGarbages();
           }
           this.$message({
-            showClose:true,
-            message:resp.data.msg,
-            type:resp.data.type,
-            duration:"1000"
+            showClose: true,
+            message: resp.data.msg,
+            type: resp.data.type,
+            duration: "1000"
           })
         })
+      }, getGarbage(id, name, gcId) {
+        this.garbage.garbageId = id;
+        this.garbage.garbageName = name;
+        this.garbage.gcId = gcId;
+        this.type = 'upd';
       }
     },
     created() {
