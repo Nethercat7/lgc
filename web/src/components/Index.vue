@@ -25,7 +25,6 @@
             <template slot="title"><i class="el-icon-s-custom"></i>角色管理</template>
             <el-menu-item @click="goto('/roleMgt/roles')">所有角色</el-menu-item>
             <el-menu-item @click="goto('/roleMgt/add')">添加角色</el-menu-item>
-            <el-menu-item>修改角色状态</el-menu-item>
           </el-submenu>
           <el-submenu index="3">
             <template slot="title"><i class="el-icon-notebook-1"></i>分类管理</template>

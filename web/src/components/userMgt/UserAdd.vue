@@ -18,8 +18,8 @@
         </el-form-item>
         <el-form-item label="性别" prop="userGender">
           <el-radio-group v-model="user.userGender">
-            <el-radio label="1">男</el-radio>
-            <el-radio label="0">女</el-radio>
+            <el-radio :label="1">男</el-radio>
+            <el-radio :label="0">女</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="电话号码" prop="userPhone">
@@ -33,9 +33,9 @@
         </el-form-item>
         <el-form-item label="状态" prop="userStatus">
           <el-radio-group v-model="user.userStatus">
-            <el-radio label="0">正常</el-radio>
-            <el-radio label="1">冻结</el-radio>
-            <el-radio label="2">封锁</el-radio>
+            <el-radio :label="0">正常</el-radio>
+            <el-radio :label="1">冻结</el-radio>
+            <el-radio :label="2">封锁</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item>
