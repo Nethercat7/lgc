@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lightning.lgc.core.dao.RoleMgtDao">
+    <insert id="add" parameterType="Role">
+        INSERT INTO role(role_id,role_code,role_name,role_status)
+        VALUES(#{roleId},#{roleCode},#{roleName},#{roleStatus})
+    </insert>
+
+    <select id="getRoleById" parameterType="String" resultType="Role">
+        SELECT * FROM role
+        WHERE role_id=#{id}
+    </select>
+
+    <select id="getRoles" resultType="Role">
+        SELECT * FROM role
+    </select>
+
+    <update id="updRole" parameterType="Role">
+        UPDATE role SET role_code=#{roleCode},role_name=#{roleName},role_status=#{roleStatus}
+        WHERE role_id=#{roleId}
+    </update>
+
+    <delete id="delRole" parameterType="String">
+        DELETE FROM role
+        WHERE role_id=#{id}
+    </delete>
+
+    <select id="getPerms" parameterType="Perms" resultType="Perms">
+        SELECT * FROM perms
+        <where>
+            <choose>
+                <when test="permsPid!=null">
+                    AND perms_pid=#{permsPid}
+                </when>
+                <otherwise>
+                    AND perms_pid=0
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+
+    <insert id="addRolePermsRelation" parameterType="Map">
+        INSERT INTO role_perms_relation
+        VALUES(#{prId},#{prRoleId},#{prPermsId})
+    </insert>
+
+    <select id="getRolePerms" parameterType="String" resultType="Perms">
+        SELECT p.* FROM perms p
+        LEFT JOIN role_perms_relation rp
+        ON p.perms_id=rp.rp_perms_id
+        LEFT JOIN role r
+        ON r.role_id=rp.rp_role_id
+        WHERE role_id=#{roleId}
+    </select>
+
+    <select id="getRolePermsId" resultType="String">
+        SELECT p.perms_id FROM perms p
+        LEFT JOIN role_perms_relation rp
+        ON p.perms_id=rp.rp_perms_id
+        LEFT JOIN role r
+        ON r.role_id=rp.rp_role_id
+        WHERE role_id=#{roleId}
+    </select>
+
+    <delete id="delRolePerms" parameterType="String">
+        DELETE FROM role_perms_relation
+        WHERE rp_role_id=#{rpRoleId}
+        AND rp_perms_id=#{rpPermsId}
+    </delete>
+
+    <delete id="delAllRolePerms" parameterType="String">
+        DELETE FROM role_perms_relation
+        WHERE rp_role_id=#{rpRoleId}
+    </delete>
+
+</mapper>

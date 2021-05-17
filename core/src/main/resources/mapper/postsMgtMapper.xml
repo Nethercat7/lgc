@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lightning.lgc.core.dao.PostsMgtDao">
+    <insert id="addPosts" parameterType="Posts">
+        INSERT INTO posts(posts_id,posts_title,posts_title_img,posts_content,posts_author,posts_has_pic,posts_status)
+        VALUES (#{postsId},#{postsTitle},#{postsTitleImg},#{postsContent},#{postsAuthor},#{postsHasPic},#{postsStatus})
+    </insert>
+
+    <select id="getPosts" resultType="Posts" parameterType="String">
+        SELECT
+        p.posts_id,p.posts_title,p.posts_title_img,p.posts_content,p.posts_author,p.posts_add_time,p.posts_upd_time,pc.pc_id,pc.pc_name,u.user_nickname,p.posts_has_pic,p.posts_status
+        FROM posts p
+        LEFT JOIN posts_category_relation pcr
+        ON p.posts_id=pcr.pcr_posts_id
+        LEFT JOIN posts_category pc
+        ON pc.pc_id=pcr.pcr_pc_id
+        LEFT JOIN user u
+        ON u.user_id=p.posts_author
+        <choose>
+            <when test="id!=null">
+                WHERE pc.pc_id=#{id}
+            </when>
+        </choose>
+        ORDER BY p.posts_add_time DESC
+    </select>
+
+    <update id="updPosts" parameterType="Posts">
+        UPDATE posts
+        SET posts_title=#{postsTitle},posts_title_img=#{postsTitleImg},posts_content=#{postsContent},posts_has_pic=#{postsHasPic},posts_status=#{postsStatus}
+        WHERE posts_id=#{postsId}
+    </update>
+
+    <select id="getPostsById" parameterType="String" resultType="Posts">
+        SELECT p.posts_id,p.posts_title,p.posts_title_img,p.posts_content,p.posts_author,p.posts_add_time,p.posts_upd_time,pc.pc_id,pc.pc_name,u.user_nickname,p.posts_has_pic,p.posts_status
+        FROM posts p
+        LEFT JOIN posts_category_relation pcr
+        ON p.posts_id=pcr.pcr_posts_id
+        LEFT JOIN posts_category pc
+        ON pc.pc_id=pcr.pcr_pc_id
+        LEFT JOIN user u
+        ON u.user_id=p.posts_author
+        WHERE p.posts_id=#{id}
+    </select>
+
+    <delete id="delPosts" parameterType="String">
+        DELETE FROM posts
+        WHERE posts_id=#{id}
+    </delete>
+
+    <insert id="addPostsCategory" parameterType="PostsCategory">
+        INSERT INTO posts_category(pc_id,pc_name,pc_description)
+        VALUES(#{pcId},#{pcName},#{pcDescription})
+    </insert>
+
+    <select id="getCategories" resultType="PostsCategory">
+        SELECT * FROM posts_category
+    </select>
+
+    <select id="getCategoryById" parameterType="String" resultType="PostsCategory">
+        SELECT * FROM posts_category
+        WHERE pc_id=#{id}
+    </select>
+
+    <update id="updCategory" parameterType="PostsCategory">
+        UPDATE posts_category
+        SET pc_name=#{pcName},pc_description=#{pcDescription},pc_status=#{pcStatus}
+        WHERE pc_id=#{pcId}
+    </update>
+
+    <delete id="delCategory" parameterType="String">
+        DELETE FROM posts_category
+        WHERE pc_id=#{pcId}
+    </delete>
+
+    <insert id="addPostsCategoryRelation" parameterType="String">
+        INSERT INTO posts_category_relation(pcr_id,pcr_posts_id,pcr_pc_id)
+        VALUES(#{pcrId},#{postsId},#{categoryId})
+    </insert>
+
+    <update id="updPostsCategoryRelation" parameterType="String">
+        UPDATE posts_category_relation
+        SET pcr_pc_id=#{pcId}
+        WHERE pcr_posts_id=#{postsId}
+    </update>
+
+    <delete id="delPostsCategoryRelation" parameterType="String">
+        DELETE FROM posts_category_relation
+        WHERE pcr_posts_id=#{id}
+    </delete>
+
+    <update id="delPostsTitlePic" parameterType="String">
+        UPDATE posts
+        SET posts_title_img=null
+        WHERE posts_id=#{id}
+    </update>
+</mapper>

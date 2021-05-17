@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lightning.lgc.core.dao.UserDao">
+    <resultMap id="userMap" type="User">
+        <id property="userId" column="user_id"/>
+        <result property="userName" column="user_name"/>
+        <result property="userGender" column="user_gender"/>
+        <result property="userBirthday" column="user_birthday"/>
+        <result property="userPhone" column="user_phone"/>
+        <result property="userEmail" column="user_email"/>
+        <result property="userAddTime" column="user_add_time"/>
+        <result property="userUpdTime" column="user_upd_time"/>
+        <result property="userIntegral" column="user_integral"/>
+        <result property="userAvatar" column="user_avatar"/>
+        <result property="userStatus" column="user_status"/>
+        <result property="userNickname" column="user_nickname"/>
+        <collection property="roleList" ofType="Role">
+            <id property="roleId" column="role_id"/>
+            <result property="roleCode" column="role_code"/>
+            <result property="roleName" column="role_name"/>
+        </collection>
+        <collection property="roleIds" ofType="String">
+            <id property="String" column="role_id"/>
+        </collection>
+    </resultMap>
+
+    <select id="getUserByName" parameterType="String" resultMap="userMap">
+        SELECT u.user_id,u.user_name,u.user_gender,u.user_birthday,u.user_phone,u.user_email,u.user_add_time,u.user_upd_time,u.user_integral,u.user_avatar,u.user_status,u.user_nickname,r.role_id,r.role_code,r.role_name
+        FROM user u
+        LEFT JOIN user_role_relation ur
+        ON u.user_id=ur.ur_user_id
+        LEFT JOIN role r
+        ON r.role_id=ur.ur_role_id
+        WHERE user_name=#{name}
+    </select>
+
+    <select id="getUserLoginInfo" parameterType="String" resultType="User">
+        SELECT * FROM user
+        WHERE user_name=#{userName}
+    </select>
+
+    <insert id="add" parameterType="User">
+        INSERT INTO user(user_id,user_name,user_pwd,user_gender,user_phone,user_email,user_salt,user_nickname,user_status)
+        VALUES(#{userId},#{userName},#{userPwd},#{userGender},#{userPhone},#{userEmail},#{userSalt},#{userNickname},#{userStatus})
+    </insert>
+
+    <select id="getUsers" resultMap="userMap" parameterType="Boolean">
+        SELECT
+        u.user_id,u.user_name,u.user_gender,u.user_birthday,u.user_phone,u.user_email,u.user_add_time,u.user_upd_time,u.user_integral,u.user_avatar,u.user_status,u.user_nickname,r.role_id,r.role_code,r.role_name
+        FROM user u
+        LEFT JOIN user_role_relation ur
+        ON u.user_id=ur.ur_user_id
+        LEFT JOIN role r
+        ON r.role_id=ur.ur_role_id
+        <choose>
+            <when test="rate">
+                ORDER BY u.user_integral DESC LIMIT 19
+            </when>
+        </choose>
+    </select>
+
+    <update id="upd" parameterType="User">
+        UPDATE user SET user_gender=#{userGender},user_phone=#{userPhone},user_email=#{userEmail},user_avatar=#{userAvatar},user_nickname=#{userNickname}
+        WHERE user_id=#{userId}
+    </update>
+
+    <delete id="del" parameterType="String">
+        DELETE FROM user
+        WHERE user_id=#{id}
+    </delete>
+
+    <insert id="addUserRoleRelation" parameterType="Map">
+        INSERT INTO user_role_relation
+        VALUES(#{urId},#{urUserId},#{urRoleId})
+    </insert>
+
+    <select id="getUrRoleId" resultType="String">
+        SELECT ur_role_id FROM user_role_relation
+        WHERE ur_user_id=#{id}
+    </select>
+
+    <delete id="delUserRoleRelation" parameterType="String">
+        DELETE FROM user_role_relation
+        WHERE ur_user_id=#{userId}
+        AND ur_role_id=#{roleId}
+    </delete>
+
+    <delete id="delUserRoleRelations" parameterType="String">
+        DELETE FROM user_role_relation
+        WHERE ur_user_id=#{id}
+        OR ur_role_id=#{id}
+    </delete>
+
+    <select id="getUserPerms" parameterType="String" resultType="String">
+        SELECT p.perms_code FROM perms p
+        LEFT JOIN role_perms_relation rp
+        ON p.perms_id=rp_perms_id
+        LEFT JOIN role r
+        ON r.role_id=rp.rp_role_id
+        LEFT JOIN user_role_relation ur
+        ON r.role_id=ur.ur_role_id
+        LEFT JOIN user u
+        ON u.user_id=ur.ur_user_id
+        WHERE u.user_id=#{id}
+    </select>
+
+    <select id="getIntegral" resultType="Long" parameterType="String">
+        SELECT user_integral FROM user
+        WHERE user_id=#{id}
+    </select>
+
+    <update id="updIntegral" parameterType="Object">
+        UPDATE user
+        SET user_integral=#{integral}
+        WHERE user_id=#{id}
+    </update>
+
+    <select id="getUserRate" resultType="Map" parameterType="String">
+        SELECT b.user_id AS id,b.user_name AS name,b.rate,b.user_integral AS integral,b.user_avatar AS avatar,b.user_nickname as nickname FROM
+        (SELECT t.*, @rownum := @rownum + 1 AS rate FROM
+        (SELECT @rownum := 0) r,
+        (SELECT * FROM user ORDER BY user_integral DESC) AS t) AS b
+        WHERE b.user_id =#{id};
+    </select>
+
+    <select id="checkUserName" resultType="Integer" parameterType="String">
+        SELECT COUNT(user_id)
+        FROM user
+        WHERE user_name=#{name}
+    </select>
+
+    <select id="checkUserPhone" resultType="Integer" parameterType="String">
+        SELECT COUNT(user_id)
+        FROM user
+        WHERE user_phone=#{phone}
+    </select>
+
+    <select id="checkUserEmail" resultType="Integer" parameterType="String">
+        SELECT COUNT(user_id)
+        FROM user
+        WHERE user_email=#{email}
+    </select>
+
+    <update id="updUserPhone" parameterType="String">
+        UPDATE user
+        SET user_phone=#{phone}
+        WHERE user_id=#{id}
+    </update>
+
+    <update id="updUserEmail" parameterType="String">
+        UPDATE user
+        SET user_email=#{email}
+        WHERE user_id=#{id}
+    </update>
+
+    <update id="updUserPwd" parameterType="String">
+        UPDATE user
+        SET user_pwd=#{pwd}
+        WHERE user_id=#{id}
+    </update>
+
+    <select id="getUserPwd" parameterType="String" resultType="User">
+        SELECT user_pwd,user_salt
+        FROM user
+        WHERE user_id=#{id}
+    </select>
+
+    <select id="checkUserNickname" resultType="Integer" parameterType="String">
+        SELECT COUNT(user_id)
+        FROM user
+        WHERE user_nickname=#{nickname}
+    </select>
+
+    <update id="updUserNickname" parameterType="String">
+        UPDATE user
+        SET user_nickname=#{nickname}
+        WHERE user_id=#{id}
+    </update>
+
+    <update id="updUserAvatar" parameterType="String">
+        UPDATE user
+        SET user_avatar=#{path}
+        WHERE user_id=#{id}
+    </update>
+
+    <select id="getUserById" parameterType="String" resultType="User">
+        SELECT u.user_id,u.user_name,u.user_gender,u.user_birthday,u.user_phone,u.user_email,u.user_add_time,u.user_upd_time,u.user_integral,u.user_avatar,u.user_status,u.user_nickname
+        FROM user u
+        WHERE user_id=#{id}
+    </select>
+</mapper>

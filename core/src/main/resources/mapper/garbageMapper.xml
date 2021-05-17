@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lightning.lgc.core.dao.GarbageDao">
+    <insert id="addCategory" parameterType="GarbageCategory">
+        INSERT INTO garbage_category VALUES (#{gcId},#{gcName},#{gcType},#{gcStatus})
+    </insert>
+
+    <select id="getCategories" resultType="GarbageCategory">
+        SELECT * FROM garbage_category
+    </select>
+
+    <delete id="delCategory" parameterType="String">
+        DELETE FROM garbage_category
+        WHERE gc_id=#{id}
+    </delete>
+
+    <update id="updCategory" parameterType="GarbageCategory">
+        UPDATE garbage_category
+        SET gc_name=#{gcName},gc_type=#{gcType},gc_status=#{gcStatus}
+        WHERE gc_id=#{gcId}
+    </update>
+
+    <insert id="addGarbage" parameterType="Garbage">
+        INSERT INTO garbage(garbage_id,garbage_name,garbage_add_user)
+        VALUES (#{garbageId},#{garbageName},#{garbageAddUser})
+    </insert>
+
+    <insert id="addGarbageRelation" parameterType="String">
+        INSERT INTO garbage_garbage_category_relation VALUES(#{gcrId},#{garbageId},#{gcId})
+    </insert>
+
+    <select id="getGarbages" resultType="Garbage" parameterType="Object">
+        SELECT g.garbage_id,g.garbage_name,g.garbage_add_user,gc.gc_id,gc.gc_name,gc.gc_type FROM garbage g
+        LEFT JOIN garbage_garbage_category_relation gcr
+        ON g.garbage_id=gcr.gcr_garbage_id
+        LEFT JOIN garbage_category gc
+        ON gc.gc_id=gcr.gcr_gc_id
+        LEFT JOIN user_garbage_relation ugr
+        ON g.garbage_id=ugr.ugr_garbage_id
+        LEFT JOIN user u
+        ON u.user_id=ugr.ugr_user_id
+        <choose>
+            <when test="name!=null">
+                WHERE g.garbage_name LIKE concat('%',#{name},'%')
+            </when>
+            <when test="category!=null">
+                WHERE gc.gc_name=#{category}
+            </when>
+            <when test="num!=null">
+                ORDER BY RAND() LIMIT #{num}
+            </when>
+            <when test="userId!=null">
+                WHERE u.user_id=#{userId}
+            </when>
+        </choose>
+    </select>
+
+    <update id="updGarbage" parameterType="Garbage">
+        UPDATE garbage
+        SET garbage_name=#{garbageName}
+        WHERE garbage_id=#{garbageId}
+    </update>
+
+    <update id="updGarbageRelation" parameterType="Garbage">
+        UPDATE garbage_garbage_category_relation
+        SET gcr_gc_id=#{gcId}
+        WHERE gcr_garbage_id=#{garbageId}
+    </update>
+
+    <delete id="delGarbage" parameterType="String">
+        DELETE FROM garbage
+        WHERE garbage_id=#{garbageId}
+    </delete>
+
+    <delete id="delGarbageRelation" parameterType="String">
+        DELETE FROM garbage_garbage_category_relation
+        WHERE gcr_garbage_id=#{garbageId}
+    </delete>
+
+    <select id="inFavorite" parameterType="String" resultType="Integer">
+        SELECT COUNT(g.garbage_id) FROM garbage g
+        LEFT JOIN garbage_garbage_category_relation gcr
+        ON g.garbage_id=gcr.gcr_garbage_id
+        LEFT JOIN garbage_category gc
+        ON gc.gc_id=gcr.gcr_gc_id
+        LEFT JOIN user_garbage_relation ugr
+        ON g.garbage_id=ugr.ugr_garbage_id
+        LEFT JOIN user u
+        ON u.user_id=ugr.ugr_user_id
+        WHERE g.garbage_id =#{garbageId}
+        AND u.user_id=#{userId}
+    </select>
+
+    <insert id="addFavorite" parameterType="String">
+        INSERT INTO user_garbage_relation
+        VALUES (#{ugrId},#{userId},#{garbageId})
+    </insert>
+
+    <delete id="delFavorite" parameterType="String">
+        DELETE FROM user_garbage_relation
+        WHERE ugr_user_id=#{userId}
+        AND ugr_garbage_id=#{garbageId}
+    </delete>
+</mapper>
